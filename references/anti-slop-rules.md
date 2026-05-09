@@ -24,14 +24,18 @@ Tells are CUMULATIVE — a single rule break is sometimes compensable, but stack
 6. **3-column equal feature card grid** — confirmed 6 hits in single AI page; 0 in human.
 7. **Heavy Tailwind utility class density (>200 in initial HTML)** — snapstory: 383, exgen: 379. Human max: 64. Indicator of utility-spam without committed CSS architecture.
 8. **Generic SaaS CTA labels in hero**: "Get Started", "Sign In", "Subscribe", "Start Free", "Sign Up Free" — without product-specific framing.
+9. **AI-generated 3D model as hero subject**. Default Octane render aesthetic — glossy plastic shading, balanced studio lighting, generic primitive arrangement. Includes `.glb`/`.gltf` imports rendered real-time + AI-generated 3D blobs/characters/scenes. **Use static 3D render → 2D image (Augen pattern) OR shader effect OR 2D illustration instead.** Direct evidence: 0/7 human-crafted landings used real-time AI-generated 3D models.
+10. **OrbitControls enabled in landing/portfolio** — signals "viewer demo" not designed page. Visitor doesn't want to "explore 3D."
 
 ### Tier 2 — AI compositional tendencies (MUST FIX in combination)
 
-9. **Generic browser-mockup as right-half of split hero** (laptop frame with fake UI inside). Confirmed pattern in snapstory + exgen.
-10. **Friendly bullet checkbox reassurance row** under hero CTA: "✓ No credit card required ✓ 7-day free trial ✓ Cancel anytime" (or similar checkmark trio).
-11. **Round fake stats** in hero: "10K+ users", "2M+ downloads", "1M+ stories", "99.99% uptime", "10x faster".
-12. **AI-generated cute illustration** as hero subject (cartoon animal with laptop/coffee, generic 3D blob characters, "diverse team smiling at laptop").
-13. **Centered hero with centered H1** at high DESIGN_VARIANCE. Compensable only when vibe is genuinely minimal AND visual carries the page.
+11. **Generic browser-mockup as right-half of split hero** (laptop frame with fake UI inside). Confirmed pattern in snapstory + exgen.
+12. **Friendly bullet checkbox reassurance row** under hero CTA: "✓ No credit card required ✓ 7-day free trial ✓ Cancel anytime" (or similar checkmark trio).
+13. **Round fake stats** in hero: "10K+ users", "2M+ downloads", "1M+ stories", "99.99% uptime", "10x faster".
+14. **AI-generated cute illustration** as hero subject (cartoon animal with laptop/coffee, generic 3D blob characters, "diverse team smiling at laptop").
+15. **Centered hero with centered H1** at high DESIGN_VARIANCE. Compensable only when vibe is genuinely minimal AND visual carries the page.
+16. **3D model used purely as decoration** without narrative purpose (e.g., rotating cube/torusKnot in middle of viewport). Even with user-provided GLB exception, model must serve the product story, not be eye-candy.
+17. **Style mixing across 2D illustrations** in same site (silkscreen poster hero + synthwave gradient mid-section). All illustrations must share style language per `2d-illustration-catalog.md` § Asset Cohesion Rules.
 
 ### Tier 3 — Style preferences (compensable with visual craft)
 
@@ -211,18 +215,36 @@ Tells are CUMULATIVE — a single rule break is sometimes compensable, but stack
 
 ## 3D-Specific Anti-Slop
 
-### Forbidden
+### Forbidden — 3D models (Tier 1 escalation)
+- **AI-generated `.glb` / `.gltf` as hero subject** — default Octane render aesthetic, generic plastic shading
+- **Rotating product GLB at center of viewport** — "viewer demo" not landing
+- **AI-generated 3D characters / blobs / mascots** — generic AI fingerprint
+- **`OrbitControls` enabled** in landing/portfolio context
+
+### Forbidden — Three.js defaults
 - `MeshNormalMaterial` rainbow (default Three.js render)
-- `OrbitControls` enabled by default — feels like a viewer demo
 - Default Three.js lighting (`AmbientLight` only at 0.5)
 - Stock physically-correct grass / water shaders
 - Stats overlay shipped to production
 - `frameloop="always"` on static scenes
 - Generic "particle field with bloom" without vibe match
+- "Cube/sphere/torusKnot rotates in middle of viewport" stock demo
 
-### Approved
-- Custom-tuned material that matches palette
-- No camera controls unless interactive-accent pattern requires
+### Approved — visual effects only
+- Custom-tuned shader material that matches locked palette
+- Particle fields driven by shader uniforms (not CPU loop)
+- Displacement plane shader (single plane, vertex displacement)
+- Refractive shader for glass-tech vibe
+- No camera controls (camera is fixed; user doesn't navigate scene)
+- `frameloop="demand"` for static-state shaders
+- Static 3D render exported as PNG → used as `<Image>` (handled in Phase 4, NOT Phase 5)
+
+### User-provided real-product GLB exception
+Only allowed when:
+- User explicitly provides a GLB file
+- Model shows a real shippable product (not generic shape)
+- Override logged in `plans/{date}-{slug}/overrides.md` with reason
+- All standard Three.js perf guardrails apply (Draco compression, dpr cap, Suspense fallback)
 - Studio HDRI from `drei` for luxury / glass-tech vibe
 - `frameloop="demand"` for static / scroll-only
 - Lazy-loaded with `dynamic({ ssr: false })` + poster fallback
@@ -248,6 +270,16 @@ grep -rE '\bh-screen\b' app/  # must be empty (must use min-h-[100dvh])
 # Inline hex colors (should be Tailwind tokens)
 grep -rE '#[0-9a-fA-F]{6}' app/components/ | grep -v 'tailwind.config' | grep -v 'globals.css'
 # Should be empty or only inside SVG icon paths
+
+# 3D model imports (Tier 1 — must be empty unless user-GLB override logged)
+grep -rE 'GLTFLoader|FBXLoader|OBJLoader|useGLTF|gltfjsx' app/  # must be empty unless override
+find public/ -name '*.glb' -o -name '*.gltf' 2>/dev/null  # must be empty unless override
+
+# OrbitControls in production (Tier 1)
+grep -rE 'OrbitControls' app/  # must be empty for landing/portfolio
+
+# Default Three.js material clichés
+grep -rE 'MeshNormalMaterial' app/  # must be empty
 ```
 
 ### Source-code checks — if type = landing

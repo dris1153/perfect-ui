@@ -15,10 +15,10 @@ It orchestrates a strict 8-phase pipeline:
 1. **Detect mode** — new build vs redesign of existing site
 2. **Detect type** — landing page vs portfolio (asks if unclear)
 3. **Discover vibe** via [`ck:brainstorm`](https://docs.claude.com) — 1 anchor + 1 wildcard adjective
-4. **Lock visual direction** — palette, typography pair, spatial language, optional 3D layer
+4. **Lock visual direction** — palette, typography pair, spatial language, optional Visual Effect Layer
 5. **Custom icon set** — direct SVG OR AI-generated + traced. **Zero emoji. Zero icon libraries.**
-6. **AI visual assets** — hero illustrations, backgrounds, project covers via `ck:ai-artist` / `ck:ai-multimodal`
-7. **Optional 3D layer** via `ck:threejs` — always proposed, never auto-applied
+6. **2D visual assets** — illustrations, photos, static 3D renders (exported as PNG), SVG. Style picked from 11 vibes × 11 styles catalog. **2D craft is the default visual language.**
+7. **Optional Visual Effect Layer** — shaders, particles, atmospheric effects via CSS-first / `ck:threejs`-as-shader-runner. **NO 3D models as hero subjects** (rotating GLB / AI characters forbidden).
 8. **Implementation** via `ck:plan` + `ck:cook` on Next.js + Tailwind + shadcn
 
 A final anti-slop audit (Tier 1/2/3 system) blocks ship if AI fingerprints stack.
@@ -34,17 +34,6 @@ This skill encodes that finding as enforceable rules.
 ## Installation
 
 The skill is auto-discovered when placed in your Claude Code skills directory. Once registered, it activates on relevant phrases ("design a landing page", "build my portfolio", etc.).
-
-### Folder rename note
-
-Current folder is `perfect-landing/` for historical reasons; the skill itself is named `perfect-ui` (in `SKILL.md` frontmatter). To match folder to skill name (recommended):
-
-```powershell
-# After ending current Claude Code session (folder is locked while CWD'd into it)
-Rename-Item "perfect-landing" "perfect-ui"
-```
-
-Skill activation works either way — Claude reads `SKILL.md` `name:` field, not the folder name.
 
 ---
 
@@ -160,9 +149,11 @@ These cannot be overridden without explicit double-confirmation + logged overrid
    - No two equal-weight CTAs in hero
    - No "Elevate / Seamless / Unleash / Empower / Game-changer / Next-gen" copy in headlines
    - No "Hi, I'm X, a passionate designer who loves coffee" portfolio opener
-4. **Always propose 3D** — every site gets a 3D-layer proposal during visual direction. User accepts or declines.
-5. **Vibe before pixels** — never write code or generate assets before vibe + palette + typography are locked.
-6. **Type-aware everything** — Phase 1 brief, Phase 6 plan, anatomy, and skeleton ALL branch by `--type`.
+4. **NO AI-generated 3D models as hero subject** — no rotating product GLB, no AI-generated 3D character, no GLTF showcase. **2D illustration is the default.** Static 3D renders (Blender/Spline export → PNG) are 2D images, allowed. User-provided real-product GLB allowed only with logged override.
+5. **3D = effects only** — Phase 5 (Visual Effect Layer) is for shaders, particles, atmospheric layers. CSS first, WebGL only when CSS can't.
+6. **Always propose Visual Effect Layer** — every site gets the proposal. User accepts or declines.
+7. **Vibe before pixels** — never write code or generate assets before vibe + palette + typography are locked.
+8. **Type-aware everything** — Phase 1 brief, Phase 6 plan, anatomy, and skeleton ALL branch by `--type`.
 
 Full forbidden patterns (with Tier 1/2/3 enforcement): [`references/anti-slop-rules.md`](references/anti-slop-rules.md).
 
@@ -176,7 +167,8 @@ Default output for `--stack nextjs` (recommended):
 - **Styling:** Tailwind CSS with locked palette as theme tokens
 - **Components:** shadcn/ui customized (no defaults)
 - **Fonts:** `next/font/local` or `next/font/google` for distinctive display + body pair
-- **3D (if used):** React Three Fiber + drei, lazy-loaded with `ssr: false`
+- **2D illustrations:** AI-generated via `ck:ai-artist` / `ck:ai-multimodal` per [`references/2d-illustration-catalog.md`](references/2d-illustration-catalog.md), OR direct SVG, OR Blender/Spline static 3D render exported as PNG
+- **Visual effects (if used):** CSS first, then React Three Fiber **as shader runner only** (NOT 3D model viewer), lazy-loaded with `ssr: false`
 - **Animation (if used):** Framer Motion + Lenis (smooth scroll) + GSAP (scroll triggers)
 - **Icons:** Custom SVG components in `app/components/icons/`
 
@@ -194,8 +186,9 @@ perfect-landing/                              (folder; skill name is "perfect-ui
 │   ├── workflow-phases.md                    Detailed phase walkthrough + activation prompts
 │   ├── visual-direction-guide.md             11 vibe palettes, typography pairs, commitment audit
 │   ├── custom-icon-pipeline.md               Decision tree: SVG-direct vs AI-gen + cohesion rules
-│   ├── threejs-integration-patterns.md       3D patterns + RTF integration + perf guardrails
-│   ├── visual-asset-prompt-library.md        Prompt templates per vibe (hero, bg, OG, avatar)
+│   ├── 2d-illustration-catalog.md            11 vibes × 11 illustration styles + cohesion rules
+│   ├── visual-asset-prompt-library.md        Prompt templates per vibe + static 3D render + SVG patterns
+│   ├── visual-effect-patterns.md             Shader / particle / atmospheric patterns (NO models)
 │   ├── landing-anatomy.md                    Landing sections + conversion patterns + anti-patterns
 │   ├── portfolio-anatomy.md                  Portfolio sections + portfolio-specific anti-clichés
 │   ├── anti-slop-rules.md                    Tier 1/2/3 forbidden patterns + grep audits
@@ -208,9 +201,11 @@ perfect-landing/                              (folder; skill name is "perfect-ui
 └── plans/
     ├── 260509-perfect-ui-multitype/
     │   └── brainstorm.md                     Original design doc for multi-type expansion
-    └── 260509-ai-vs-human-analysis/
-        ├── synthesis.md                      Evidence-based AI vs human comparison
-        └── raw/human-pages-findings.md       Background research on human-made pages
+    ├── 260509-ai-vs-human-analysis/
+    │   ├── synthesis.md                      Evidence-based AI vs human comparison
+    │   └── raw/human-pages-findings.md       Background research on human-made pages
+    └── 260510-2d-priority-no-3d-models/
+        └── brainstorm.md                     Pivot to 2D-priority + effect-only threejs
 ```
 
 ---
@@ -290,16 +285,39 @@ A: Add palette + typography pair to [`references/visual-direction-guide.md`](ref
 **Q: Can I use this for blog sites?**
 A: Not yet. Blog support was deferred — see [`plans/260509-perfect-ui-multitype/brainstorm.md`](plans/260509-perfect-ui-multitype/brainstorm.md) for context. Currently `landing` and `portfolio` only.
 
+**Q: Can I add a rotating 3D product GLB to my hero?**
+A: Generally NO. Direct evidence from 12 real landings showed 0/7 human-crafted pages used real-time 3D models. Use one of these instead:
+1. **Static 3D render → 2D image** (recommended) — render in Blender / Spline / KeyShot, export PNG/WebP, use as `<Image>`. This is the Augen.pro pattern.
+2. **2D illustration** matching vibe — see [`references/2d-illustration-catalog.md`](references/2d-illustration-catalog.md)
+3. **Shader effect** for atmosphere — see [`references/visual-effect-patterns.md`](references/visual-effect-patterns.md)
+
+**User-provided real-product GLB exception:** If you have a GLB of an actual shippable product (hardware brand showcase), allow with double-confirm + logged override.
+
+**Q: What's the difference between "3D model" (forbidden) and "static 3D render" (allowed)?**
+A: A 3D MODEL is a `.glb`/`.gltf` rendered in real-time in the browser — visitor sees Three.js running. A STATIC 3D RENDER is a 3D scene pre-rendered (in Blender / Spline / KeyShot) and exported as a 2D image (PNG/WebP) — visitor sees `<Image>`. Same visual look, very different performance + AI-fingerprint profile.
+
+**Q: When does the Visual Effect Layer (Phase 5) earn its place?**
+A: Only when:
+- CSS can't deliver the atmosphere (then shader)
+- Vibe is retro-futuristic / glass-tech (effects native to vibe)
+- Effect serves narrative (scroll storytelling, brand moment), not decoration
+
+Default: skip Phase 5. The strongest human-crafted landings (Paperclip, OWO, Augen) use NO visual effects.
+
+**Q: Can I import `three`, `@react-three/fiber`, `@react-three/drei`?**
+A: Yes — but only as **shader/effect runners**, not 3D model viewers. Single `<Canvas>` with single `<mesh>` running custom shader = OK. `<GLTFLoader>` / `useGLTF` / `OrbitControls` = NO (unless user-GLB override).
+
 ---
 
 ## Contributing / Modifying
 
 This is a personal skill. To extend:
 
-1. **New vibe:** add to `visual-direction-guide.md` palette + typography sections + 3D pairing matrix
-2. **New anti-slop pattern:** classify into Tier 1/2/3 in `anti-slop-rules.md`, add grep check to Final Audit
-3. **New section archetype:** add ASCII layout to `section-archetypes.md` + vibe-mapping row
-4. **New skill type (e.g., blog):** see deferred decision in `plans/260509-perfect-ui-multitype/brainstorm.md`
+1. **New vibe:** add palette + typography to `visual-direction-guide.md` + illustration style row to `2d-illustration-catalog.md` + effect layer pairing to visual-direction-guide
+2. **New illustration style:** add to `2d-illustration-catalog.md` § Illustration Style Catalog + cross-reference vibe table
+3. **New anti-slop pattern:** classify into Tier 1/2/3 in `anti-slop-rules.md`, add grep check to Final Audit
+4. **New section archetype:** add ASCII layout to `section-archetypes.md` + vibe-mapping row
+5. **New skill type (e.g., blog):** see deferred decision in `plans/260509-perfect-ui-multitype/brainstorm.md`
 
 Validate after changes: `python ~/.claude/skills/skill-creator/scripts/quick_validate.py <skill-path>`
 

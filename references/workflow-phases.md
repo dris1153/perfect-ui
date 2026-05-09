@@ -234,73 +234,111 @@ export const FeatureSpeed = (props: IconProps) => (
 
 ---
 
-## Phase 4 — AI Visual Assets
+## Phase 4 — 2D Visual Assets
+
+**2D craft is the default visual language.** Pick illustration style from `2d-illustration-catalog.md` based on locked vibe.
+
+### Pre-step: pick illustration style from catalog
+Open `references/2d-illustration-catalog.md` § Vibe → Style Mapping table. Find row matching locked vibe. Pick primary style — use secondary only if primary fails to deliver hero.
 
 ### Asset checklist
-- [ ] Hero illustration / scene (1)
+- [ ] Hero illustration / scene / static 3D render exported as PNG (1)
 - [ ] Section dividers / accents (2-4)
 - [ ] Background texture (1, tileable)
 - [ ] Open Graph image (1, 1200×630)
 - [ ] Favicon source (1, square)
+- [ ] Avatars / portraits (per testimonials, owner portrait if portfolio)
 
 ### Prompt template (apply to ALL prompts)
 ```
 Subject: {what}
+Style: {pick from 2d-illustration-catalog} (e.g., "silkscreen poster", "hand-drawn ink", "static 3D render")
 Vibe: {vibe-anchor} + {wildcard}
-Palette: {3 colors with hex}
-Lighting: {keyword}
+Palette: {3 colors with hex from locked direction}
+Lighting: {keyword matched to style}
 Composition: {asymmetric | centered | rule-of-thirds}
 Negative space: {where empty}
-Style refs: {2-3 artistic references}
+Style refs: {2-3 artistic references from catalog row}
 Forbidden: AI purple/blue gradient, neon glow, generic tech illustration,
-  Microsoft-clip-art aesthetic, gradient mesh, default 3D render
+  Microsoft-clip-art aesthetic, gradient mesh, default Octane 3D render,
+  AI-generated 3D blob characters, generic AI 3D-rendered scenes
 Aspect ratio: {1:1 | 16:9 | 9:16}
 ```
 
-Examples in `visual-asset-prompt-library.md`.
+Examples in `visual-asset-prompt-library.md`. Static 3D render templates in same file § Static 3D Render → 2D Image Templates.
 
-### Tool routing
-| Asset | Primary tool | Fallback |
-|-------|-------------|----------|
-| Hero illustration (artistic) | `ck:ai-artist` --mode search | `--mode wild` if too generic |
-| Hero photo (realistic) | `ck:ai-multimodal` Imagen 4 Ultra | Nano Banana 2 |
-| Background texture | `ck:ai-multimodal` Imagen 4 Fast | tile via `ck:media-processing` |
-| OG image | `ckm:design` social-photos | manual composition |
-| Avatars (testimonials) | `ck:ai-multimodal` Nano Banana 2 | photo-style realistic |
+### Tool routing (by style)
+| Style | Primary tool | Notes |
+|-------|--------------|-------|
+| Silkscreen / hand-drawn / cut-paper / risograph / watercolor | `ck:ai-artist` --mode search | Best style match from 129 curated prompts |
+| Engraved line-art / vintage patent | `ck:ai-artist` --mode wild | Random artistic transformation includes "vintage patent document" |
+| Geometric flat (SVG) | Direct SVG code (Claude inline) | Preferred for production-quality vector |
+| Architectural schematic | `ck:ai-artist` or vector tool | Technical aesthetic |
+| Static 3D render → 2D | Blender / Spline / KeyShot manually OR `ck:ai-multimodal` Imagen Ultra with strict prompt | Output is PNG/WebP, NEVER `.glb` |
+| Photographic | Real photos preferred for portfolios with real work; AI fallback only with anti-stock negative prompt | `ck:ai-multimodal` Nano Banana 2 |
+| Synthwave gradient | `ck:ai-artist` --mode search "synthwave" | Retro-futuristic vibe ONLY |
+| OG image | `ckm:design` social-photos | Manual composition fallback |
+
+### Forbidden in this phase
+- AI-generated 3D models (`.glb`/`.gltf`) — even if "for the hero"
+- Stock illustrations from `unDraw` / `Storyset` libraries
+- Default Octane render aesthetic outputs
+- Style mixing across assets (silkscreen hero + synthwave dividers)
+- Palette drift (using colors not in locked palette)
 
 ### Validation loop
 After every generation:
 1. View image with `ck:ai-multimodal` analyze
 2. Check: does it match locked palette? (extract dominant colors, compare)
-3. Check: does it match vibe adjective? (describe in 3 words, compare to brief)
-4. If drift > 30%, regenerate with stronger negative prompt
+3. Check: does it match the chosen catalog style? (describe style in 3 words, compare to row)
+4. Check: does it match vibe adjective from brief?
+5. If drift > 30%, regenerate with stronger negative prompt
+6. After ≥ 3 assets generated, run cross-asset cohesion audit (do they all feel one hand?)
 
 ---
 
-## Phase 5 — 3D Layer (conditional)
+## Phase 5 — Visual Effect Layer (conditional)
 
-Skip entirely if Phase 2d returned "none".
+Skip entirely if Phase 2d returned "none". **Scope: shaders, particles, atmospheric layers — NOT 3D models.**
 
 ### Decision matrix
-| Phase 2d choice | 3D scope | Three.js features |
-|----------------|---------|------------------|
-| hero-scene | Full hero is canvas | Geometry, lights, camera anim |
-| scroll-triggered | Element animates with scroll | ScrollTrigger + GSAP, scroll-linked rotation |
-| interactive-accent | Small draggable / hoverable widget | OrbitControls or pointer events |
+| Phase 2d choice | Effect scope | Stack |
+|----------------|---------|-------|
+| CSS-only atmosphere | Gradient + grain overlay + subtle CSS animation | CSS only (Tier 1) |
+| Shader background | Procedural noise / fluid / displacement on fullscreen plane | RTF shader (Tier 3) |
+| Particle field | 5000+ shader-driven points | RTF + bufferGeometry + shader (Tier 3) |
+| Scroll-driven distortion | Lenis + GSAP ScrollTrigger drives shader uniform | Lenis + GSAP + RTF shader (Tier 2-3) |
+| Cursor-reactive accent | Mouse coords drive CSS conic gradient OR shader uniform | CSS preferred (Tier 1), shader fallback (Tier 3) |
+| Lottie animation | After-Effects-style 2D motion | Lottie (Tier 4) |
 
-### Pattern lookup
+**Tier 1 = CSS preferred. Try CSS first, only escalate to WebGL when CSS proves insufficient.**
+
+### Pattern lookup (only if shader/particle approach chosen)
 ```bash
-# Hero scene
-python3 ~/.claude/skills/threejs/scripts/search.py "abstract geometry hero" -n 5
+# Shader background patterns
+python3 ~/.claude/skills/threejs/scripts/search.py "fragment shader noise" -n 5
 
-# Scroll-triggered
-python3 ~/.claude/skills/threejs/scripts/search.py "scroll animation camera" -n 5
+# Particle systems
+python3 ~/.claude/skills/threejs/scripts/search.py "particle field gpu compute" -n 5
 
-# Interactive accent
-python3 ~/.claude/skills/threejs/scripts/search.py "draggable card 3d" -n 5
+# Scroll-driven shader effects
+python3 ~/.claude/skills/threejs/scripts/search.py "scroll shader uniform" -n 5
 ```
 
-See `threejs-integration-patterns.md` for full integration guide.
+### Forbidden in this phase
+- AI-generated `.glb`/`.gltf` as hero subject (use Phase 4 static 3D render instead)
+- `OrbitControls` enabled (signals viewer demo)
+- `MeshNormalMaterial` rainbow (Three.js default)
+- Heavy bundle (>100KB) for what CSS can deliver
+- Effect-for-effect's-sake (decorative without narrative)
+
+### User-provided GLB exception (rare, logged)
+If user explicitly provides real-product GLB:
+1. Confirm model shows real shippable product (not generic shape)
+2. Log override in `plans/{date}-{slug}/overrides.md`
+3. Apply standard ck:threejs guardrails (Draco compression, Suspense fallback, dpr cap)
+
+See `visual-effect-patterns.md` for full integration guide.
 
 ---
 

@@ -117,6 +117,165 @@ rainbow. Aspect ratio: 1:1.
 
 Portfolios often use a featured-project visual or abstract mark as hero, NOT a stock illustration. Use sparingly — usually the work grid is the hero.
 
+## Static 3D Render → 2D Image Templates
+
+**Critical:** These produce a 3D-rendered scene that is exported as PNG/WebP and used as `<Image>`. The visitor sees a 2D image. **Never imported as `.glb`.** This is the Augen.pro pattern.
+
+### Template: Static 3D Render — glass-tech device on infinite gradient
+```
+A photorealistic 3D rendering of {product description — e.g., "a sleek
+wireless wearable headset with brushed-metal accents"}, glass-tech vibe with
+clinical wildcard. Render style: Blender Cycles / Spline / KeyShot studio
+output, exported as 2D image. Palette: off-white background #F8F6F1 with
+gradient to lavender, ink-gray product surfaces, single muted blue-gray
+accent #A2D8F0 in product detail. Lighting: studio three-point with HDRI
+neutral environment, soft shadows beneath product, single rim from upper-
+right. Composition: product floats slightly off-center (asymmetric, not
+dead-center), generous negative space top-left for type overlay. Style
+references: Augen.pro hero, Apple keynote product photography, contemporary
+industrial design portfolios. Forbidden: AI default Octane render aesthetic,
+chrome highlights, generic glass-balls-on-marble, AI-generated 3D blob
+characters, cyberpunk neon glow, default OctaneMaterial pink-blue. Aspect
+ratio: 1:1 or 4:3.
+```
+
+### Template: Static 3D Render — sci-fi figure silhouette (Augen pattern)
+```
+A photorealistic 3D rendering of {subject — e.g., "a human head silhouette
+viewed in three-quarter profile, eyes closed, completely smooth surface
+without facial features, deep matte material"}, glass-tech vibe with
+cinematic wildcard. Render style: Blender Cycles studio output, exported as
+2D image. Palette: pure off-white background #F8F6F1, dark matte form in
+warm graphite, single accent — soft warm rim light only. Lighting: backlight
+silhouette with subtle skin-tone rim from right, ambient occlusion under
+form. Composition: subject centered with massive negative space all around
+(80% empty), face softly fading into background where it meets light.
+Style references: Augen.pro hero head, Apple introductory product films,
+contemporary editorial 3D portrait work. Forbidden: detailed facial features,
+generic 3D-character aesthetic, glossy plastic feel, default Octane render,
+chrome highlights, neon. Aspect ratio: 1:1.
+```
+
+### Template: Static 3D Render — playful / claymation
+```
+A 3D rendering of {subject — e.g., "soft-edged primitive shapes (sphere,
+capsule, torus) in deliberately playful arrangement"}, playful vibe with
+handmade wildcard. Render style: clay-material soft shading, exported as 2D
+image. Palette: cream-yellow background #FFF8E7, coral accent #FF6B4A, deep
+brown ink #2D1F12 for shadows. Lighting: warm soft three-point, gentle
+shadows, no harsh specular. Style references: Memphis Group 1980s,
+claymation, Bruno Munari toys, Spline community handmade aesthetic.
+Forbidden: chrome material, neon, AI default 3D render aesthetic,
+MeshNormalMaterial rainbow, cyberpunk hologram. Aspect ratio: 1:1.
+```
+
+### When to use static 3D render
+- Glass-tech vibe → primary visual language
+- Luxury vibe (product photography style) → if real product photo unavailable
+- Playful vibe → claymation aesthetic only
+- Forbidden vibes for static 3D: editorial, hand-crafted, art-deco, brutalist, organic (all conflict with rendered look)
+
+### Production tools
+- **Blender** (free) — Cycles renderer, full control
+- **Spline** (web-based) — quick 3D scene + export PNG
+- **KeyShot** (paid) — product photography quality
+- **`ck:ai-multimodal` Imagen Ultra** — fallback when no 3D tool, but use ONLY with strict negative prompt list to avoid AI-default aesthetic
+
+### Validation
+After generation, verify:
+- Output is a single PNG/WebP (not multiple frames implying real-time)
+- Palette matches locked direction (extract dominant colors)
+- No "AI default 3D render" aesthetic (the tell: balanced lighting + glossy plastic + saturated rim color)
+- File size < 500KB after WebP optimization
+
+## SVG Illustration Templates
+
+For geometric flat / engraved line / geometric vector illustrations. Claude can write SVG directly OR generate via AI then trace.
+
+### Template: Geometric flat hero (minimal / brutalist / art-deco)
+```
+A geometric flat illustration of {metaphor — e.g., "interlocking arcs forming
+a sun motif"}, brutalist/art-deco vibe. Constraint: composed entirely of
+basic shapes (circle, rectangle, triangle, arc) — no curves beyond simple
+arcs. Palette: 2-3 flat colors from locked palette, no gradients. Style:
+SVG-friendly hard edges, mathematical composition. Reference: Saul Bass
+posters, Massimo Vignelli signage, mid-century geometric posters. Forbidden:
+soft gradients, shadows, photographic detail. Aspect ratio: 1:1 or 16:9.
+```
+
+After generation, trace to clean SVG (Inkscape Trace Bitmap) OR rewrite by hand for production-quality vector.
+
+### Template: Hand-drawn ink illustration
+```
+A loose hand-drawn ink illustration of {subject — e.g., "a folded paper
+crane mid-flight"}, editorial / hand-crafted vibe. Single weight or weight-
+varied ink line, expressive imperfection. Palette: ink only on cream paper
+background; no fills. Style: contemporary editorial line art, Alvin Lustig
+references, mid-century book illustration. Forbidden: digital perfect
+curves, gradient fills, photographic shading. Aspect ratio: 1:1 or 3:4.
+```
+
+### Template: Engraved line art (luxury / art-deco)
+```
+A vintage-style engraved illustration of {subject}, luxury / art-deco vibe.
+Style: thin parallel lines for shading (crosshatching), monogram-style
+precision, vintage scientific drawing aesthetic. Palette: single ink on
+cream paper. Reference: vintage patent illustrations, banknote engraving,
+heritage brand identity work (Hermès, Aesop). Forbidden: digital flat fills,
+modern gradients, AI-default rendering. Aspect ratio: 1:1.
+```
+
+### Direct SVG (Claude inline) — preferred for simple geometric
+
+```tsx
+// app/components/illustrations/sun-motif.tsx
+export const SunMotif = ({ size = 200 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 200 200" aria-hidden="true">
+    {/* 12 rays */}
+    {Array.from({ length: 12 }).map((_, i) => (
+      <line
+        key={i}
+        x1={100 + Math.cos((i * Math.PI) / 6) * 60}
+        y1={100 + Math.sin((i * Math.PI) / 6) * 60}
+        x2={100 + Math.cos((i * Math.PI) / 6) * 90}
+        y2={100 + Math.sin((i * Math.PI) / 6) * 90}
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    ))}
+    <circle cx="100" cy="100" r="40" fill="none" stroke="currentColor" strokeWidth="1.5" />
+  </svg>
+);
+```
+
+Style mapping per vibe: see `references/2d-illustration-catalog.md` § Vibe → Style Mapping.
+
+## Asset Cohesion Rules
+
+**Within a single site, ALL 2D illustrations + photos + (optional) static 3D renders must share style language.**
+
+### Cohesion checklist (run before shipping)
+1. **Single illustration style** — pick one row from `2d-illustration-catalog.md` vibe table; apply to hero, mid-section, dividers
+2. **Single palette** — every asset uses ONLY locked palette colors; no rogue colors
+3. **Single line weight / stroke philosophy** if line-based — matches icon set stroke from `custom-icon-pipeline.md`
+4. **Single composition language** — if asymmetric heroes, asymmetric mid-section illustrations too
+5. **Single texture treatment** — grain everywhere OR grain nowhere; not "grainy hero, clean rest"
+6. **Single lighting language** (if photographic / static 3D) — warm afternoon vs cool studio vs harsh flash; pick one
+7. **Single depth-of-field discipline** — all flat OR all dimensional, not mixed
+
+### Cross-asset audit
+At end of Phase 4, run quick audit:
+- Open hero image + 2 mid-section images + 1 OG side-by-side
+- Ask: "Do these look like one designer made them?"
+- If "no" or "uncertain" → identify the outlier, regenerate with stronger style anchors
+
+### Anti-pattern: style mixing
+- ❌ Silkscreen poster hero + synthwave gradient mid-section
+- ❌ Hand-drawn ink illustrations + photographic testimonials with no color-grade tie
+- ❌ Geometric flat icons + watercolor section dividers
+- ❌ Static 3D render hero + cut-paper collage section visuals
+
 ### Template: Portfolio abstract intro (editorial, mark-like)
 ```
 A single typographic monogram of letters "{initials}" rendered as overlapping

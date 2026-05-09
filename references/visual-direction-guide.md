@@ -194,21 +194,32 @@ If user explicitly requests one of these twice, allow but log: "User-overridden 
 - Generous py-40+ between sections
 - Type sits on atmosphere, not on flat color
 
-## 3D Layer Pairings (when Phase 2d = yes)
+## Visual Effect Layer Pairings (when Phase 2d ≠ none)
 
-| Vibe | Best 3D layer type | Avoid |
-|------|---------------------|-------|
-| Minimal | interactive-accent (small widget) | hero-scene (clutters) |
-| Editorial | scroll-triggered (subtle) | hero-scene |
-| Brutalist | hero-scene (raw geometry) | scroll-triggered |
-| Retro-futuristic | hero-scene (particles, grids) | flat |
-| Organic | scroll-triggered (camera flow) | hero-scene |
-| Luxury | hero-scene (rotating product) | brutalist geometry |
-| Playful | interactive-accent (toy-like) | static hero |
-| Industrial | hero-scene (mechanical) | organic flow |
-| Art-deco | scroll-triggered (geometric reveal) | particles |
-| Glass-tech | hero-scene (volumetric glass) | flat |
-| Hand-crafted | none (3D fights vibe) | hero-scene |
+**Reminder:** No 3D models as hero subjects. Effects are shaders, particles, atmospheric layers — geometry as canvas, not as visible model. CSS first, WebGL only when CSS can't. Static 3D renders → 2D images are NOT this layer; they're Phase 4 assets.
+
+| Vibe | Recommended effect layer | Stack | Avoid |
+|------|--------------------------|-------|-------|
+| Minimal | CSS conic gradient + grain overlay; cursor-reactive accent on logo | CSS only | shader, particles |
+| Editorial | CSS noise overlay; GSAP scroll-linked transforms on display type | Lenis + GSAP | WebGL, particles |
+| Brutalist | IntersectionObserver hard reveals; CSS hard-edged transforms | CSS + IO | smooth gradients, organic |
+| Retro-futuristic | Particle field (shader points); animated synthwave gradient (shader) | RTF shader | flat, hand-drawn motion |
+| Organic | Displacement plane (shader wave); slow CSS gradient animation | RTF shader OR CSS | hard-edged motion |
+| Luxury | Subtle CSS gradient + grain; Lenis smooth scroll | CSS + Lenis | particles, distortion |
+| Playful | Lottie character animation; CSS spring hover bounces | Lottie + CSS | shader complexity, WebGL |
+| Industrial | IntersectionObserver hard reveals; CSS structural animations | CSS + IO | organic motion, particles |
+| Art-deco | Geometric SVG path animations (SMIL); slow CSS rotation | SVG + CSS | WebGL, modern shader |
+| Glass-tech | Refractive shader on hero plane (frosted glass); subtle particle accent | RTF shader + Postprocessing | flat, no-effect |
+| Hand-crafted | CSS-only with paper texture; Lottie sketch-line animations | CSS + Lottie | WebGL, smooth gradients |
+
+### Forbidden in Phase 5 (regardless of vibe)
+- **AI-generated 3D models** as hero subject (rotating product GLB, character, blob)
+- **OrbitControls** enabled by default ("viewer demo" aesthetic)
+- **`MeshNormalMaterial` rainbow** (default Three.js render)
+- **Effect-for-effect's-sake** (decorative without narrative purpose)
+
+### User-provided real-product GLB exception
+If user has a GLB of a real shippable product (hardware brand showcase), allow with logged override in `plans/{date}-{slug}/overrides.md`. See `visual-effect-patterns.md` § User-Provided GLB Exception.
 
 ## Output Artifact Template
 
@@ -234,13 +245,17 @@ Save to `plans/{date}-{slug}/visual-direction.md`:
 ## Spatial Language
 {Asymmetric Editorial | Minimal Grid | Brutalist Density | Atmospheric}
 
-## 3D Layer
-{none | hero-scene | scroll-triggered | interactive-accent}
+## Visual Effect Layer
+{none | CSS-only atmosphere | shader background | particle field | scroll-driven distortion | cursor-reactive accent | Lottie animation}
+
+## 2D Illustration Style (per `2d-illustration-catalog.md`)
+{silkscreen poster | hand-drawn ink | geometric flat (SVG) | cut-paper collage | risograph | watercolor | engraved line-art | architectural schematic | static 3D render → 2D | photographic | synthwave gradient}
 
 ## Forbidden (apply throughout build)
 - No Inter / Roboto / AI purple gradient
 - No emoji
 - No icon libraries
+- No AI-generated 3D models as hero subject (use static 3D render → 2D, OR shader effect, OR 2D illustration)
 - No `h-screen`
 - No "Elevate / Seamless / Unleash" copy
 - No centered H1 (unless vibe = minimal)

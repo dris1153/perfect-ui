@@ -33,9 +33,11 @@ If user says only "design a website" or "build a site" → ask via `AskUserQuest
 1. **NO emoji anywhere** — not in copy, not in headings, not as icons. Use a custom SVG from this skill's icon pipeline.
 2. **NO icon libraries** — no Lucide, Heroicons, Phosphor, Tabler, Font Awesome, Material Icons. Every icon is custom-designed for this site's vibe.
 3. **NO AI slop defaults** — no Inter font, no purple/blue gradient hero, no centered 3-card feature row, no "Elevate / Seamless / Unleash" copy, no "Hi, I'm X, a passionate designer who loves coffee" portfolio cliché. See `references/anti-slop-rules.md`.
-4. **Always propose 3D** — every site gets a 3D-layer proposal during visual direction. User accepts or declines.
-5. **Vibe before pixels** — never write code or generate assets before the vibe is named, the palette is locked, and the typography pair is chosen.
-6. **Type-aware everything** — Phase 1 brief, Phase 6 plan, anatomy, and skeleton ALL branch by `--type`.
+4. **NO AI-generated 3D models as hero subject** — no rotating product GLB, no AI-generated 3D character, no GLTF showcase. **2D illustration is the default.** Static 3D renders (Blender/Spline export → PNG) are 2D images, allowed. User-provided real-product GLB allowed only with logged override.
+5. **3D = effects only** — Phase 5 (Visual Effect Layer) is for shaders, particles, atmospheric layers. Geometry exists as canvas for shader, not as visible "model". CSS first, WebGL only when CSS can't.
+6. **Always propose Visual Effect Layer** — every site gets the proposal. User accepts or declines.
+7. **Vibe before pixels** — never write code or generate assets before the vibe is named, the palette is locked, and the typography pair is chosen.
+8. **Type-aware everything** — Phase 1 brief, Phase 6 plan, anatomy, and skeleton ALL branch by `--type`.
 
 ## Process Flow (Authoritative)
 
@@ -45,9 +47,9 @@ flowchart TD
     T --> B[Phase 1: Discovery via ck:brainstorm — branched per type]
     B --> C[Phase 2: Visual Direction]
     C --> D[Phase 3: Custom Icon Set]
-    D --> E[Phase 4: AI Visual Assets]
-    E --> F{Phase 5: 3D Layer?}
-    F -->|Yes| G[Three.js Integration via ck:threejs]
+    D --> E[Phase 4: 2D Visual Assets — illustration / static 3D render / photo / SVG]
+    E --> F{Phase 5: Visual Effect Layer?}
+    F -->|Yes| G[Shader / Particle / Atmospheric via ck:threejs or CSS]
     F -->|No| H[Phase 6: Plan via ck:plan — type-aware]
     G --> H
     H --> I[Phase 7: Implement via ck:cook]
@@ -125,8 +127,10 @@ Lock palette + typography + spatial language before any pixels.
 ### 2c. Spatial language
 Pick one: Asymmetric editorial / Minimal grid / Brutalist density / Atmospheric.
 
-### 2d. 3D decision (always proposed, regardless of type)
-`AskUserQuestion`: hero 3D scene / scroll-triggered / interactive accent / no.
+### 2d. Visual Effect Layer decision (always proposed, regardless of type)
+`AskUserQuestion`: shader background / particle field / scroll-driven distortion / cursor-reactive accent / CSS-only atmosphere / none.
+
+**Note:** This is NOT a 3D-model decision. 3D models as hero subjects are forbidden (see Hard Rule 4). Effects use geometry only as canvas for shader/atmosphere.
 
 Save to `plans/{date}-{slug}/visual-direction.md`. Detailed: `references/visual-direction-guide.md`.
 
@@ -140,7 +144,9 @@ Type affects icon **inventory**, not pipeline:
 
 Same cohesion rules apply: single stroke weight, single corner family, single fill style, single metaphor language. Detail + decision tree: `references/custom-icon-pipeline.md`.
 
-## Phase 4 — AI Visual Assets
+## Phase 4 — 2D Visual Assets
+
+**2D craft is the default.** Pick illustration style from `references/2d-illustration-catalog.md` (11 vibes × 11 styles) — silkscreen, hand-drawn ink, geometric flat, cut-paper collage, risograph, watercolor, engraved line-art, schematic, static 3D render → 2D, photographic, synthwave gradient.
 
 Type affects asset list:
 
@@ -148,15 +154,35 @@ Type affects asset list:
 
 **Portfolio:** hero portrait OR abstract intro visual, project cover images (per featured project), background texture, OG image, optional process-illustration.
 
+**Critical rule:** AI-generated 3D models are forbidden as hero subjects. If a 3D look is desired, use the **static 3D render → 2D image** pattern: render in Blender/Spline, export PNG/WebP, use as `<Image>`. Never import as `.glb` (Augen pattern).
+
+**Asset cohesion rule:** ALL 2D assets in a site share one illustration style + locked palette + line weight + composition language. See `references/2d-illustration-catalog.md` § Asset Cohesion Rules.
+
 Tool routing + prompt templates: `references/visual-asset-prompt-library.md`.
 
-## Phase 5 — 3D Layer (optional, all types)
+## Phase 5 — Visual Effect Layer (optional, all types)
 
-Same conditional logic regardless of type. If Phase 2d returned "none", skip. Patterns: `references/threejs-integration-patterns.md`.
+**Scope:** Shaders, particles, atmospheric layers, scroll-driven motion. **NOT 3D models.**
 
-**Type-specific 3D placement guidance:**
-- Landing: hero scene OR scroll-triggered are most common
-- Portfolio: interactive accent (3D logo / mark) OR scroll-triggered work reveal — full 3D hero on portfolio risks overshadowing the work
+If Phase 2d returned "none", skip this phase. Patterns: `references/visual-effect-patterns.md`.
+
+**Forbidden in this phase:**
+- AI-generated 3D models (GLB/GLTF) as hero subject
+- OrbitControls / "viewer demo" aesthetic
+- Effect-for-effect's-sake (decorative without narrative weight)
+- Heavy bundle (>100KB) for what CSS can deliver
+
+**Allowed:**
+- CSS-only atmosphere (gradients, grain, blur) — preferred Tier 1
+- Lenis smooth scroll, Framer Motion, GSAP ScrollTrigger — Tier 2
+- Shader effects via React Three Fiber (RTF as shader runner, not model viewer) — Tier 3 only when CSS can't
+- Lottie / SMIL / SVG animations — Tier 4 alt to shaders
+
+**User-provided real-product GLB exception:** if user explicitly has a GLB of a real shippable product, allow with logged override in `plans/{date}-{slug}/overrides.md`.
+
+**Type-specific effect guidance:**
+- Landing: shader background OR scroll-driven distortion most common
+- Portfolio: cursor-reactive accent on logo OR scroll-triggered work reveal. Avoid full-canvas effects that overshadow work.
 
 ## Phase 6 — Plan (delegate to ck:plan, branched per type)
 
@@ -191,7 +217,10 @@ Constraints `ck:cook` MUST follow (all types):
 - Custom icons only (NEVER `npm install lucide-react` etc.)
 - Locked palette as Tailwind tokens (no inline hex outside icons)
 - Fonts via `next/font`
-- 3D lazy-loaded with `ssr: false`
+- 2D illustration assets per `references/2d-illustration-catalog.md` style mapping
+- NO `.glb` / `.gltf` imports unless user-override logged
+- Visual effect components (if any) lazy-loaded with `ssr: false`
+- CSS-first for atmosphere; WebGL only when CSS proves insufficient
 - Real draft copy — no Lorem, no AI clichés (see `references/anti-slop-rules.md`)
 - Realistic data (no Jane Doe / 99.99%)
 
@@ -208,15 +237,15 @@ Delegate audit to `code-reviewer` agent. Do NOT mark complete with open items.
 | Phase | Skill / agent | Purpose |
 |-------|---------------|---------|
 | 1 | `ck:brainstorm` | Vibe + type-branched brief |
-| 2 | inline + `AskUserQuestion` | Lock palette/typo/3D |
+| 2 | inline + `AskUserQuestion` | Lock palette/typo/effect-layer |
 | 3 | `ckm:design` icon gen and/or `ck:ai-multimodal` | Custom icons |
-| 4 | `ck:ai-artist`, `ck:ai-multimodal`, `ck:media-processing` | Visual assets |
-| 5 | `ck:threejs` | 3D patterns |
+| 4 | `ck:ai-artist`, `ck:ai-multimodal`, `ck:media-processing` | 2D visual assets (illustration / static 3D render → 2D / photo / SVG) |
+| 5 | `ck:threejs` (shaders only) OR CSS / Lottie | Visual Effect Layer — shaders, particles, atmospheric |
 | 6 | `ck:plan` | Type-aware implementation plan |
 | 7 | `ck:cook` | Build the site |
 | 8 | `code-reviewer` agent | Anti-slop audit |
 
-Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landing|portfolio}/`, `app/components/three/`.
+Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landing|portfolio}/`, `app/components/effects/`.
 
 ## References
 
@@ -225,8 +254,9 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 | Detailed phase walkthrough | `references/workflow-phases.md` |
 | Visual direction patterns + commitment audit | `references/visual-direction-guide.md` |
 | Custom icon pipeline | `references/custom-icon-pipeline.md` |
-| Three.js integration | `references/threejs-integration-patterns.md` |
+| 2D illustration catalog (11 vibes × styles) | `references/2d-illustration-catalog.md` |
 | Visual asset prompt library | `references/visual-asset-prompt-library.md` |
+| Visual effect patterns (shaders, particles — NO models) | `references/visual-effect-patterns.md` |
 | Landing anatomy / sections | `references/landing-anatomy.md` |
 | Portfolio anatomy / sections | `references/portfolio-anatomy.md` |
 | Anti-slop forbidden patterns (Tier 1/2/3) | `references/anti-slop-rules.md` |
@@ -247,11 +277,13 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 |---------|---------|
 | "Just one Lucide icon, it's faster" | One library import = vibe broken. Always custom. |
 | "Inter is fine here" | Inter is the AI-default fingerprint. Pick from `references/anti-slop-rules.md`. |
-| "User didn't ask about 3D, skip it" | Always propose 3D — user can decline. |
+| "User didn't ask about effects, skip it" | Always propose Visual Effect Layer — user can decline. |
+| "Let me drop a rotating GLB in the hero, looks impressive" | NO. 0/7 human-crafted landings used real-time 3D models. Use static 3D render → PNG, OR shader effect, OR 2D illustration. |
+| "AI-generated 3D model is a quick visual win" | NO. Default Octane render aesthetic = AI fingerprint. Pick a 2D style from `references/2d-illustration-catalog.md`. |
 | "Lorem Ipsum is just placeholder" | Real draft copy reveals layout issues Lorem hides. |
 | "Skip the brief, I know what they want" | Skip the brief = build wrong vibe = redo everything. |
 | "AI purple gradient looks modern" | It looks generated. Pick a desaturated single accent. |
 | "User said 'website', default to landing" | NO. Ask via Phase 0.5 — landing and portfolio differ in conversion + anatomy. |
 | "Portfolio just needs an 'About me' opener" | NO. Lead with work, not personality. See portfolio-anatomy.md. |
 
-**Remember:** A perfect site (landing or portfolio) is one where icons, copy, color, type, motion, and 3D feel made by the same hand. The whole point of this skill is enforcing that cohesion AND the right anatomy per type.
+**Remember:** A perfect site (landing or portfolio) is one where icons, copy, color, type, motion, and effects feel made by the same hand. **2D illustration is the default visual language; effects are atmospheric layers; 3D models are forbidden as hero subjects.** The whole point of this skill is enforcing that cohesion AND the right anatomy per type.
