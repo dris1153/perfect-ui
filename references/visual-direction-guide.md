@@ -245,3 +245,48 @@ Save to `plans/{date}-{slug}/visual-direction.md`:
 - No "Elevate / Seamless / Unleash" copy
 - No centered H1 (unless vibe = minimal)
 ```
+
+## Commitment Audit (REQUIRED before Phase 3)
+
+After locking palette + typography + spatial language, run a commitment audit. The single biggest distinguisher between AI and human pages is **cohesion** — every choice reinforces ONE direction (see `plans/260509-ai-vs-human-analysis/synthesis.md` for evidence).
+
+### The audit (six questions)
+
+For each question, give a 1-10 score. **Total ≥ 48/60 = pass; <48 = revisit visual direction.**
+
+1. **Type → vibe alignment**: does the locked display font's character match the vibe anchor? (e.g., GT Maru Rounded for funny, PP Neue Montreal for elegant — not Inter for both)
+2. **Palette → vibe alignment**: do the locked colors evoke the vibe word without hedging? (luxury palette has gold/champagne, NOT teal AI-startup gradient)
+3. **Spatial → vibe alignment**: does the spatial language reinforce vibe? (atmospheric vibes need generous padding + grain; brutalist needs cramped, hard borders)
+4. **Internal palette consistency**: single accent, single neutral family, no surprise rogue colors planned
+5. **Typography pair tension**: display + body create deliberate contrast OR deliberate harmony (NOT "we picked two random Google Fonts that go OK together")
+6. **Vibe-anchor commitment**: would a designer recognize this anchor in 2 seconds from a screenshot? (if vibe is "luxury" but palette could pass for SaaS, commitment is weak)
+
+### Scoring template
+
+```
+Visual Direction Commitment Audit — {Project}
+
+1. Type → vibe: {N}/10  ({reason})
+2. Palette → vibe: {N}/10  ({reason})
+3. Spatial → vibe: {N}/10  ({reason})
+4. Palette consistency: {N}/10  ({reason})
+5. Typography pair: {N}/10  ({reason})
+6. Vibe commitment: {N}/10  ({reason})
+
+TOTAL: {sum}/60  →  {PASS if ≥48 / REVISIT if <48}
+```
+
+### What "revisit" means
+
+If score < 48, return to one of:
+- **2a**: re-pick palette
+- **2b**: re-pick typography
+- **2c**: re-pick spatial language
+
+Do NOT proceed to Phase 3 with a score below 48 — every downstream phase (icons, assets, plan, code) inherits the commitment level. A weak direction = AI-fingerprint output regardless of execution.
+
+### Why this matters (data)
+
+Direct comparison of 12 real landings showed: AI pages stack 10+ anti-slop violations because they default to ALL safe choices simultaneously without committing to any vibe. Human pages with strong commitment scores can break 1-2 individual rules and still read as human-crafted (overlay.com breaks 4 anti-slop rules but commits hard to "premium beauty tech" via custom photo + GSAP + WebGL + restrained palette).
+
+**Commitment is the multiplier on craft.**

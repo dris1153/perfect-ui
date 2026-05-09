@@ -1,6 +1,6 @@
 # Workflow Phases — Detailed Walkthrough
 
-Complete phase-by-phase guidance with exact prompts to feed to delegated skills.
+Complete phase-by-phase guidance with exact prompts to feed to delegated skills. Many phases branch by `--type` (landing | portfolio).
 
 ## Phase 0 — Mode Detection
 
@@ -9,29 +9,63 @@ Complete phase-by-phase guidance with exact prompts to feed to delegated skills.
 if user supplies URL → redesign
 elif user attaches screenshot/image of existing site → redesign
 elif user says "redesign" / "rework" / "v2" / "iterate" → redesign
-elif user supplies repo path with existing landing → redesign
-elif user describes a product idea with no existing site → new
+elif user supplies repo path with existing site → redesign
+elif user describes content with no existing site → new
 else → AskUserQuestion to disambiguate
 ```
 
-### For redesign mode (extra step before Phase 1)
+### For redesign mode (extra step before Phase 0.5)
 Run audit per `redesign-audit-checklist.md`. Output: `plans/{date}-{slug}/audit.md` with sections:
 - **Current vibe** (one sentence)
+- **Detected type** (landing | portfolio — informs Phase 0.5)
 - **Keep** (3 elements that work)
 - **Kill** (5 elements that don't)
 - **Original conversion goal** (inferred)
 - **Why redesign now** (user's stated reason)
 
-Then proceed to Phase 1 with audit context attached to brief.
+Then proceed to Phase 0.5 with audit context attached.
 
 ---
 
-## Phase 1 — Discovery (delegate to ck:brainstorm)
+## Phase 0.5 — Type Detection
 
-### Activation prompt
+### Detection rules
+```
+if --type flag passed → use it directly
+elif user explicitly says "landing", "marketing page", "sales page", "product launch" → landing
+elif user explicitly says "portfolio", "work showcase", "hire-me page", "personal site" → portfolio
+elif redesign audit detected type → use that
+else → AskUserQuestion("Site type?", [Landing, Portfolio])
+```
+
+### Off-scope refusal (REQUIRED)
+If user requests any of these, refuse and redirect:
+- "dashboard", "admin panel", "internal tool"
+- "full app", "build my app"
+- "e-commerce", "online store", "Shopify-like"
+- "SaaS internal", "user dashboard"
+
+Refusal text:
+> perfect-ui scope = marketing-style sites only (landing/portfolio).
+> For {requested-thing}, use ck:frontend-development or ck:frontend-design instead.
+> If you actually need a marketing page FOR your {app/SaaS/store}, that's a landing — clarify and we'll proceed.
+
+### Carry type into all downstream phases
+Type determines:
+- Phase 1 brief template (which questions to ask)
+- Phase 6 plan template (which sections to scaffold)
+- Phase 7 skeleton (landing-skeleton.md vs portfolio-skeleton.md)
+- Phase 8 anti-slop checks (type-specific clichés)
+
+---
+
+## Phase 1 — Discovery (delegate to ck:brainstorm, branched per type)
+
+### If type = landing — Activation prompt
 ```
 Task: Run a landing-page discovery brainstorm.
 Mode: {new|redesign}
+Type: landing
 Audit context: {paste audit.md if redesign}
 
 Output: plans/{date}-{slug}/brief.md with these exact sections:
@@ -42,20 +76,51 @@ Output: plans/{date}-{slug}/brief.md with these exact sections:
    - Pick 1 of: minimal | editorial | brutalist | retro-futuristic | organic |
      luxury | playful | industrial | art-deco | glass-tech | hand-crafted
    - Plus 1 wildcard adjective the brand owns
-5. Inspirations (3 reference URLs the user likes — gather via WebSearch if needed)
-6. Anti-references (2 landings to avoid resembling)
-7. Constraints (technical, deadline, budget — anything blocking)
+5. Inspirations (3 reference URLs)
+6. Anti-references (2 landings to avoid)
+7. Constraints (technical, deadline, budget)
 
 DO NOT propose specific colors, fonts, or copy yet.
 End with user approval of the brief before returning.
 ```
 
-### Quality bar
+### If type = portfolio — Activation prompt
+```
+Task: Run a portfolio discovery brainstorm.
+Mode: {new|redesign}
+Type: portfolio
+Audit context: {paste audit.md if redesign}
+
+Output: plans/{date}-{slug}/brief.md with these exact sections:
+1. Owner one-liner (you + craft, plainly stated — NOT cute)
+2. Audience (specific: hiring managers at tech cos / agency clients /
+   freelance leads / fellow craft community)
+3. Single goal (hire me / book a call / freelance inquiry / "available from {date}")
+4. Work focus (project types featured + count: 4 / 6 / 8 / 12)
+5. Case study depth (gallery thumbnails | 1-2 deep dives | hybrid)
+6. Vibe shortlist:
+   - Pick 1 of: minimal | editorial | brutalist | retro-futuristic | organic |
+     luxury | playful | industrial | art-deco | glass-tech | hand-crafted
+   - Plus 1 wildcard adjective tied to your craft
+7. Inspirations (3 portfolio URLs you admire)
+8. Anti-references (2 portfolio styles to avoid — e.g., "no hover-overload bento grids")
+9. Constraints
+
+DO NOT propose specific colors, fonts, or copy yet.
+End with user approval of the brief before returning.
+```
+
+### Quality bar (both types)
 Brief is approved only when:
-- [ ] Audience is specific (not "everyone", "users", "developers")
-- [ ] Single conversion goal locked
+- [ ] Audience is specific (not "everyone", "users")
+- [ ] Single goal locked (one CTA destination)
 - [ ] Vibe is one anchor + one wildcard, not a list
-- [ ] 3 inspirations are real URLs / image refs
+- [ ] 3 inspirations are real URLs
+
+### Portfolio-specific extra checks
+- [ ] Work focus is specific ("brand identity for early-stage tech" not "design")
+- [ ] Case study depth chosen (drives Phase 6 plan complexity)
+- [ ] Anti-references include hover-overload / "Hi I'm passionate" if applicable
 
 ---
 
@@ -250,23 +315,40 @@ Inputs (read these files):
 - plans/{date}-{slug}/brief.md
 - plans/{date}-{slug}/visual-direction.md
 - app/components/icons/ (already populated)
-- public/landing/ (already populated)
+- public/{landing|portfolio}/ (already populated)
 
-Output: plans/{date}-{slug}/plan.md + phase files covering:
+### If type = landing — phase output
 1. Project scaffold + Tailwind theme tokens from visual-direction.md
 2. Font loading via next/font (display + body)
 3. Layout primitives (Container, Section, Grid)
 4. Hero section
-5. Each content section (features, social-proof, how-it-works, FAQ, CTA, footer)
+5. Each content section (social-proof, features, how-it-works, testimonials, pricing?, FAQ, final-CTA, footer)
 6. {if 3D} Three.js integration phase
 7. Animations + scroll behavior
 8. Responsive + a11y polish
 
-Hard constraints — call out in plan:
+### If type = portfolio — phase output
+1. Project scaffold + Tailwind theme tokens
+2. Font loading via next/font
+3. Layout primitives (Container, Section, Grid)
+4. Hero (intro) section
+5. Selected Work Grid section
+6. Featured Case Study section(s) — count from brief
+7. About / Bio section
+8. {if applicable} Process / Approach section
+9. Contact / Availability CTA section
+10. Footer
+11. {if case studies have own pages} Per-project page template at `app/work/[slug]/page.tsx`
+12. {if 3D} Three.js integration phase
+13. Animations + scroll behavior
+14. Responsive + a11y polish
+
+### Hard constraints (both types) — call out in plan
 - Custom icons only (NEVER lucide-react / heroicons / phosphor)
 - Locked palette as Tailwind tokens — no inline hex
 - Real draft copy, no Lorem, no AI clichés
 - min-h-[100dvh] not h-screen
+- Type-specific anti-slop: portfolio → no "Hi I'm passionate" opener, no skill bars
 ```
 
 User reviews plan. Iterate until approved.
@@ -302,21 +384,33 @@ See `anti-slop-rules.md` § Final Audit for the full machine-runnable checklist.
 
 ### Run as code-reviewer agent task
 ```
-Task: Audit landing page for AI slop violations.
+Task: Audit {landing|portfolio} for AI slop violations.
+Type: {landing|portfolio}
 Reference: references/anti-slop-rules.md § Final Audit
 Source: app/ directory
 
-Run grep checks for:
+Generic grep checks (both types):
 - Emoji: grep -rE '[\\x{1F300}-\\x{1FAFF}]' app/
 - Icon libraries: grep -rE 'lucide-react|@heroicons|phosphor|@tabler' app/
 - Forbidden fonts: grep -rE 'Inter|Roboto|Open Sans|Space Grotesk' app/
-- AI clichés: grep -rEi 'elevate|seamless|unleash|empower|unlock' app/
 - h-screen: grep -rE 'h-screen' app/
 
-Plus visual checks via screenshot:
-- Hero centered H1 at variance > 4? Flag.
-- Single accent color enforced? Count distinct accents.
-- Lighthouse mobile score ≥ 90 (≥ 80 if 3D).
+If type = landing:
+- AI clichés: grep -rEi 'elevate|seamless|unleash|empower|unlock|game.?changer|next.?gen' app/
+- Generic placeholders: grep -rE 'John Doe|Jane Smith|Acme Corp|99\.99|Lorem ipsum' app/
+
+If type = portfolio:
+- Cliché openers: grep -rEi "hi,?\\s+i'?m\\s|hello,?\\s+world|welcome to my (portfolio|corner)|passionate (designer|developer|creative)" app/
+- Skill bar / proficiency: grep -rEi 'proficiency|years of experience.{0,30}\\d+\\+|skill.bar' app/
+- 4D framework: grep -rEi 'discover.{0,5}define.{0,5}develop.{0,5}deliver' app/
+- Multi-disciplinary cliché: grep -rEi 'multi.?disciplinary creative|based in [a-z ]+' app/
+
+Visual checks via screenshot:
+- Single accent color enforced (count distinct accents)
+- Lighthouse mobile score ≥ 90 (≥ 80 if 3D)
+- Type-specific:
+  - Landing: hero NOT centered-H1 at variance > 4
+  - Portfolio: actual work visible above the fold (not just bio)
 
 Output: plans/{date}-{slug}/anti-slop-report.md with PASS/FAIL per check.
 ```

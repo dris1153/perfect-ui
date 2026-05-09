@@ -1,0 +1,327 @@
+# Perfect UI
+
+> Skill for Claude Code — designs and ships **landing pages** and **portfolios** that look human-crafted, not AI-generated.
+
+**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.0.0 &nbsp;·&nbsp; **License:** MIT
+
+---
+
+## What it does
+
+Most LLMs default to the same SaaS slop when asked to design a website: Inter font, AI purple/blue gradient hero, three-column equal feature cards, lucide-react icons, "Elevate your workflow" copy. **Perfect UI is built specifically to avoid that.**
+
+It orchestrates a strict 8-phase pipeline:
+
+1. **Detect mode** — new build vs redesign of existing site
+2. **Detect type** — landing page vs portfolio (asks if unclear)
+3. **Discover vibe** via [`ck:brainstorm`](https://docs.claude.com) — 1 anchor + 1 wildcard adjective
+4. **Lock visual direction** — palette, typography pair, spatial language, optional 3D layer
+5. **Custom icon set** — direct SVG OR AI-generated + traced. **Zero emoji. Zero icon libraries.**
+6. **AI visual assets** — hero illustrations, backgrounds, project covers via `ck:ai-artist` / `ck:ai-multimodal`
+7. **Optional 3D layer** via `ck:threejs` — always proposed, never auto-applied
+8. **Implementation** via `ck:plan` + `ck:cook` on Next.js + Tailwind + shadcn
+
+A final anti-slop audit (Tier 1/2/3 system) blocks ship if AI fingerprints stack.
+
+## Why it exists
+
+Direct comparison of 12 real landings (5 AI-generated + 7 human-made) showed: AI pages stack 10+ anti-slop violations because they default to ALL safe options simultaneously. Human pages commit to ONE aesthetic direction. Cohesion is the multiplier on craft. Full evidence: [`plans/260509-ai-vs-human-analysis/synthesis.md`](plans/260509-ai-vs-human-analysis/synthesis.md).
+
+This skill encodes that finding as enforceable rules.
+
+---
+
+## Installation
+
+The skill is auto-discovered when placed in your Claude Code skills directory. Once registered, it activates on relevant phrases ("design a landing page", "build my portfolio", etc.).
+
+### Folder rename note
+
+Current folder is `perfect-landing/` for historical reasons; the skill itself is named `perfect-ui` (in `SKILL.md` frontmatter). To match folder to skill name (recommended):
+
+```powershell
+# After ending current Claude Code session (folder is locked while CWD'd into it)
+Rename-Item "perfect-landing" "perfect-ui"
+```
+
+Skill activation works either way — Claude reads `SKILL.md` `name:` field, not the folder name.
+
+---
+
+## Usage
+
+### Trigger phrases
+
+The skill activates on any of these (auto-detected from user message):
+
+**Landing page:**
+- "design a landing page for X"
+- "build me a marketing page"
+- "I need a hero section / sales page"
+- "redesign this landing"
+
+**Portfolio:**
+- "design my portfolio"
+- "build a portfolio for [name]"
+- "personal site / hire-me page / work showcase"
+- "redesign my portfolio"
+
+**Off-scope (refused, redirected):**
+- "build a dashboard / admin panel" → use `ck:frontend-development`
+- "build my SaaS app" → use `ck:frontend-development`
+- "e-commerce store" → use `ck:frontend-development` or `ck:shopify`
+
+### Arguments
+
+```
+[description OR existing site URL] [--type landing|portfolio] [--new|--redesign] [--no-3d] [--stack nextjs|astro|vanilla]
+```
+
+| Flag | Default | Behavior |
+|------|---------|----------|
+| `--type` | _asks_ | `landing` or `portfolio`. If unspecified, asks via `AskUserQuestion`. |
+| `--new` / `--redesign` | _detects_ | Auto-detects from URL/screenshot presence. Override if needed. |
+| `--no-3d` | propose | Skip Phase 5 entirely. Default is to propose 3D as optional. |
+| `--stack` | `nextjs` | `nextjs` (Next.js + Tailwind + shadcn — recommended), `astro`, or `vanilla`. |
+
+---
+
+## Examples
+
+### Example 1 — Landing page from scratch
+
+**Input:**
+> Design a landing page for a new specialty coffee subscription service targeting home-brewing enthusiasts in Japan. Vibe should feel editorial and warm.
+
+**Skill flow:**
+1. Phase 0 — detects `new` (no URL provided)
+2. Phase 0.5 — detects `landing` from "landing page"
+3. Phase 1 — delegates to `ck:brainstorm`:
+   - Product: "Specialty single-origin coffee delivered weekly to home brewers"
+   - Audience: "Home espresso enthusiasts age 28-45 in Tokyo / Osaka"
+   - Conversion goal: signup
+   - Vibe: editorial + agrarian (wildcard)
+   - 3 inspirations confirmed
+4. Phase 2 — visual direction:
+   - Palette: cream `#F5F1E8` + ink `#1A1715` + dusk-rose accent `#B8635A`
+   - Type: `Migra` (display) + `GT Sectra` (body)
+   - Spatial: asymmetric editorial
+   - 3D: declined (vibe doesn't fit)
+5. Phase 3 — 8 custom icons designed (nav-mark, brewing-step icons via direct SVG, social marks)
+6. Phase 4 — hero illustration generated via `ck:ai-artist` — silkscreen-style poster of folded letter releasing coffee beans
+7. Phase 5 — skipped (declined)
+8. Phase 6 — `ck:plan` produces phased Next.js implementation
+9. Phase 7 — `ck:cook` builds it
+10. Phase 8 — Tier-1/2/3 anti-slop audit passes; ships
+
+### Example 2 — Portfolio redesign
+
+**Input:**
+> Redesign this portfolio: https://my-old-site.com — I want it to feel more elegant and let my work speak. Currently has too many flashy hover effects.
+
+**Skill flow:**
+1. Phase 0 — detects `redesign` (URL provided)
+2. Audit per `redesign-audit-checklist.md`:
+   - Current vibe: "Trying-too-hard maximalist"
+   - Keep: portfolio cover photo quality, custom monogram
+   - Kill: hover-effect overload, skill-bar percentages, "Hi I'm passionate" opener
+3. Phase 0.5 — detects `portfolio` from "redesign this portfolio"
+4. Phase 1 — `ck:brainstorm` runs portfolio brief variant (asks about work focus, case study depth, etc.)
+5. Phase 2 — locks elegant vibe (PP Neue Montreal display, off-white palette, atmospheric spatial)
+6. Phase 3 — minimal icon set (5 icons: monogram, project-arrow, contact-mark, 2 social)
+7. Phase 4 — owner portrait re-generated as editorial environmental shot
+8. Phase 5 — 3D proposed: interactive 3D logo accent. Approved.
+9. Phase 6 — `ck:plan` outputs portfolio plan with `app/work/[slug]` case study route
+10. Phase 7 — `ck:cook` implements
+11. Phase 8 — audit catches "Welcome to my portfolio" copy left over from old site → fixes → ships
+
+### Example 3 — User request that gets refused
+
+**Input:**
+> Build me an admin dashboard with a sidebar and analytics charts.
+
+**Skill response:**
+> perfect-ui scope = marketing-style sites only (landing/portfolio).
+> For an admin dashboard with sidebar and charts, use `ck:frontend-development` instead — it has React/TypeScript patterns suited to app surfaces.
+> If you need a marketing landing page FOR your admin tool, that's in scope — clarify and we'll proceed.
+
+---
+
+## Hard Rules (Non-Negotiable)
+
+These cannot be overridden without explicit double-confirmation + logged override.
+
+1. **NO emoji anywhere** — not in copy, headings, or as icons. Use a custom SVG instead.
+2. **NO icon libraries** — no Lucide, Heroicons, Phosphor, Tabler, Font Awesome, Material Icons, react-icons.
+3. **NO AI slop defaults**:
+   - No Inter / DM Sans / Space Grotesk paired alone (Inter as body OK *only* with distinctive display font)
+   - No purple/blue gradient hero (`from-purple-* to-blue-*`)
+   - No 3-column equal feature card row
+   - No two equal-weight CTAs in hero
+   - No "Elevate / Seamless / Unleash / Empower / Game-changer / Next-gen" copy in headlines
+   - No "Hi, I'm X, a passionate designer who loves coffee" portfolio opener
+4. **Always propose 3D** — every site gets a 3D-layer proposal during visual direction. User accepts or declines.
+5. **Vibe before pixels** — never write code or generate assets before vibe + palette + typography are locked.
+6. **Type-aware everything** — Phase 1 brief, Phase 6 plan, anatomy, and skeleton ALL branch by `--type`.
+
+Full forbidden patterns (with Tier 1/2/3 enforcement): [`references/anti-slop-rules.md`](references/anti-slop-rules.md).
+
+---
+
+## Tech Stack Output
+
+Default output for `--stack nextjs` (recommended):
+
+- **Framework:** Next.js 14+ App Router with TypeScript
+- **Styling:** Tailwind CSS with locked palette as theme tokens
+- **Components:** shadcn/ui customized (no defaults)
+- **Fonts:** `next/font/local` or `next/font/google` for distinctive display + body pair
+- **3D (if used):** React Three Fiber + drei, lazy-loaded with `ssr: false`
+- **Animation (if used):** Framer Motion + Lenis (smooth scroll) + GSAP (scroll triggers)
+- **Icons:** Custom SVG components in `app/components/icons/`
+
+File scaffolds: [`assets/nextjs-skeleton/landing-skeleton.md`](assets/nextjs-skeleton/landing-skeleton.md) · [`assets/nextjs-skeleton/portfolio-skeleton.md`](assets/nextjs-skeleton/portfolio-skeleton.md)
+
+---
+
+## File Structure
+
+```
+perfect-landing/                              (folder; skill name is "perfect-ui")
+├── SKILL.md                                  Main entry — workflow + scope + rules
+├── README.md                                 This file
+├── references/
+│   ├── workflow-phases.md                    Detailed phase walkthrough + activation prompts
+│   ├── visual-direction-guide.md             11 vibe palettes, typography pairs, commitment audit
+│   ├── custom-icon-pipeline.md               Decision tree: SVG-direct vs AI-gen + cohesion rules
+│   ├── threejs-integration-patterns.md       3D patterns + RTF integration + perf guardrails
+│   ├── visual-asset-prompt-library.md        Prompt templates per vibe (hero, bg, OG, avatar)
+│   ├── landing-anatomy.md                    Landing sections + conversion patterns + anti-patterns
+│   ├── portfolio-anatomy.md                  Portfolio sections + portfolio-specific anti-clichés
+│   ├── anti-slop-rules.md                    Tier 1/2/3 forbidden patterns + grep audits
+│   ├── loading-ui-patterns.md                Splash decision tree + 4 approved + 7 forbidden patterns
+│   └── redesign-audit-checklist.md           Audit pipeline for redesign mode
+├── assets/nextjs-skeleton/
+│   ├── landing-skeleton.md                   Next.js scaffold for landing
+│   ├── portfolio-skeleton.md                 Next.js scaffold for portfolio (incl. case study route)
+│   └── section-archetypes.md                 ASCII layouts for landing + portfolio sections × vibes
+└── plans/
+    ├── 260509-perfect-ui-multitype/
+    │   └── brainstorm.md                     Original design doc for multi-type expansion
+    └── 260509-ai-vs-human-analysis/
+        ├── synthesis.md                      Evidence-based AI vs human comparison
+        └── raw/human-pages-findings.md       Background research on human-made pages
+```
+
+---
+
+## The 11 Vibe Anchors
+
+Locked in Phase 1 brief (1 anchor + 1 wildcard adjective):
+
+| Vibe | Best for |
+|------|----------|
+| **Minimal** | Premium SaaS, design tools, editorial software |
+| **Editorial** | Coffee/food, magazine, lifestyle brands |
+| **Brutalist** | Tech-rebel, dev tools, indie products |
+| **Retro-futuristic** | Web3, gaming, synthwave aesthetic |
+| **Organic** | Wellness, nature, natural products |
+| **Luxury** | High-end goods, premium services |
+| **Playful** | Consumer apps, kids' products, casual gaming |
+| **Industrial** | Hardware, manufacturing, B2B serious |
+| **Art-deco** | Hospitality, finance, heritage brands |
+| **Glass-tech** | AI/ML products, futuristic tech |
+| **Hand-crafted** | Artisan goods, illustrators, makers |
+
+Per-vibe palettes + typography pairs in [`references/visual-direction-guide.md`](references/visual-direction-guide.md).
+
+---
+
+## Anti-Slop Tier System
+
+The skill catches AI fingerprints by counting cumulative violations (Tier 1 / 2 / 3). See [`references/anti-slop-rules.md`](references/anti-slop-rules.md) § Tier System for full enforcement matrix.
+
+| Tier | Examples | Enforcement |
+|------|----------|-------------|
+| **Tier 1** (auto-fail) | DM Sans + Space Grotesk pairing, AI purple gradient hero, lucide-react import, two equal CTAs in hero, `h-screen`, 3-column feature grid, Tailwind utility count >200, generic CTA labels ("Get Started" / "Sign In" / "Subscribe") | ≥1 hit = MUST FIX. ≥2 hits = block ship. |
+| **Tier 2** (caution) | Generic browser-mockup hero, friendly bullet checklist, round fake stats, AI cute illustration, centered hero with centered H1 | 1 Tier-1 + 2+ Tier-2 = block ship. |
+| **Tier 3** (compensable) | Inter font alone, AI cliché in body copy, Title Case headers | OK if visual cohesion ≥ 8/10 (commitment audit) |
+
+Bypass requires explicit user override (twice) + logged reason in `plans/{date}-{slug}/overrides.md`.
+
+---
+
+## Loading UI Patterns
+
+Most landings should NOT have a loading splash. AI pages skip splash because they don't think about it; human pages skip splash because **restraint is confident**.
+
+Splash earns its place ONLY when:
+- Heavy assets need >1.5s to load (3D scene, hero video, large image, GLB)
+- Brand has a moment-worthy mark (Marblex giant logotype pattern)
+- Portfolio needs curated narrative entrance (Isadeburgh scroll-trigger pattern)
+
+4 approved patterns + 7 forbidden patterns: [`references/loading-ui-patterns.md`](references/loading-ui-patterns.md).
+
+---
+
+## FAQ
+
+**Q: Can I use Inter font?**
+A: As body text only, IF paired with a distinctive display font (Instrument Serif, PP Neue Montreal, Migra, etc.). Inter alone = AI fingerprint (Tier 3 — compensable but discouraged).
+
+**Q: Can I use Tailwind without triggering the >200 utility-class indicator?**
+A: Yes — keep utilities focused. The signal is utility-spam (Tailwind doing all design work). Use Tailwind theme tokens for colors/fonts/spacing, write custom components, not 50-utility-classes-per-element.
+
+**Q: What if my vibe genuinely needs a centered hero?**
+A: Pick `minimal` vibe — it's the only one where centered H1 at low DESIGN_VARIANCE is approved. Other vibes need asymmetric / split / full-bleed.
+
+**Q: Can I generate icons with `lucide` and replace them later?**
+A: No. "Just for now" never gets replaced. Generate custom SVG up-front per [`references/custom-icon-pipeline.md`](references/custom-icon-pipeline.md).
+
+**Q: What if user explicitly requests a forbidden pattern?**
+A: Refuse once. If they request again with reason, log override in `plans/{date}-{slug}/overrides.md` and proceed. Never silent-allow.
+
+**Q: Does this skill work without `ck:brainstorm` / `ck:plan` / `ck:cook` skills?**
+A: It's designed to orchestrate them. Without them, the workflow degrades — Claude does each phase inline but loses the structured brainstorm-plan-cook discipline. Strongly recommend having them installed.
+
+**Q: How do I add a new vibe (e.g., `dystopian`, `vaporwave`)?**
+A: Add palette + typography pair to [`references/visual-direction-guide.md`](references/visual-direction-guide.md), add archetype mapping to [`assets/nextjs-skeleton/section-archetypes.md`](assets/nextjs-skeleton/section-archetypes.md), add 3D-pairing row if relevant.
+
+**Q: Can I use this for blog sites?**
+A: Not yet. Blog support was deferred — see [`plans/260509-perfect-ui-multitype/brainstorm.md`](plans/260509-perfect-ui-multitype/brainstorm.md) for context. Currently `landing` and `portfolio` only.
+
+---
+
+## Contributing / Modifying
+
+This is a personal skill. To extend:
+
+1. **New vibe:** add to `visual-direction-guide.md` palette + typography sections + 3D pairing matrix
+2. **New anti-slop pattern:** classify into Tier 1/2/3 in `anti-slop-rules.md`, add grep check to Final Audit
+3. **New section archetype:** add ASCII layout to `section-archetypes.md` + vibe-mapping row
+4. **New skill type (e.g., blog):** see deferred decision in `plans/260509-perfect-ui-multitype/brainstorm.md`
+
+Validate after changes: `python ~/.claude/skills/skill-creator/scripts/quick_validate.py <skill-path>`
+
+---
+
+## Credits
+
+- Original brainstorm: 2026-05-09 (`plans/260509-perfect-ui-multitype/brainstorm.md`)
+- AI vs human evidence research: 2026-05-09 (`plans/260509-ai-vs-human-analysis/synthesis.md`)
+- Vibe palettes adapted from contemporary editorial / branding references
+- Typography recommendations from current premium foundries (Pangram Pangram, Klim, Grilli, Commercial Type)
+
+Author: dris1153
+
+---
+
+## Related Skills
+
+| Skill | When to use instead |
+|-------|---------------------|
+| `ck:frontend-development` | Full apps, dashboards, admin panels, complex multi-page IA |
+| `ck:frontend-design` | Replicating an existing design from screenshot/video |
+| `ck:ui-ux-pro-max` | Component-level UI work in existing apps |
+| `ck:shopify` | E-commerce stores |
+| `ckm:design` | Logo / CIP / banner / social-photo design (skill called by perfect-ui internally for icons) |

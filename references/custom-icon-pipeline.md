@@ -1,13 +1,45 @@
 # Custom Icon Pipeline — Decision Tree & Recipes
 
-How to produce a cohesive, bespoke icon set without ever touching emoji or icon libraries.
+How to produce a cohesive, bespoke icon set without ever touching emoji or icon libraries. Applies to both `landing` and `portfolio` types.
 
 ## Why Custom (Not Lucide / Heroicons)
 
-A landing's icon set is a brand asset. Generic library icons leak the "made by AI" fingerprint and dilute the vibe. Custom icons:
+A site's icon set is a brand asset. Generic library icons leak the "made by AI" fingerprint and dilute the vibe. Custom icons:
 - Match the locked stroke weight and corner family from visual direction
 - Use the brand's metaphor language (organic for "wellness", angular for "fintech")
 - Avoid clichés (rocket = launch, shield = security)
+
+## Icon Inventory by Type
+
+The pipeline is identical, but the inventory differs.
+
+### If type = landing
+Typical inventory (6–12 icons):
+```
+nav-logo-mark         | header              | brand mark
+feature-{name}        | features section    | 3-6 feature illustrations
+cta-arrow             | hero + final CTA    | directional indicator
+status-checkmark      | features / pricing  | "included" indicator
+testimonial-quote     | testimonials        | open-quote glyph
+social-{platform}     | footer              | 2-4 social marks (custom, NOT brand-issued)
+```
+
+### If type = portfolio
+Typical inventory (5–10 icons):
+```
+nav-logo-mark         | header              | often a monogram from owner's initials
+project-link-arrow    | work grid + case studies | "view project" indicator
+tag-glyph-{category}  | work grid           | small project-tag indicators (Brand / Web / Product)
+process-step-{n}      | process section     | optional, only if process section exists
+contact-mark          | contact CTA         | email-evoking glyph (NOT envelope cliché)
+social-{platform}     | footer              | 2-4 social marks
+availability-indicator | hero / contact     | "available" status — dot + line, NOT a literal dot
+```
+
+**Key portfolio nuances:**
+- `nav-logo-mark` for portfolio is often a typographic monogram (initials in display font), not a pictorial mark
+- `tag-glyph-*` for project categories should feel like signage, not generic SaaS labels
+- `availability-indicator` should NOT be a generic green-dot status — design something tied to vibe
 
 ## Decision Tree
 

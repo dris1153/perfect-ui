@@ -2,6 +2,54 @@
 
 The defaults LLMs gravitate to. Treat as forbidden unless user explicitly overrides twice (and log the override).
 
+## Tier System (Cumulative Detection)
+
+Tells are CUMULATIVE — a single rule break is sometimes compensable, but stacked tells = AI fingerprint. This system was derived from direct comparison of 5 AI-generated landings vs 7 human-crafted landings (see `plans/260509-ai-vs-human-analysis/synthesis.md`).
+
+| Tier | What it is | Enforcement |
+|------|-----------|-------------|
+| **Tier 1** | Strong, unambiguous AI tells. Each one is a serious flag. | ≥1 tier-1 hit = MUST FIX. ≥2 tier-1 hits = AI fingerprint, refuse to ship. |
+| **Tier 2** | AI compositional tendencies. Common in AI work but not exclusive. | 1 tier-1 + 2+ tier-2 = drift toward AI; MUST FIX before ship. |
+| **Tier 3** | Style preferences. Compensable with strong visual craft. | OK alone IF cohesion is high (see `visual-direction-guide.md` § Commitment Audit). |
+
+**Strict default:** treat all tiers as MUST FIX. Only allow tier-3 break with logged override + visual proof of compensation.
+
+### Tier 1 — Strong AI tells (MUST FIX, no compensation)
+
+1. **DM Sans + Space Grotesk Google Fonts pairing** — direct evidence: present in 3/5 AI pages, 0/7 human. Forbidden combo even though individual fonts are softer flags.
+2. **AI purple/blue gradient hero** (`from-purple-500 to-blue-500`, `from-purple-100 to-purple-200`, etc.) + **gradient highlight on H1 keyword** (e.g., "Confidence" highlighted in cyan-blue gradient).
+3. **Icon library imports detected** (`lucide-react`, `@heroicons`, `@phosphor-icons`, `@tabler/icons`, `react-icons`, `font-awesome`). Confirmed in 2/5 AI pages.
+4. **Two equal-weight CTAs in hero** (e.g., "Start Free" + "View Demo" both as primary buttons). Confirmed 5/5 AI pages.
+5. **`h-screen` utility class** present (must use `min-h-[100dvh]`).
+6. **3-column equal feature card grid** — confirmed 6 hits in single AI page; 0 in human.
+7. **Heavy Tailwind utility class density (>200 in initial HTML)** — snapstory: 383, exgen: 379. Human max: 64. Indicator of utility-spam without committed CSS architecture.
+8. **Generic SaaS CTA labels in hero**: "Get Started", "Sign In", "Subscribe", "Start Free", "Sign Up Free" — without product-specific framing.
+
+### Tier 2 — AI compositional tendencies (MUST FIX in combination)
+
+9. **Generic browser-mockup as right-half of split hero** (laptop frame with fake UI inside). Confirmed pattern in snapstory + exgen.
+10. **Friendly bullet checkbox reassurance row** under hero CTA: "✓ No credit card required ✓ 7-day free trial ✓ Cancel anytime" (or similar checkmark trio).
+11. **Round fake stats** in hero: "10K+ users", "2M+ downloads", "1M+ stories", "99.99% uptime", "10x faster".
+12. **AI-generated cute illustration** as hero subject (cartoon animal with laptop/coffee, generic 3D blob characters, "diverse team smiling at laptop").
+13. **Centered hero with centered H1** at high DESIGN_VARIANCE. Compensable only when vibe is genuinely minimal AND visual carries the page.
+
+### Tier 3 — Style preferences (compensable with visual craft)
+
+14. Forbidden font names appearing alone: `Inter`, `Roboto`, `Open Sans`, `Helvetica`, `Poppins`, `Lato`, `Montserrat`, `Nunito` — *without* a distinctive paired display font.
+   - **Compensable:** Inter as body text IS acceptable when paired with a distinctive display font (Instrument Serif, PP Neue Montreal, Greed, etc.). Confirmed in 3/7 human pages.
+15. AI cliché phrases: Elevate / Seamless / Unleash / Empower / Unlock / Game-changer / Cutting-edge / Next-gen / Delve / Tapestry / Leverage. Confirmed 5/7 human pages contain at least one — but in non-load-bearing copy positions, with strong visual craft. Refuse them in headlines and primary CTAs unconditionally.
+16. Generic startup names in placeholders: Acme, Globex, Initech.
+17. Title Case Headers (sentence case is more contemporary).
+
+### How to use these tiers
+
+- During Phase 8 audit, classify each finding as Tier 1 / 2 / 3.
+- Tier 1: ALWAYS fix.
+- Tier 2: count alongside tier 1. ≥1 tier-1 + 2+ tier-2 = block ship.
+- Tier 3: allow IF visual craft cohesion ≥ 8/10 (see `visual-direction-guide.md` § Commitment Audit).
+- Override path: user must request twice + reason logged in `plans/{date}-{slug}/overrides.md`.
+
+
 ## Typography
 
 ### Forbidden fonts (default reject)
@@ -99,7 +147,7 @@ The defaults LLMs gravitate to. Treat as forbidden unless user explicitly overri
 
 ## Copy
 
-### Forbidden words / phrases (case-insensitive)
+### Forbidden — landing-specific
 - Elevate, Seamless, Unleash, Empower, Unlock
 - Game-changer, Next-gen, Cutting-edge, Revolutionary
 - Delve, Tapestry, Embark, Leverage, Synergy
@@ -109,18 +157,41 @@ The defaults LLMs gravitate to. Treat as forbidden unless user explicitly overri
 - "The future of [thing]"
 - "Lorem ipsum"
 
+### Forbidden — portfolio-specific
+- "Hi, I'm [Name], a passionate {designer | developer | creative}..."
+- "Hello, world!" greeting
+- "Welcome to my corner of the internet"
+- "Welcome to my portfolio"
+- "Multi-disciplinary creative based in {city}"
+- "Crafting beautiful digital experiences"
+- "Pixel-perfect" / "pixel pusher" self-descriptors
+- "I love coffee and dogs" / personality-padding bio
+- "Years of experience" prominent counter
+- "Available for new opportunities" with no concrete date
+- "Let's create magic together" / "Let's chat"
+- "Drop a line"
+
 ### Forbidden placeholder data
 - Names: John Doe, Jane Smith, Sarah Chan, Acme Corp, Globex, Initech
 - Round fake numbers: 99.99%, 50% off, $100.00, 10x faster, 1M+ users
 - Generic role + company combos that scream stock
+- Portfolio: "Project 01", "Project 02" generic project titles
+- Portfolio: testimonials from "Director of Awesome at Generic Studio"
 
-### Approved
+### Approved (both types)
 - Real specific numbers: 47.2%, $99, 3.4x, 12,400
 - Realistic diverse names tied to actual demographics
 - Specific outcome statements ("cut deploy time from 14min to 2min")
 - Sentence case headers ("How it works" not "How It Works")
 - Confident success messages ("Saved" not "Saved!")
 - Direct error messages ("Connection failed. Try again." not "Oops!")
+
+### Portfolio-approved
+- "{Name} — {specific craft for specific audience}." Example: "Sarah Chen — Brand identity for early-stage tech."
+- "I design healthcare apps. 6 years, 3 platforms, 12 launches." (concrete proof)
+- "Available for projects starting June 2026." (concrete date)
+- "Selectively booking design partnerships through Q3."
+- Specific named process phases tied to your craft (NOT Discover-Define-Develop-Deliver)
 
 ## Components
 
@@ -160,7 +231,7 @@ The defaults LLMs gravitate to. Treat as forbidden unless user explicitly overri
 
 Run BEFORE declaring complete. Each must PASS or be fixed.
 
-### Source-code checks (grep)
+### Source-code checks (grep) — universal (both types)
 ```bash
 # Emoji
 grep -rE '[\x{1F300}-\x{1FAFF}]' app/  # must be empty
@@ -171,12 +242,6 @@ grep -rE 'lucide-react|@heroicons|@phosphor-icons|@tabler/icons|react-icons|font
 # Forbidden fonts
 grep -rE 'Inter|Roboto|"Open Sans"|Space Grotesk|Poppins|Montserrat|Lato|Nunito' app/ tailwind.config.* next.config.*  # must be empty (unless logged override)
 
-# AI cliché copy
-grep -rEi 'elevate|seamless|unleash|empower|unlock|game.?changer|next.?gen|cutting.?edge|delve|tapestry|leverage' app/lib/content.ts app/components  # must be empty
-
-# Generic placeholder data
-grep -rE 'John Doe|Jane Smith|Acme Corp|99\.99|Lorem ipsum' app/  # must be empty
-
 # h-screen
 grep -rE '\bh-screen\b' app/  # must be empty (must use min-h-[100dvh])
 
@@ -185,13 +250,54 @@ grep -rE '#[0-9a-fA-F]{6}' app/components/ | grep -v 'tailwind.config' | grep -v
 # Should be empty or only inside SVG icon paths
 ```
 
-### Visual checks
-- [ ] Hero is NOT centered-H1-at-variance>4 (unless vibe = minimal)
+### Source-code checks — if type = landing
+```bash
+# AI cliché copy
+grep -rEi 'elevate|seamless|unleash|empower|unlock|game.?changer|next.?gen|cutting.?edge|delve|tapestry|leverage' app/lib/content.ts app/components  # must be empty
+
+# Generic placeholder data
+grep -rE 'John Doe|Jane Smith|Acme Corp|99\.99|Lorem ipsum' app/  # must be empty
+```
+
+### Source-code checks — if type = portfolio
+```bash
+# Cliché openers
+grep -rEi "hi,?\s+i'?m\s+\w+|hello,?\s+world|welcome to my (portfolio|corner)" app/  # must be empty
+
+# Personality padding
+grep -rEi 'passionate (designer|developer|creative)|multi.?disciplinary creative|pixel.?perfect|crafting beautiful' app/  # must be empty
+
+# Skill bars / proficiency
+grep -rEi 'proficiency|skill.bar|years of experience.{0,30}\d+\+' app/  # must be empty
+
+# 4D framework cliché
+grep -rEi 'discover.{0,5}define.{0,5}develop.{0,5}deliver' app/  # must be empty
+
+# Generic project titles
+grep -rE 'Project 0?[1-9]|Project Title|Untitled Project' app/  # must be empty
+
+# Vague availability
+grep -rEi 'available for new opportunities|let’?s create magic|drop a line' app/  # must be empty
+```
+
+### Visual checks (both types)
 - [ ] Single accent color enforced (count distinct accent values in render)
 - [ ] No AI purple/blue hero gradient
 - [ ] Custom icon set is consistent (same stroke weight, corner family, fill style)
-- [ ] Testimonial avatars don't look like stock photos
 - [ ] All text wrap balanced on H1/H2 (`text-wrap: balance`)
+
+### Visual checks — if type = landing
+- [ ] Hero is NOT centered-H1-at-variance>4 (unless vibe = minimal)
+- [ ] Testimonial avatars don't look like stock photos
+- [ ] Two equal-weight CTAs in hero — flag (single primary CTA only)
+
+### Visual checks — if type = portfolio
+- [ ] Actual work visible above the fold (not just bio / personality)
+- [ ] Project tiles are NOT iPhone-mockup-holding-the-work
+- [ ] Project tiles do NOT all force same aspect ratio
+- [ ] Email + concrete availability date visible in contact section
+- [ ] No hover-effect overload on work grid (max 1-2 hover changes)
+- [ ] Skill bars / proficiency percentages absent
 
 ### Performance checks
 - [ ] Lighthouse mobile performance ≥ 90 (≥ 80 if 3D layer)

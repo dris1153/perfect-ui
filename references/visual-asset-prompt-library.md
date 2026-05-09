@@ -1,6 +1,25 @@
 # Visual Asset Prompt Library
 
-Battle-tested prompt templates for hero illustrations, backgrounds, OG images, and avatars. Always inject the locked palette and vibe from `visual-direction.md`.
+Battle-tested prompt templates for hero illustrations, backgrounds, OG images, avatars, project covers. Always inject the locked palette and vibe from `visual-direction.md`. Templates work for both `landing` and `portfolio` types — type-specific sections noted.
+
+## Asset Checklist by Type
+
+### If type = landing
+- Hero illustration / scene (1)
+- Section dividers / accents (2-4)
+- Background texture (1, tileable)
+- Open Graph image (1, 1200×630)
+- Testimonial avatars (3-6, depending on count)
+- Favicon source (1, square)
+
+### If type = portfolio
+- Hero portrait / abstract intro visual (1) — ONLY if vibe matches; often the work grid IS the hero
+- Project cover images (per featured project — usually 4-8)
+- Process / sketch visuals (3-6, optional, for case study)
+- Background texture (1, tileable)
+- Open Graph image (1, 1200×630, typography-driven preferred)
+- Owner portrait (1, optional — only for About section)
+- Favicon source (1, square — often a monogram)
 
 ## Prompt Anatomy (apply to ALL)
 
@@ -93,6 +112,62 @@ references: Memphis Group 1980s, claymation, Bruno Munari toys. Forbidden:
 chrome material, neon, AI default 3D render aesthetic, MeshNormalMaterial
 rainbow. Aspect ratio: 1:1.
 ```
+
+## Portfolio-Specific Hero Templates
+
+Portfolios often use a featured-project visual or abstract mark as hero, NOT a stock illustration. Use sparingly — usually the work grid is the hero.
+
+### Template: Portfolio abstract intro (editorial, mark-like)
+```
+A single typographic monogram of letters "{initials}" rendered as overlapping
+display-serif glyphs in deep ink on cream paper, editorial vibe with
+hand-crafted wildcard. Palette: cream paper #F5F1E8, deep ink #1A1715, single
+warm accent #B8635A used only on a small detail. Lighting: flat editorial,
+no dramatic shadows. Composition: monogram anchored bottom-right, large empty
+top-left for headline. Style references: Massimo Vignelli signage, Saul Bass
+title sequences, Mid-century editorial monograms. Forbidden: glow, gradient,
+3D extrusion, generic SaaS branding aesthetic. Aspect ratio: 1:1.
+```
+
+### Template: Portfolio process visual (sketch / artifact)
+```
+A flat-lay photograph of design process artifacts — pencil sketches, fabric
+swatches, color chips, post-it notes — arranged on a wooden surface, organic
+vibe with hand-crafted wildcard. Palette: warm wood tones, raw paper, single
+accent matching brand. Lighting: morning window light. Composition:
+asymmetric scatter, NOT grid. Style references: Eames studio photographs,
+process documentation in design monographs. Forbidden: stock-photo aesthetic,
+overly arranged, MacBook in shot. Aspect ratio: 16:9.
+```
+
+### Template: Portfolio owner portrait (when used)
+```
+A natural environmental portrait of {owner description — e.g., "a designer in
+their studio, mid-30s, wearing simple workwear"}, looking off-camera in mid-
+gesture, editorial vibe. Palette: tinted to match locked palette, color
+graded to match cream + ink + accent. Lighting: window side-light, soft
+fall-off, natural shadows. Composition: subject in lower-third, environmental
+context (studio, materials) visible. Style references: August Sander
+portraits, Annie Leibovitz environmental editorials. Forbidden: white-
+backdrop studio aesthetic, fake smile, LinkedIn corporate look, AI face
+artifacts (asymmetric ears, wrong fingers, melted accessories). Aspect ratio:
+4:5 or 1:1.
+```
+
+### Template: Project cover (for work grid tiles)
+```
+{Specific project description — e.g., "Brand identity system for a Vietnamese
+specialty coffee roaster, showing logo on packaging mockups in the actual
+shop environment"}. Photograph the work in real context, NOT on white
+backdrop. Palette: derived from the project's actual brand colors, NOT the
+portfolio palette. Lighting: realistic, situational. Composition: work
+should fill 60-80% of frame. Forbidden: phone-mockup-on-marble aesthetic,
+isometric mockup composition with multiple devices, "generic startup brand
+showcase" aesthetic. Aspect ratio: project-specific (use whatever shows the
+work best — don't force consistency across projects).
+```
+
+**Note:** Project covers should NOT be AI-generated for real client work. Use real photos / screenshots / scans of the actual work. AI gen here is only acceptable when the user has no real shot AND is doing speculative work or self-initiated projects.
 
 ## Background Texture Templates
 

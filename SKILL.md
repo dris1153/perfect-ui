@@ -223,13 +223,14 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 | Topic | File |
 |-------|------|
 | Detailed phase walkthrough | `references/workflow-phases.md` |
-| Visual direction patterns | `references/visual-direction-guide.md` |
+| Visual direction patterns + commitment audit | `references/visual-direction-guide.md` |
 | Custom icon pipeline | `references/custom-icon-pipeline.md` |
 | Three.js integration | `references/threejs-integration-patterns.md` |
 | Visual asset prompt library | `references/visual-asset-prompt-library.md` |
 | Landing anatomy / sections | `references/landing-anatomy.md` |
 | Portfolio anatomy / sections | `references/portfolio-anatomy.md` |
-| Anti-slop forbidden patterns | `references/anti-slop-rules.md` |
+| Anti-slop forbidden patterns (Tier 1/2/3) | `references/anti-slop-rules.md` |
+| Loading UI / splash patterns | `references/loading-ui-patterns.md` |
 | Redesign audit checklist | `references/redesign-audit-checklist.md` |
 
 ## Security Policy
