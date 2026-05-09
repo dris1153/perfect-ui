@@ -1,0 +1,324 @@
+# Workflow Phases — Detailed Walkthrough
+
+Complete phase-by-phase guidance with exact prompts to feed to delegated skills.
+
+## Phase 0 — Mode Detection
+
+### Detection rules
+```
+if user supplies URL → redesign
+elif user attaches screenshot/image of existing site → redesign
+elif user says "redesign" / "rework" / "v2" / "iterate" → redesign
+elif user supplies repo path with existing landing → redesign
+elif user describes a product idea with no existing site → new
+else → AskUserQuestion to disambiguate
+```
+
+### For redesign mode (extra step before Phase 1)
+Run audit per `redesign-audit-checklist.md`. Output: `plans/{date}-{slug}/audit.md` with sections:
+- **Current vibe** (one sentence)
+- **Keep** (3 elements that work)
+- **Kill** (5 elements that don't)
+- **Original conversion goal** (inferred)
+- **Why redesign now** (user's stated reason)
+
+Then proceed to Phase 1 with audit context attached to brief.
+
+---
+
+## Phase 1 — Discovery (delegate to ck:brainstorm)
+
+### Activation prompt
+```
+Task: Run a landing-page discovery brainstorm.
+Mode: {new|redesign}
+Audit context: {paste audit.md if redesign}
+
+Output: plans/{date}-{slug}/brief.md with these exact sections:
+1. Product (one sentence: what + who + why now)
+2. Audience (specific role, e.g. "freelance designer earning $80k+ who codes side projects")
+3. Conversion goal (single CTA — pick ONE: signup, demo, buy, waitlist, contact)
+4. Vibe shortlist:
+   - Pick 1 of: minimal | editorial | brutalist | retro-futuristic | organic |
+     luxury | playful | industrial | art-deco | glass-tech | hand-crafted
+   - Plus 1 wildcard adjective the brand owns
+5. Inspirations (3 reference URLs the user likes — gather via WebSearch if needed)
+6. Anti-references (2 landings to avoid resembling)
+7. Constraints (technical, deadline, budget — anything blocking)
+
+DO NOT propose specific colors, fonts, or copy yet.
+End with user approval of the brief before returning.
+```
+
+### Quality bar
+Brief is approved only when:
+- [ ] Audience is specific (not "everyone", "users", "developers")
+- [ ] Single conversion goal locked
+- [ ] Vibe is one anchor + one wildcard, not a list
+- [ ] 3 inspirations are real URLs / image refs
+
+---
+
+## Phase 2 — Visual Direction
+
+### 2a. Color palette dialog
+Use `AskUserQuestion` with header "Palette".
+
+Derive 3 candidate palettes from the vibe in brief:
+
+```
+Vibe: editorial luxury → candidates:
+1. Cream base (#F5F1E8) + ink (#1A1715) + dusk-rose accent (#B8635A)
+2. Bone (#EDE6D6) + charcoal (#221F1B) + olive accent (#7A8A4A)
+3. Off-white (#F8F6F1) + deep navy (#0E1A2B) + ochre accent (#C89A3A)
+```
+
+Show 3 candidates. User picks one. Lock it.
+
+### 2b. Typography pair dialog
+Use `AskUserQuestion` with header "Typography".
+
+Same drill: 3 candidate display+body pairs from vibe.
+
+```
+Vibe: brutalist → candidates:
+1. Display: PP Neue Machina Inktrap | Body: PP Neue Montreal
+2. Display: Migra | Body: GT America Mono
+3. Display: Hubot Sans | Body: Söhne
+```
+
+Validate forbidden list: refuse if user picks Inter/Roboto/Arial/Open Sans/Space Grotesk (unless they push back twice — log the override).
+
+### 2c. Spatial language
+Single `AskUserQuestion`:
+- Asymmetric editorial
+- Minimal grid
+- Brutalist density
+- Atmospheric (gradients + grain)
+
+### 2d. 3D layer (always proposed)
+Single `AskUserQuestion` with the four 3D options from SKILL.md Phase 2d.
+
+### Output artifact
+`plans/{date}-{slug}/visual-direction.md`:
+```markdown
+# Visual Direction
+- Vibe: {anchor} + {wildcard}
+- Palette: {role: hex} × 4
+- Tailwind tokens: {snippet}
+- Display font: {name}, weights [...]
+- Body font: {name}, weights [...]
+- Spatial language: {choice}
+- 3D layer: {none | hero-scene | scroll-triggered | interactive-accent}
+- Forbidden: Inter, Roboto, AI purple gradient, centered hero (unless minimal)
+```
+
+---
+
+## Phase 3 — Custom Icon Set
+
+See `custom-icon-pipeline.md` for full decision tree. Quick reference:
+
+### Icon inventory worksheet
+For each icon, fill: `name | section | metaphor | complexity | method`
+
+```
+nav-logo-mark      | header     | mountain peak (brand-specific) | high  | AI gen + trace
+feature-speed      | features   | arc + dot (momentum)           | low   | direct SVG
+feature-secure     | features   | folded paper (private)         | med   | direct SVG (avoid shield cliché)
+feature-flow       | features   | ribbon path                    | med   | direct SVG
+cta-arrow          | hero CTA   | thin arrow with custom angle    | low  | direct SVG
+social-twitter     | footer     | hand-drawn X                   | med   | AI gen + trace
+social-github      | footer     | hand-drawn cat silhouette      | med   | AI gen + trace
+testimonial-quote  | testimonials | open quote mark              | low   | direct SVG
+```
+
+### Cohesion check (before generating)
+All icons in the set MUST share:
+1. **Stroke weight** — pick one: 1px (thin), 1.5px (default), 2px (bold)
+2. **Corner radius** — sharp / rounded / mixed-by-rule
+3. **Fill style** — outlined / filled / duotone (one only)
+4. **Visual metaphor language** — handcrafted / geometric / organic / pixel
+
+If a needed icon can't fit the cohesion, redesign the metaphor — don't break cohesion.
+
+### Generation
+- **Direct SVG:** Claude writes inline. Target viewBox `0 0 24 24` for system icons, `0 0 48 48` for hero glyphs.
+- **AI gen + trace:** invoke `ckm:design` icon CLI or `ck:ai-multimodal` Imagen. Then trace via Inkscape Trace Bitmap (mention to user; don't auto-trace) OR feed to a vectorizer.
+
+### Output structure (Next.js)
+```
+app/components/icons/
+├── index.ts              (re-exports)
+├── icon.tsx              (base wrapper: size, color, stroke props)
+├── nav-logo-mark.tsx
+├── feature-speed.tsx
+├── feature-secure.tsx
+└── ...
+```
+
+Each icon component:
+```tsx
+import { Icon, type IconProps } from './icon';
+export const FeatureSpeed = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M..." />
+  </Icon>
+);
+```
+
+---
+
+## Phase 4 — AI Visual Assets
+
+### Asset checklist
+- [ ] Hero illustration / scene (1)
+- [ ] Section dividers / accents (2-4)
+- [ ] Background texture (1, tileable)
+- [ ] Open Graph image (1, 1200×630)
+- [ ] Favicon source (1, square)
+
+### Prompt template (apply to ALL prompts)
+```
+Subject: {what}
+Vibe: {vibe-anchor} + {wildcard}
+Palette: {3 colors with hex}
+Lighting: {keyword}
+Composition: {asymmetric | centered | rule-of-thirds}
+Negative space: {where empty}
+Style refs: {2-3 artistic references}
+Forbidden: AI purple/blue gradient, neon glow, generic tech illustration,
+  Microsoft-clip-art aesthetic, gradient mesh, default 3D render
+Aspect ratio: {1:1 | 16:9 | 9:16}
+```
+
+Examples in `visual-asset-prompt-library.md`.
+
+### Tool routing
+| Asset | Primary tool | Fallback |
+|-------|-------------|----------|
+| Hero illustration (artistic) | `ck:ai-artist` --mode search | `--mode wild` if too generic |
+| Hero photo (realistic) | `ck:ai-multimodal` Imagen 4 Ultra | Nano Banana 2 |
+| Background texture | `ck:ai-multimodal` Imagen 4 Fast | tile via `ck:media-processing` |
+| OG image | `ckm:design` social-photos | manual composition |
+| Avatars (testimonials) | `ck:ai-multimodal` Nano Banana 2 | photo-style realistic |
+
+### Validation loop
+After every generation:
+1. View image with `ck:ai-multimodal` analyze
+2. Check: does it match locked palette? (extract dominant colors, compare)
+3. Check: does it match vibe adjective? (describe in 3 words, compare to brief)
+4. If drift > 30%, regenerate with stronger negative prompt
+
+---
+
+## Phase 5 — 3D Layer (conditional)
+
+Skip entirely if Phase 2d returned "none".
+
+### Decision matrix
+| Phase 2d choice | 3D scope | Three.js features |
+|----------------|---------|------------------|
+| hero-scene | Full hero is canvas | Geometry, lights, camera anim |
+| scroll-triggered | Element animates with scroll | ScrollTrigger + GSAP, scroll-linked rotation |
+| interactive-accent | Small draggable / hoverable widget | OrbitControls or pointer events |
+
+### Pattern lookup
+```bash
+# Hero scene
+python3 ~/.claude/skills/threejs/scripts/search.py "abstract geometry hero" -n 5
+
+# Scroll-triggered
+python3 ~/.claude/skills/threejs/scripts/search.py "scroll animation camera" -n 5
+
+# Interactive accent
+python3 ~/.claude/skills/threejs/scripts/search.py "draggable card 3d" -n 5
+```
+
+See `threejs-integration-patterns.md` for full integration guide.
+
+---
+
+## Phase 6 — Plan (delegate to ck:plan)
+
+### Activation prompt
+```
+Task: Plan a Next.js 14+ App Router landing page implementation.
+Stack: Next.js, Tailwind, shadcn/ui, React Three Fiber {if 3D}.
+
+Inputs (read these files):
+- plans/{date}-{slug}/brief.md
+- plans/{date}-{slug}/visual-direction.md
+- app/components/icons/ (already populated)
+- public/landing/ (already populated)
+
+Output: plans/{date}-{slug}/plan.md + phase files covering:
+1. Project scaffold + Tailwind theme tokens from visual-direction.md
+2. Font loading via next/font (display + body)
+3. Layout primitives (Container, Section, Grid)
+4. Hero section
+5. Each content section (features, social-proof, how-it-works, FAQ, CTA, footer)
+6. {if 3D} Three.js integration phase
+7. Animations + scroll behavior
+8. Responsive + a11y polish
+
+Hard constraints — call out in plan:
+- Custom icons only (NEVER lucide-react / heroicons / phosphor)
+- Locked palette as Tailwind tokens — no inline hex
+- Real draft copy, no Lorem, no AI clichés
+- min-h-[100dvh] not h-screen
+```
+
+User reviews plan. Iterate until approved.
+
+---
+
+## Phase 7 — Implement (delegate to ck:cook)
+
+### Activation prompt
+```
+/ck:cook plans/{date}-{slug}/plan.md
+
+Constraints (enforce throughout):
+- Import icons from app/components/icons — never npm install icon libraries
+- Use Tailwind theme tokens for all colors — no inline hex
+- All fonts via next/font — no <link> CDN
+- 3D components: 'use client' + dynamic import with ssr:false
+- Copy is real draft, not Lorem, not AI cliché vocabulary
+- Hero composition follows visual-direction.md (no centered-H1 unless minimal vibe)
+```
+
+### Mid-implementation checks (run during ck:cook)
+After each section completes, spot-check:
+- Imports list — any forbidden library?
+- Color values — any inline hex outside theme?
+- Copy — any "Elevate / Seamless / Unleash"?
+
+---
+
+## Phase 8 — Anti-Slop Review
+
+See `anti-slop-rules.md` § Final Audit for the full machine-runnable checklist.
+
+### Run as code-reviewer agent task
+```
+Task: Audit landing page for AI slop violations.
+Reference: references/anti-slop-rules.md § Final Audit
+Source: app/ directory
+
+Run grep checks for:
+- Emoji: grep -rE '[\\x{1F300}-\\x{1FAFF}]' app/
+- Icon libraries: grep -rE 'lucide-react|@heroicons|phosphor|@tabler' app/
+- Forbidden fonts: grep -rE 'Inter|Roboto|Open Sans|Space Grotesk' app/
+- AI clichés: grep -rEi 'elevate|seamless|unleash|empower|unlock' app/
+- h-screen: grep -rE 'h-screen' app/
+
+Plus visual checks via screenshot:
+- Hero centered H1 at variance > 4? Flag.
+- Single accent color enforced? Count distinct accents.
+- Lighthouse mobile score ≥ 90 (≥ 80 if 3D).
+
+Output: plans/{date}-{slug}/anti-slop-report.md with PASS/FAIL per check.
+```
+
+If any FAIL, return to Phase 7 to fix. Repeat until clean.
