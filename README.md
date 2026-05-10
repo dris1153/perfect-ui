@@ -169,7 +169,7 @@ Default output for `--stack nextjs` (recommended):
 - **Fonts:** `next/font/local` or `next/font/google` for distinctive display + body pair
 - **2D illustrations:** AI-generated via `ck:ai-artist` / `ck:ai-multimodal` per [`references/2d-illustration-catalog.md`](references/2d-illustration-catalog.md), OR direct SVG, OR Blender/Spline static 3D render exported as PNG
 - **Visual effects (if used):** CSS first, then React Three Fiber **as shader runner only** (NOT 3D model viewer), lazy-loaded with `ssr: false`
-- **Animation (if used):** Framer Motion + Lenis (smooth scroll) + GSAP (scroll triggers)
+- **Motion (vibe-scaled, locked Phase 2e):** CSS → Framer Motion → Lenis → GSAP tier system. Total motion JS ≤100KB gz. Per [`references/motion-patterns.md`](references/motion-patterns.md).
 - **Icons:** Custom SVG components in `app/components/icons/`
 
 File scaffolds: [`assets/nextjs-skeleton/landing-skeleton.md`](assets/nextjs-skeleton/landing-skeleton.md) · [`assets/nextjs-skeleton/portfolio-skeleton.md`](assets/nextjs-skeleton/portfolio-skeleton.md)
@@ -179,7 +179,7 @@ File scaffolds: [`assets/nextjs-skeleton/landing-skeleton.md`](assets/nextjs-ske
 ## File Structure
 
 ```
-perfect-landing/                              (folder; skill name is "perfect-ui")
+perfect-ui/                                   (folder; skill name is "perfect-ui")
 ├── SKILL.md                                  Main entry — workflow + scope + rules
 ├── README.md                                 This file
 ├── references/
@@ -189,6 +189,7 @@ perfect-landing/                              (folder; skill name is "perfect-ui
 │   ├── 2d-illustration-catalog.md            11 vibes × 11 illustration styles + cohesion rules
 │   ├── visual-asset-prompt-library.md        Prompt templates per vibe + static 3D render + SVG patterns
 │   ├── visual-effect-patterns.md             Shader / particle / atmospheric patterns (NO models)
+│   ├── motion-patterns.md                    Motion tier system + vibe × intensity matrix + recipes
 │   ├── landing-anatomy.md                    Landing sections + conversion patterns + anti-patterns
 │   ├── portfolio-anatomy.md                  Portfolio sections + portfolio-specific anti-clichés
 │   ├── anti-slop-rules.md                    Tier 1/2/3 forbidden patterns + grep audits
@@ -204,8 +205,10 @@ perfect-landing/                              (folder; skill name is "perfect-ui
     ├── 260509-ai-vs-human-analysis/
     │   ├── synthesis.md                      Evidence-based AI vs human comparison
     │   └── raw/human-pages-findings.md       Background research on human-made pages
-    └── 260510-2d-priority-no-3d-models/
-        └── brainstorm.md                     Pivot to 2D-priority + effect-only threejs
+    ├── 260510-2d-priority-no-3d-models/
+    │   └── brainstorm.md                     Pivot to 2D-priority + effect-only threejs
+    └── 260510-motion-rules/
+        └── brainstorm.md                     Vibe-scaled motion intensity + tier system
 ```
 
 ---
@@ -303,6 +306,21 @@ A: Only when:
 - Effect serves narrative (scroll storytelling, brand moment), not decoration
 
 Default: skip Phase 5. The strongest human-crafted landings (Paperclip, OWO, Augen) use NO visual effects.
+
+**Q: What's the difference between "Visual Effect Layer" (Phase 5) and "Motion" (Phase 2e)?**
+A: Visual Effect = WebGL shader / particle / atmospheric layer (geometry as shader canvas). Motion = DOM elements transforming (translate, opacity, scroll-linked). Effects are atmospheric; motion is choreographic. Effects use `ck:threejs` as shader runner; motion uses CSS / Framer Motion / Lenis / GSAP. Different scope, different files, different concerns.
+
+**Q: How do I add motion without it looking AI-default?**
+A: Lock intensity at Phase 2e (0/3 to 3/3) per vibe. Cap fade-up to ≤30% sections at 2/3 intensity. Use vibe-paired cubic-bezier easing (NOT `ease-in-out` 0.3s). Never animate body `<p>` text. Always respect `prefers-reduced-motion`. Full rules: [`references/motion-patterns.md`](references/motion-patterns.md).
+
+**Q: Should I add Lenis smooth scroll to every site?**
+A: NO. Only at intensity ≥2/3 AND when vibe benefits (luxury, glass-tech, organic). Adding Lenis at intensity 1/3 is a 10KB bundle for nothing. Native scroll is fine for most landings. Augen.pro and Paperclip use NO smooth scroll.
+
+**Q: When do I need GSAP if Framer Motion is already installed?**
+A: Only at intensity 3/3 with timeline scrub-driven choreography across multiple elements. If you only need single-property scroll-linked transforms, FM `useScroll` + `useTransform` (Tier 2) is enough — adding GSAP adds 50KB for one effect.
+
+**Q: How does the motion intensity affect mobile?**
+A: Auto-degrades by 1 step at <768px viewport (3/3 → 2/3, 2/3 → 1/3). Plus `prefers-reduced-motion` forces 0/3 regardless of locked intensity.
 
 **Q: Can I import `three`, `@react-three/fiber`, `@react-three/drei`?**
 A: Yes — but only as **shader/effect runners**, not 3D model viewers. Single `<Canvas>` with single `<mesh>` running custom shader = OK. `<GLTFLoader>` / `useGLTF` / `OrbitControls` = NO (unless user-GLB override).

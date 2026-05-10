@@ -2,16 +2,20 @@
 
 How to add a Visual Effect Layer (shaders, particles, atmospheric) to a Next.js landing or portfolio. **No 3D models** as hero subjects — only effects that enhance the page.
 
-## Critical Distinction
+## Scope Distinction (effect vs motion vs model)
 
-| Category | Status | Examples |
-|----------|--------|----------|
-| **3D model as hero subject** | FORBIDDEN | Rotating product GLB, AI-generated 3D character, GLTF showcase, OrbitControls demo |
-| **Static 3D render → 2D image** | OK (handled in Phase 4, not here) | Blender/Spline render exported as PNG, used in `<Image>` |
-| **Visual effect (this file's scope)** | OK | Shader background, particle field, scroll-driven distortion, displacement plane, atmospheric layer |
-| **User-provided real-product GLB** | OK with logged override | Hardware brand wants product showcase; document in `plans/{date}-{slug}/overrides.md` |
+| Category | File | Status | Examples |
+|----------|------|--------|----------|
+| **3D model as hero subject** | n/a | FORBIDDEN | Rotating product GLB, AI-generated 3D character, GLTF showcase, OrbitControls demo |
+| **Static 3D render → 2D image** | `2d-illustration-catalog.md` (Phase 4) | OK | Blender/Spline render exported as PNG, used in `<Image>` |
+| **Visual effect (this file)** | `visual-effect-patterns.md` (Phase 5) | OK | Shader background, particle field, scroll-driven distortion, displacement plane, atmospheric layer |
+| **Motion (UI animation)** | `motion-patterns.md` (locked Phase 2e, applied Phase 7) | OK — vibe-scaled | Entrance reveals, hover lifts, scroll-linked transforms, smooth scroll baseline |
+| **User-provided real-product GLB** | n/a | OK with logged override | Hardware brand wants product showcase; document in `plans/{date}-{slug}/overrides.md` |
 
-**Rule of thumb:** If geometry is the SUBJECT (visitor's eye is drawn to it as the thing being shown), it's a model — forbidden. If geometry is a CANVAS for shader / atmosphere / motion, it's an effect — allowed.
+**Rule of thumb:**
+- **Geometry as SUBJECT** → 3D model — forbidden
+- **Geometry as CANVAS** for shader/atmosphere → visual effect — Phase 5
+- **DOM elements transforming** (translate, opacity, stagger) → motion — Phase 2e/7, see `motion-patterns.md`
 
 ## When to Add a Visual Effect Layer
 

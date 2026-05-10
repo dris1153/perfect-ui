@@ -221,6 +221,33 @@ If user explicitly requests one of these twice, allow but log: "User-overridden 
 ### User-provided real-product GLB exception
 If user has a GLB of a real shippable product (hardware brand showcase), allow with logged override in `plans/{date}-{slug}/overrides.md`. See `visual-effect-patterns.md` § User-Provided GLB Exception.
 
+## Vibe × Motion Intensity Matrix (Phase 2e)
+
+Default motion intensity per vibe. User confirms or overrides during Phase 2e (logs override if mismatch). See `motion-patterns.md` for full tier system + patterns.
+
+| Vibe | Default Intensity | Stack | Typical pattern |
+|------|-------------------|-------|-----------------|
+| Minimal | 1/3 | CSS | Hover lift, fade-in on first scroll only |
+| Editorial | 1-2/3 | CSS + FM | Stagger display type reveal, slow scroll-linked transforms |
+| Brutalist | 0-1/3 | CSS | Hard-edge instant reveals, NO easing on most elements |
+| Retro-futuristic | 3/3 | FM + Lenis + GSAP | Heavy choreography, scroll-driven, sequential reveals |
+| Organic | 2/3 | FM + Lenis | Soft flowing motion, slow easing |
+| Luxury | 1-2/3 | CSS + Lenis | Restrained, premium pacing, smooth scroll |
+| Playful | 2-3/3 | FM | Spring physics, bouncy hover, reveal sequences |
+| Industrial | 0-1/3 | CSS | Mechanical hard reveals, no organic motion |
+| Art-deco | 1-2/3 | CSS + FM | Geometric reveal, slow rotation |
+| Glass-tech | 2-3/3 | FM + Lenis (+ GSAP) | Smooth flowing reveals, scroll-linked |
+| Hand-crafted | 0-1/3 | CSS | Subtle, no smoothness — paper aesthetic |
+
+### Intensity scale reference
+- **0/3** — Static, no motion (CSS focus-states only)
+- **1/3** — Minimal (CSS hover + one-shot CSS entrance keyframe)
+- **2/3** — Moderate (FM `whileInView` reveals + Lenis smooth scroll)
+- **3/3** — Full choreography (FM + Lenis + GSAP ScrollTrigger timelines)
+
+### Per-vibe easing
+Each vibe pairs with a specific cubic-bezier or spring config. Full list: `motion-patterns.md` § Easing Library.
+
 ## Output Artifact Template
 
 Save to `plans/{date}-{slug}/visual-direction.md`:
@@ -251,6 +278,12 @@ Save to `plans/{date}-{slug}/visual-direction.md`:
 ## 2D Illustration Style (per `2d-illustration-catalog.md`)
 {silkscreen poster | hand-drawn ink | geometric flat (SVG) | cut-paper collage | risograph | watercolor | engraved line-art | architectural schematic | static 3D render → 2D | photographic | synthwave gradient}
 
+## Motion Intensity (Phase 2e — per `motion-patterns.md`)
+- Intensity: {0/3 | 1/3 | 2/3 | 3/3}
+- Stack: {CSS only | CSS + FM | CSS + FM + Lenis | FM + Lenis + GSAP}
+- Easing: `{cubic-bezier values from motion-patterns.md § Easing Library}`
+- Override logged: {yes/no — if vibe mismatch}
+
 ## Forbidden (apply throughout build)
 - No Inter / Roboto / AI purple gradient
 - No emoji
@@ -259,6 +292,9 @@ Save to `plans/{date}-{slug}/visual-direction.md`:
 - No `h-screen`
 - No "Elevate / Seamless / Unleash" copy
 - No centered H1 (unless vibe = minimal)
+- No generic fade-up on every element (cap ≤30% sections at 2/3 intensity)
+- No `ease-in-out` 0.3s as universal duration (use vibe-paired cubic-bezier)
+- No motion on body `<p>` text
 ```
 
 ## Commitment Audit (REQUIRED before Phase 3)

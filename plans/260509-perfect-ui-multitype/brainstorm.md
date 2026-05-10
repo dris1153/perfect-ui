@@ -1,5 +1,5 @@
 ---
-title: perfect-landing → perfect-ui multi-type expansion
+title: perfect-ui multi-type expansion
 date: 2026-05-09
 status: approved
 type: brainstorm
@@ -9,13 +9,13 @@ type: brainstorm
 
 ## Problem Statement
 
-Current `perfect-landing` skill is locked to landing pages only. User wants to add `--type` arg for portfolio + landing. (Blog deferred to later phase.)
+Current `perfect-ui` skill is locked to landing pages only. User wants to add `--type` arg for portfolio + landing. (Blog deferred to later phase.)
 
 ## Approved Decisions
 
 | Item | Decision |
 |------|----------|
-| Skill rename | `perfect-landing` → `perfect-ui` |
+| Skill rename | `perfect-ui` |
 | Types supported | `landing` \| `portfolio` (blog deferred) |
 | Default behavior | `AskUserQuestion` if `--type` not passed |
 | Workflow sharing | All 8 phases shared, only Phase 1 brief + Phase 6 plan + anatomy reference differ |
@@ -28,13 +28,10 @@ Current `perfect-landing` skill is locked to landing pages only. User wants to a
 - Cons: Name "ui" generic — risk of triggering for dashboard work
 - Mitigation: Hard scope declaration + refuse logic
 
-### B. Keep `perfect-landing`, add `--type`
-- Rejected: Skill name no longer matches scope, confusing for future invocations
-
-### C. Separate sibling skills (perfect-landing + perfect-portfolio)
+### B. Separate sibling skills (perfect-ui + perfect-portfolio)
 - Rejected: Duplicates 80% of references; user explicitly chose unified
 
-### D. Parent-router (`perfect-ui` delegates to sub-skills)
+### C. Parent-router (`perfect-ui` delegates to sub-skills)
 - Rejected: Over-engineered for 2 types; orchestration overhead > benefit
 
 ## Final Architecture
@@ -42,7 +39,7 @@ Current `perfect-landing` skill is locked to landing pages only. User wants to a
 ### File migration
 
 ```
-perfect-landing/                     →  perfect-ui/
+perfect-ui/
   SKILL.md                              SKILL.md                            (rename + expand desc + Phase 0.5)
   references/
     workflow-phases.md                  workflow-phases.md                   (Phase 1 branches per type)
@@ -124,7 +121,6 @@ argument-hint: "[description OR site URL] [--type landing|portfolio] [--new|--re
 
 ## Success Criteria
 
-- [ ] Folder renamed `perfect-landing/` → `perfect-ui/`
 - [ ] SKILL.md frontmatter updated, description ≤1024 char
 - [ ] Phase 0.5 type detection added
 - [ ] Phase 1 brief has 2 branches (landing, portfolio)

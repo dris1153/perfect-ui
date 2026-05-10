@@ -137,16 +137,35 @@ Tells are CUMULATIVE — a single rule break is sometimes compensable, but stack
 ### Forbidden
 - Neon outer glows (`box-shadow: 0 0 40px ...`) — "modern" cliché
 - Custom mouse cursors (hurts a11y, dated)
-- Standard `ease-in-out` / `linear` transitions everywhere
 - `backdrop-blur` glassmorphism without inner border + refraction shadow
-- Generic motion: fade-up + 0.3s + ease-in-out on every element
 - Auto-playing video heros with loud audio
 
 ### Approved
-- Spring physics motion (Framer Motion `spring` config)
-- Custom cubic-beziers (`cubic-bezier(0.16, 1, 0.3, 1)` for elegant out)
 - Inner-border + tinted shadow combos for elevation
 - Subtle noise/grain layer over flat surfaces
+
+## Motion (Tier 2 — must be vibe-scaled per `motion-patterns.md`)
+
+### Forbidden
+- **Generic fade-up on every element** — AI default, becomes invisible noise. Cap ≤30% sections animate at intensity 2/3.
+- **`ease-in-out` 0.3s as universal duration** — no character. Use vibe-paired cubic-bezier or spring physics.
+- **`ease-out` / `ease-in-out` named keywords** in `transition` / Framer Motion — AI default. Replace with `cubic-bezier(...)` or spring.
+- **Motion on body `<p>` text** — distracting, hurts readability.
+- **Motion library imported but used <50%** — bundle bloat. If only ONE animation, use a lighter tier.
+- **Multiple competing scroll libraries** (Lenis + Locomotive + native CSS smooth-scroll).
+- **Ignoring `prefers-reduced-motion`** — accessibility violation.
+- **Auto-playing heavy animations on mobile** without intensity-1 degrade at <768px.
+- **Motion intensity mismatched with vibe** without logged override (e.g., 3/3 motion on minimal vibe).
+- **`will-change` left on after animation completes** — kills perf.
+
+### Approved
+- Spring physics motion (Framer Motion `spring` config) for playful vibes
+- Custom cubic-beziers paired to vibe (see `motion-patterns.md` § Easing Library)
+- CSS-only hover transitions (Tier 1 — universal)
+- FM `whileInView` with stagger ≤200ms total, `viewport={{ once: true }}` (no replay)
+- Lenis smooth scroll baseline at intensity ≥2/3 for luxury / glass-tech / organic vibes
+- GSAP ScrollTrigger ONLY at intensity 3/3 with timeline `scrub` for choreographed reveals
+- `prefers-reduced-motion` respected via FM `useReducedMotion()` or CSS `@media`
 - Orchestrated page-load sequence > scattered micro-interactions
 
 ## Copy
@@ -280,6 +299,24 @@ grep -rE 'OrbitControls' app/  # must be empty for landing/portfolio
 
 # Default Three.js material clichés
 grep -rE 'MeshNormalMaterial' app/  # must be empty
+
+# Motion library imports — must align with locked Phase 2e intensity
+grep -rE "from ['\"]framer-motion['\"]|from ['\"]@studio-freight/react-lenis['\"]|from ['\"]gsap['\"]" app/
+
+# Generic ease-in-out / ease-out (motion anti-pattern — Tier 2)
+grep -rE '(ease-in-out|ease-out|"easeInOut"|"easeOut")' app/components/  # flag, replace with cubic-bezier()
+
+# Generic 0.3s duration (often AI default)
+grep -rE 'duration:\s*0\.3|duration-300\b' app/  # spot-check, may be intentional but verify
+
+# Motion on body text (forbidden)
+grep -rE '<motion\.p\b' app/  # body <p> shouldn't have motion wrapper
+
+# prefers-reduced-motion respect (must have ≥1 hit if motion library imported)
+grep -rE 'useReducedMotion|prefers-reduced-motion' app/  # required when FM/Lenis/GSAP imported
+
+# Multiple competing scroll libraries (forbidden)
+grep -rE 'locomotive-scroll' app/ package.json  # if Lenis already imported, this is forbidden
 ```
 
 ### Source-code checks — if type = landing

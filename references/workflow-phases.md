@@ -161,8 +161,17 @@ Single `AskUserQuestion`:
 - Brutalist density
 - Atmospheric (gradients + grain)
 
-### 2d. 3D layer (always proposed)
-Single `AskUserQuestion` with the four 3D options from SKILL.md Phase 2d.
+### 2d. Visual Effect Layer (always proposed)
+Single `AskUserQuestion` with the visual-effect options from SKILL.md Phase 2d. **Note:** No 3D-model option — that decision is forbidden by Hard Rule 4.
+
+### 2e. Motion Intensity Lock (always asked)
+Single `AskUserQuestion` with header "Motion Budget":
+- 0/3 — no motion (CSS hover only)
+- 1/3 — minimal (CSS + light entrance)
+- 2/3 — moderate (FM entrance + Lenis smooth scroll)
+- 3/3 — full choreography (FM + Lenis + GSAP timelines)
+
+Default = vibe matrix from `motion-patterns.md` § Vibe × Motion Intensity. If user picks intensity that mismatches vibe (e.g., 3/3 for minimal), flag with confirmation prompt and log override in `plans/{date}-{slug}/overrides.md`.
 
 ### Output artifact
 `plans/{date}-{slug}/visual-direction.md`:
@@ -174,6 +183,9 @@ Single `AskUserQuestion` with the four 3D options from SKILL.md Phase 2d.
 - Display font: {name}, weights [...]
 - Body font: {name}, weights [...]
 - Spatial language: {choice}
+- Motion intensity: {0/3 | 1/3 | 2/3 | 3/3} (Phase 2e)
+- Motion stack: {CSS only | CSS + FM | CSS + FM + Lenis | FM + Lenis + GSAP}
+- Easing: {cubic-bezier values from motion-patterns.md § Easing Library}
 - 3D layer: {none | hero-scene | scroll-triggered | interactive-accent}
 - Forbidden: Inter, Roboto, AI purple gradient, centered hero (unless minimal)
 ```
@@ -406,6 +418,16 @@ Constraints (enforce throughout):
 - 3D components: 'use client' + dynamic import with ssr:false
 - Copy is real draft, not Lorem, not AI cliché vocabulary
 - Hero composition follows visual-direction.md (no centered-H1 unless minimal vibe)
+
+Motion constraints (per visual-direction.md § Motion Intensity, locked Phase 2e):
+- Apply motion ONLY at locked intensity (0/3 → 3/3)
+- Stack escalation: CSS → FM → Lenis → GSAP (only escalate if prior tier insufficient)
+- NO generic fade-up on every element (≤30% sections at 2/3 intensity)
+- NO motion on body <p> text
+- Use vibe-paired cubic-bezier easing (see motion-patterns.md § Easing Library) — NOT ease-in-out
+- prefers-reduced-motion MUST be respected (FM useReducedMotion or CSS @media)
+- Mobile auto-degrades intensity by 1 step at <768px
+- Total motion JS bundle ≤100KB gz
 ```
 
 ### Mid-implementation checks (run during ck:cook)

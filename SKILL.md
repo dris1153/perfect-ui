@@ -36,8 +36,9 @@ If user says only "design a website" or "build a site" → ask via `AskUserQuest
 4. **NO AI-generated 3D models as hero subject** — no rotating product GLB, no AI-generated 3D character, no GLTF showcase. **2D illustration is the default.** Static 3D renders (Blender/Spline export → PNG) are 2D images, allowed. User-provided real-product GLB allowed only with logged override.
 5. **3D = effects only** — Phase 5 (Visual Effect Layer) is for shaders, particles, atmospheric layers. Geometry exists as canvas for shader, not as visible "model". CSS first, WebGL only when CSS can't.
 6. **Always propose Visual Effect Layer** — every site gets the proposal. User accepts or declines.
-7. **Vibe before pixels** — never write code or generate assets before the vibe is named, the palette is locked, and the typography pair is chosen.
-8. **Type-aware everything** — Phase 1 brief, Phase 6 plan, anatomy, and skeleton ALL branch by `--type`.
+7. **Motion intensity scales with vibe** — locked at Phase 2e (0/3 to 3/3 scale). Stack escalates by need: CSS → Framer Motion → Lenis → GSAP. Generic fade-up-on-everything is forbidden. NO motion on body copy. `prefers-reduced-motion` always respected. See `references/motion-patterns.md`.
+8. **Vibe before pixels** — never write code or generate assets before the vibe is named, the palette is locked, and the typography pair is chosen.
+9. **Type-aware everything** — Phase 1 brief, Phase 6 plan, anatomy, and skeleton ALL branch by `--type`.
 
 ## Process Flow (Authoritative)
 
@@ -45,14 +46,14 @@ If user says only "design a website" or "build a site" → ask via `AskUserQuest
 flowchart TD
     M[Phase 0: Detect Mode: new vs redesign] --> T[Phase 0.5: Detect Type: landing vs portfolio]
     T --> B[Phase 1: Discovery via ck:brainstorm — branched per type]
-    B --> C[Phase 2: Visual Direction]
+    B --> C[Phase 2: Visual Direction — palette/typo/spatial/effect/motion]
     C --> D[Phase 3: Custom Icon Set]
     D --> E[Phase 4: 2D Visual Assets — illustration / static 3D render / photo / SVG]
     E --> F{Phase 5: Visual Effect Layer?}
     F -->|Yes| G[Shader / Particle / Atmospheric via ck:threejs or CSS]
     F -->|No| H[Phase 6: Plan via ck:plan — type-aware]
     G --> H
-    H --> I[Phase 7: Implement via ck:cook]
+    H --> I[Phase 7: Implement via ck:cook — apply locked motion intensity]
     I --> J[Phase 8: Anti-Slop Review + Polish]
     J --> K[Done]
 ```
@@ -132,7 +133,16 @@ Pick one: Asymmetric editorial / Minimal grid / Brutalist density / Atmospheric.
 
 **Note:** This is NOT a 3D-model decision. 3D models as hero subjects are forbidden (see Hard Rule 4). Effects use geometry only as canvas for shader/atmosphere.
 
-Save to `plans/{date}-{slug}/visual-direction.md`. Detailed: `references/visual-direction-guide.md`.
+### 2e. Motion Intensity Lock (always asked)
+`AskUserQuestion` with header "Motion Budget":
+- **0/3** — no motion (CSS hover only, no entrance animations)
+- **1/3** — minimal (CSS + light entrance one-shot)
+- **2/3** — moderate (Framer Motion entrance + Lenis smooth scroll)
+- **3/3** — full choreography (FM + Lenis + GSAP scroll timelines)
+
+Default suggestion = vibe matrix from `references/motion-patterns.md` § Vibe × Motion Intensity. User can override; if mismatch with vibe (e.g., 3/3 for minimal vibe), log override.
+
+Save to `plans/{date}-{slug}/visual-direction.md`. Detailed: `references/visual-direction-guide.md` + `references/motion-patterns.md`.
 
 ## Phase 3 — Custom Icon Set (NO emoji, NO library)
 
@@ -221,6 +231,7 @@ Constraints `ck:cook` MUST follow (all types):
 - NO `.glb` / `.gltf` imports unless user-override logged
 - Visual effect components (if any) lazy-loaded with `ssr: false`
 - CSS-first for atmosphere; WebGL only when CSS proves insufficient
+- **Motion respects locked Phase 2e intensity** — escalate libraries only as required by intensity (CSS → FM → Lenis → GSAP). NO generic fade-up on every element. NO motion on body `<p>` text. `prefers-reduced-motion` MUST be respected via FM `useReducedMotion` or CSS `@media`. See `references/motion-patterns.md`.
 - Real draft copy — no Lorem, no AI clichés (see `references/anti-slop-rules.md`)
 - Realistic data (no Jane Doe / 99.99%)
 
@@ -257,6 +268,7 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 | 2D illustration catalog (11 vibes × styles) | `references/2d-illustration-catalog.md` |
 | Visual asset prompt library | `references/visual-asset-prompt-library.md` |
 | Visual effect patterns (shaders, particles — NO models) | `references/visual-effect-patterns.md` |
+| Motion patterns (entrance / hover / scroll / smooth — vibe-scaled) | `references/motion-patterns.md` |
 | Landing anatomy / sections | `references/landing-anatomy.md` |
 | Portfolio anatomy / sections | `references/portfolio-anatomy.md` |
 | Anti-slop forbidden patterns (Tier 1/2/3) | `references/anti-slop-rules.md` |
