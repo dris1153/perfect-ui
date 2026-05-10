@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>perfect-ui — Landing pages and portfolios that don't look AI-made</title>
+<script>document.documentElement.classList.remove('no-js');</script>
 <meta name="description" content="A Claude Code skill that orchestrates vibe-driven design of cohesive landing pages and portfolios. Anti-slop enforcement, custom icons, 2D-first visual craft, vibe-scaled motion." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -182,6 +183,21 @@
   .scope-rejects li::before { width: 12px; height: 1px; background: var(--ink); transform: translateY(-4px); }
   .scope-col li code { background: transparent; padding: 0; color: var(--ink-muted); }
 
+  /* WHY (comparison) */
+  .why-stats { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); padding: 32px 0; margin-bottom: 56px; }
+  .why-stats .stat-num { font-size: 48px; }
+  .why-compare { grid-column: 1 / span 12; display: grid; grid-template-columns: 1fr 1px 1fr; gap: 0 64px; align-items: start; }
+  .why-compare-rule { background: var(--rule); width: 1px; align-self: stretch; position: relative; }
+  .why-compare-rule::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+  .why-col h3 { font-size: 20px; margin-bottom: 20px; font-style: italic; }
+  .why-col-ai h3 { color: var(--ink-muted); }
+  .why-col ul { list-style: none; padding: 0; margin: 0; }
+  .why-col li { padding: 10px 0; border-bottom: 1px solid var(--rule); font-size: 14px; line-height: 1.5; }
+  .why-col li:last-child { border-bottom: none; }
+  .why-col-ai li { color: var(--ink-muted); font-family: var(--font-mono); font-size: 13px; }
+  .why-col-human li { color: var(--ink); }
+  .why-close { grid-column: 1 / span 12; margin-top: 48px; font-size: 16px; color: var(--ink-muted); font-style: italic; max-width: 60ch; }
+
   /* PIPELINE */
   .pipeline { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
   .phase {
@@ -299,6 +315,130 @@
     font-size: 12px;
   }
 
+  /* MANDATES */
+  .mandates-intro { grid-column: 1 / span 12; max-width: 60ch; margin-bottom: 40px; font-size: 15px; color: var(--ink-muted); line-height: 1.6; }
+  .mandates-intro strong { color: var(--ink); font-weight: 500; }
+  .mandates { grid-column: 1 / span 12; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .mandate {
+    border: 1px solid var(--rule);
+    padding: 24px;
+    background: var(--bg);
+    position: relative;
+    transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .mandate:hover { border-color: var(--accent); }
+  .mandate-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+  }
+  .mandate h3 {
+    font-size: 19px;
+    margin: 10px 0 12px;
+    font-style: italic;
+    line-height: 1.15;
+  }
+  .mandate p {
+    font-size: 13px;
+    color: var(--ink-muted);
+    line-height: 1.5;
+  }
+
+  /* IN PRACTICE (tabs) */
+  .tabs { grid-column: 1 / span 12; }
+  .tabs-list {
+    display: flex;
+    gap: 32px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 40px;
+    padding: 0;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+  .tabs-list button {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    background: none;
+    border: none;
+    padding: 16px 0;
+    cursor: pointer;
+    color: var(--ink-muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .tabs-list button:hover { color: var(--ink); }
+  .tabs-list button[aria-selected="true"] {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .tabs-list button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  .tab-panel { display: none; }
+  .tab-panel[data-active="true"] { display: block; }
+  .tab-quote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--ink);
+    border-left: 2px solid var(--accent);
+    padding: 8px 0 8px 24px;
+    margin: 0 0 32px;
+    max-width: 70ch;
+  }
+  .tab-flow {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px;
+    counter-reset: flow-step;
+  }
+  .tab-flow li {
+    counter-increment: flow-step;
+    padding: 12px 0 12px 56px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .tab-flow li::before {
+    content: counter(flow-step, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+  .tab-flow li:last-child { border-bottom: none; }
+  .tab-flow code { font-size: 12px; }
+  .tab-outcome {
+    font-size: 15px;
+    color: var(--ink-muted);
+    font-style: italic;
+    max-width: 60ch;
+    border-top: 1px solid var(--ink);
+    padding-top: 16px;
+  }
+  .tab-refusal {
+    background: var(--bg-muted);
+    padding: 24px;
+    margin-bottom: 32px;
+    border-left: 2px solid var(--accent);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  /* No-JS fallback: show all panels */
+  .no-js .tab-panel { display: block; border-top: 1px solid var(--rule); padding-top: 32px; margin-top: 32px; }
+  .no-js .tabs-list { display: none; }
+
   /* GETTING STARTED */
   .start-grid { grid-column: 1 / span 12; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; }
   .start-col h3 { font-size: 24px; font-style: italic; margin-bottom: 20px; }
@@ -316,6 +456,40 @@
     white-space: pre;
     font-size: 12px;
     overflow-x: auto;
+  }
+
+  /* BEYOND */
+  .beyond { grid-column: 1 / span 12; }
+  .beyond-row {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 32px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .beyond-row:first-child {
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--ink);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-muted);
+    padding: 12px 0;
+  }
+  .beyond-need { font-size: 16px; line-height: 1.4; }
+  .beyond-skill {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .beyond-skill code {
+    background: var(--bg-muted);
+    padding: 4px 10px;
+    border-radius: 0;
+    border-left: 2px solid var(--accent);
+    font-size: 13px;
   }
 
   /* FOOTER */
@@ -350,9 +524,23 @@
     .sec-head h2 { margin-top: 8px; }
     .scope-grid, .start-grid { grid-template-columns: 1fr; gap: 48px; }
     .pipeline, .tiers { grid-template-columns: 1fr; }
+    .why-stats { grid-template-columns: repeat(2, 1fr); }
+    .why-compare { grid-template-columns: 1fr; }
+    .why-compare-rule { display: none; }
+    .mandates { grid-template-columns: 1fr 1fr; }
+    .tabs-list { gap: 0; flex-direction: column; border-bottom: none; }
+    .tabs-list button { text-align: left; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+    .tabs-list button[aria-selected="true"] { border-bottom-color: var(--accent); border-bottom-width: 2px; }
+    .tab-quote { font-size: 18px; padding-left: 16px; }
+    .beyond-row { grid-template-columns: 1fr; gap: 8px; padding: 20px 0; }
+    .beyond-row:first-child { display: none; }
     .vibe-row { grid-template-columns: 1fr; gap: 8px; padding: 20px 0; }
     .vibe-row:first-child { display: none; }
     section { padding: 64px 0; }
+  }
+
+  @media (max-width: 600px) {
+    .mandates { grid-template-columns: 1fr; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -373,7 +561,7 @@
     <div class="hero-head">
       <span class="wordmark">perfect-ui</span>
       <span class="meta">
-        <span>v0.0.1</span>
+        <span>v2.0.0</span>
         <span>MIT</span>
         <a href="README.md">README ↗</a>
       </span>
@@ -403,11 +591,75 @@
     </div>
   </section>
 
+  <!-- WHY -->
+  <section aria-label="Why it exists">
+    <div class="grid-12">
+      <div class="sec-head">
+        <span class="label">— Why</span>
+        <h2><em>Made because</em> AI pages stack defaults.</h2>
+        <span class="sec-meta">plans/260509-ai-vs-human-analysis/synthesis.md</span>
+      </div>
+
+      <div class="why-stats">
+        <div>
+          <div class="stat-num">12</div>
+          <div class="stat-label">Landings analyzed</div>
+        </div>
+        <div>
+          <div class="stat-num">5</div>
+          <div class="stat-label">AI-generated</div>
+        </div>
+        <div>
+          <div class="stat-num">7</div>
+          <div class="stat-label">Human-crafted</div>
+        </div>
+        <div>
+          <div class="stat-num">10+</div>
+          <div class="stat-label">Violations stacked / AI page</div>
+        </div>
+      </div>
+
+      <div class="why-compare">
+        <div class="why-col why-col-ai">
+          <h3>AI defaults — stacked</h3>
+          <ul>
+            <li>Inter font alone</li>
+            <li>Purple/blue gradient hero</li>
+            <li><code>h-screen</code> everywhere</li>
+            <li><code>lucide-react</code> icons</li>
+            <li>3-col equal feature grid</li>
+            <li>"Get Started" CTAs</li>
+            <li>Round fake stats (10K+, 99.99%)</li>
+            <li>Fade-up on every element</li>
+          </ul>
+        </div>
+
+        <div class="why-compare-rule" aria-hidden="true"></div>
+
+        <div class="why-col why-col-human">
+          <h3>Human commitment — singular</h3>
+          <ul>
+            <li>One vibe locked end-to-end</li>
+            <li>Custom SVG icon set</li>
+            <li>Asymmetric editorial grid</li>
+            <li>Vibe-paired typography</li>
+            <li>Distinctive display fonts</li>
+            <li>Specific draft copy</li>
+            <li>Real evidence-based stats</li>
+            <li>Vibe-scaled motion intensity</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="why-close">Cohesion is the multiplier on craft. This skill encodes that as enforceable rules.</p>
+    </div>
+  </section>
+
   <!-- SCOPE -->
   <section aria-label="Scope">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— 01</span>
+        <span class="label">— 02</span>
         <h2><em>Scope.</em> What's in. What's not.</h2>
         <span class="sec-meta">SKILL.md § Scope</span>
       </div>
@@ -445,7 +697,7 @@
   <section aria-label="Pipeline">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— 02</span>
+        <span class="label">— 03</span>
         <h2><em>Pipeline.</em> Eight phases, each with a single concern.</h2>
         <span class="sec-meta">workflow-phases.md</span>
       </div>
@@ -532,7 +784,12 @@
         <div class="phase">
           <span class="phase-num">— ∞</span>
           <h3>Loading UI</h3>
-          <p>Default no splash. Earns place only when assets need masking or brand moment justifies.</p>
+          <p>Default no splash. Earns place only when:</p>
+          <ul style="font-size: 13px; color: var(--ink-muted); padding-left: 16px; margin: 0 0 16px;">
+            <li>Heavy assets &gt;1.5s load</li>
+            <li>Brand mark moment</li>
+            <li>Curated narrative entrance</li>
+          </ul>
           <span class="ref">loading-ui-patterns.md</span>
         </div>
 
@@ -544,7 +801,7 @@
   <section aria-label="Vibes">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— 03</span>
+        <span class="label">— 04</span>
         <h2><em>Eleven vibes.</em> One anchor + one wildcard. Locked at design time.</h2>
         <span class="sec-meta">visual-direction-guide.md</span>
       </div>
@@ -653,7 +910,7 @@
   <section aria-label="Anti-slop tiers">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— 04</span>
+        <span class="label">— 05</span>
         <h2><em>Anti-slop.</em> Tier 1 = auto-fail. Tier 2 = caution. Tier 3 = compensable.</h2>
         <span class="sec-meta">anti-slop-rules.md</span>
       </div>
@@ -709,11 +966,136 @@
     </div>
   </section>
 
+  <!-- MANDATES -->
+  <section aria-label="Hard rule mandates">
+    <div class="grid-12">
+      <div class="sec-head">
+        <span class="label">— 06</span>
+        <h2><em>Eight mandates.</em> Non-negotiable.</h2>
+        <span class="sec-meta">SKILL.md § Hard Rules</span>
+      </div>
+
+      <p class="mandates-intro">
+        <strong>Mandates</strong> are doctrine — what the skill MUST and MUST NOT do. <strong>Anti-slop tiers</strong> above are audit patterns the skill greps for. Mandates are the <em>why</em> behind tier-1 patterns.
+      </p>
+
+      <div class="mandates">
+
+        <div class="mandate">
+          <span class="mandate-num">— 01</span>
+          <h3>NO emoji — anywhere</h3>
+          <p>Not in copy, headings, or as icons. Use a custom SVG instead.</p>
+        </div>
+
+        <div class="mandate">
+          <span class="mandate-num">— 02</span>
+          <h3>NO icon libraries</h3>
+          <p>Lucide, Heroicons, Phosphor, Tabler, Font Awesome, Material, react-icons — all forbidden.</p>
+        </div>
+
+        <div class="mandate">
+          <span class="mandate-num">— 03</span>
+          <h3>NO AI slop defaults</h3>
+          <p>Inter alone, purple/blue gradient hero, two equal CTAs, "Elevate / Seamless / Unleash" copy.</p>
+        </div>
+
+        <div class="mandate">
+          <span class="mandate-num">— 04</span>
+          <h3>NO 3D models as hero</h3>
+          <p>Static render → PNG OK. Real-time GLB forbidden (user-product GLB needs override).</p>
+        </div>
+
+        <div class="mandate">
+          <span class="mandate-num">— 05</span>
+          <h3>3D = effects only</h3>
+          <p>Phase 5 = shaders, particles, atmosphere. CSS first; WebGL only when CSS can't.</p>
+        </div>
+
+        <div class="mandate">
+          <span class="mandate-num">— 06</span>
+          <h3>Always propose effect layer</h3>
+          <p>Every site gets the proposal. User accepts or declines. Default = decline.</p>
+        </div>
+
+        <div class="mandate">
+          <span class="mandate-num">— 07</span>
+          <h3>Vibe before pixels</h3>
+          <p>Never write code or generate assets before vibe + palette + typography are locked.</p>
+        </div>
+
+        <div class="mandate">
+          <span class="mandate-num">— 08</span>
+          <h3>Type-aware everything</h3>
+          <p>Phase 1 brief, plan, anatomy, skeleton — all branch by <code>--type</code>.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- IN PRACTICE -->
+  <section aria-label="In practice — three example flows">
+    <div class="grid-12">
+      <div class="sec-head">
+        <span class="label">— 07</span>
+        <h2><em>In practice.</em> Three real flows.</h2>
+        <span class="sec-meta">README.md § Examples</span>
+      </div>
+
+      <div class="tabs">
+        <div class="tabs-list" role="tablist" aria-label="Example flows">
+          <button role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true" tabindex="0">Coffee landing</button>
+          <button role="tab" id="tab-portfolio" aria-controls="panel-portfolio" aria-selected="false" tabindex="-1">Portfolio redesign</button>
+          <button role="tab" id="tab-refused" aria-controls="panel-refused" aria-selected="false" tabindex="-1">Dashboard refused</button>
+        </div>
+
+        <div class="tabs-panels">
+
+          <div class="tab-panel" id="panel-coffee" role="tabpanel" aria-labelledby="tab-coffee" data-active="true">
+            <p class="tab-quote">"Design a landing page for a new specialty coffee subscription service targeting home-brewing enthusiasts in Japan. Vibe should feel editorial and warm."</p>
+            <ol class="tab-flow">
+              <li>Phase 0 detects <code>--new</code> (no URL provided)</li>
+              <li>Phase 0.5 detects <code>landing</code> from "landing page"</li>
+              <li>Phase 1 → <code>ck:brainstorm</code> locks vibe = editorial + agrarian (wildcard), 3 inspirations confirmed</li>
+              <li>Phase 2 → palette cream <code>#F5F1E8</code> + ink + dusk-rose accent · Migra + GT Sectra · asymmetric editorial · 3D declined</li>
+              <li>Phase 3 → 8 custom SVG icons designed (nav-mark, brewing-step icons, social marks)</li>
+              <li>Phase 4 → silkscreen-style poster hero illustration via <code>ck:ai-artist</code></li>
+              <li>Phase 6-8 → <code>ck:plan</code> + <code>ck:cook</code> + Tier 1/2/3 audit passes; ships</li>
+            </ol>
+            <p class="tab-outcome">Editorial coffee landing with custom assets, vibe-paired type, zero AI slop. No 3D, no icon library, no purple gradient anywhere.</p>
+          </div>
+
+          <div class="tab-panel" id="panel-portfolio" role="tabpanel" aria-labelledby="tab-portfolio" data-active="false">
+            <p class="tab-quote">"Redesign this portfolio: https://my-old-site.com — I want it to feel more elegant and let my work speak. Currently has too many flashy hover effects."</p>
+            <ol class="tab-flow">
+              <li>Phase 0 detects <code>--redesign</code> (URL provided)</li>
+              <li>Audit per <code>redesign-audit-checklist.md</code> — keep portfolio cover photo + custom monogram; kill hover-effect overload, skill-bar percentages, "Hi I'm passionate" opener</li>
+              <li>Phase 0.5 detects <code>portfolio</code></li>
+              <li>Phase 1-2 → elegant vibe locked · PP Neue Montreal display · off-white palette · atmospheric spatial</li>
+              <li>Phase 3-5 → minimal icon set (5 icons) · editorial environmental portrait · 3D logo accent approved</li>
+              <li>Phase 6-8 → Plan with <code>app/work/[slug]</code> case study route → audit catches "Welcome to my portfolio" leftover copy → fixes → ships</li>
+            </ol>
+            <p class="tab-outcome">Restrained portfolio that lets the work breathe. Atmospheric, not flashy. Audit-caught copy leftover prevented a slop-shipped redesign.</p>
+          </div>
+
+          <div class="tab-panel" id="panel-refused" role="tabpanel" aria-labelledby="tab-refused" data-active="false">
+            <p class="tab-quote">"Build me an admin dashboard with a sidebar and analytics charts."</p>
+            <div class="tab-refusal">
+              perfect-ui scope = marketing-style sites only (landing / portfolio). For an admin dashboard with sidebar and charts, use <code>ck:frontend-development</code> instead — it has React/TypeScript patterns suited to app surfaces. If you need a marketing landing page <em>for</em> your admin tool, that's in scope — clarify and we'll proceed.
+            </div>
+            <p class="tab-outcome">Skill knows when to step aside. Refusal is a redirect, not a block. Off-scope work goes to skills built for it.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- GETTING STARTED -->
   <section aria-label="Getting started">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— 05</span>
+        <span class="label">— 08</span>
         <h2><em>Getting started.</em> Activate by asking.</h2>
         <span class="sec-meta">README.md</span>
       </div>
@@ -733,6 +1115,14 @@
           <p style="margin-top: 24px; font-size: 14px; color: var(--ink-muted); line-height: 1.6;">
             The skill auto-detects mode (new vs redesign) and type (landing vs portfolio). If ambiguous, asks via <code>AskUserQuestion</code>. Off-scope requests are refused with redirect.
           </p>
+
+          <h3 style="margin-top: 40px;">Flags</h3>
+          <div class="triggers" style="font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--ink-muted);">
+            <div><strong style="color: var(--ink);">--type</strong> &nbsp; landing | portfolio &nbsp; <span style="opacity: 0.7;">(asks if unspecified)</span></div>
+            <div><strong style="color: var(--ink);">--new</strong> / <strong style="color: var(--ink);">--redesign</strong> &nbsp; <span style="opacity: 0.7;">(auto-detects from URL/screenshot)</span></div>
+            <div><strong style="color: var(--ink);">--no-3d</strong> &nbsp; <span style="opacity: 0.7;">(skip Phase 5 entirely)</span></div>
+            <div><strong style="color: var(--ink);">--stack</strong> &nbsp; nextjs | astro | vanilla &nbsp; <span style="opacity: 0.7;">(default: nextjs)</span></div>
+          </div>
         </div>
 
         <div class="start-col">
@@ -740,7 +1130,7 @@
           <div class="files">perfect-ui/
 ├── SKILL.md
 ├── README.md
-├── docs.html (this file)
+├── index.html (this file)
 ├── references/
 │   ├── workflow-phases.md
 │   ├── visual-direction-guide.md
@@ -764,16 +1154,90 @@
     </div>
   </section>
 
+  <!-- BEYOND -->
+  <section aria-label="Beyond perfect-ui — when to use other skills">
+    <div class="grid-12">
+      <div class="sec-head">
+        <span class="label">— 09</span>
+        <h2><em>Beyond.</em> Where to go when this isn't the fit.</h2>
+        <span class="sec-meta">README.md § Related Skills</span>
+      </div>
+
+      <div class="beyond">
+        <div class="beyond-row">
+          <div>If you need</div>
+          <div>Use instead</div>
+        </div>
+
+        <div class="beyond-row">
+          <div class="beyond-need">Full apps, dashboards, admin panels, complex multi-page IA</div>
+          <div class="beyond-skill"><code>ck:frontend-development</code></div>
+        </div>
+
+        <div class="beyond-row">
+          <div class="beyond-need">Replicate exact design from screenshot or video</div>
+          <div class="beyond-skill"><code>ck:frontend-design</code></div>
+        </div>
+
+        <div class="beyond-row">
+          <div class="beyond-need">Component-level UI work in existing apps</div>
+          <div class="beyond-skill"><code>ck:ui-ux-pro-max</code></div>
+        </div>
+
+        <div class="beyond-row">
+          <div class="beyond-need">E-commerce stores</div>
+          <div class="beyond-skill"><code>ck:shopify</code></div>
+        </div>
+
+        <div class="beyond-row">
+          <div class="beyond-need">Logo / CIP / banner / social-photo design (called by perfect-ui internally for icons)</div>
+          <div class="beyond-skill"><code>ckm:design</code></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     <div class="foot-row">
-      <span><em>perfect-ui</em> — v0.0.1</span>
+      <span><em>perfect-ui</em> — v2.0.0</span>
       <span>Skill name in SKILL.md frontmatter.</span>
       <span><a href="README.md">README</a> · <a href="SKILL.md">SKILL</a></span>
     </div>
   </footer>
 
 </div>
+
+<script>
+  (function () {
+    var tabs = document.querySelectorAll('[role="tab"]');
+    if (!tabs.length) return;
+
+    function activate(tab) {
+      tabs.forEach(function (t) {
+        var panel = document.getElementById(t.getAttribute('aria-controls'));
+        var isActive = t === tab;
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        t.setAttribute('tabindex', isActive ? '0' : '-1');
+        if (panel) panel.setAttribute('data-active', isActive ? 'true' : 'false');
+      });
+      tab.focus();
+    }
+
+    tabs.forEach(function (tab, idx) {
+      tab.addEventListener('click', function () { activate(tab); });
+      tab.addEventListener('keydown', function (e) {
+        var key = e.key;
+        var next;
+        if (key === 'ArrowRight') next = tabs[(idx + 1) % tabs.length];
+        else if (key === 'ArrowLeft') next = tabs[(idx - 1 + tabs.length) % tabs.length];
+        else if (key === 'Home') next = tabs[0];
+        else if (key === 'End') next = tabs[tabs.length - 1];
+        if (next) { e.preventDefault(); activate(next); }
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
