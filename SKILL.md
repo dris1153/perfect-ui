@@ -4,7 +4,7 @@ description: "Design and build cohesive web pages with custom visual identity �
 license: MIT
 metadata:
   author: dris1153
-  version: "2.2.0"
+  version: "2.3.0"
 argument-hint: "[description OR existing site URL/screenshot] [--type any_page_type] [--new|--redesign] [--no-3d] [--stack nextjs|astro|vanilla]"
 ---
 
@@ -50,7 +50,7 @@ If user says only "design a website" or "build a site" → ask via `AskUserQuest
 
 1. **NO emoji anywhere — regardless of page type** — not in copy, not in headings, not as icons. Use a custom SVG from this skill's icon pipeline. Applies to landing, portfolio, dashboard, admin, e-commerce, blog, about, pricing, contact, legal, error pages, anything.
 2. **NO icon libraries** — no Lucide, Heroicons, Phosphor, Tabler, Font Awesome, Material Icons. Every icon is custom-designed for this site's vibe.
-3. **NO AI slop defaults** — no Inter font alone, no purple/blue gradient hero (marketing-only rule but watch for it leaking into generic tier), no centered 3-card feature row, no "Elevate / Seamless / Unleash" copy in headlines, no "Hi, I'm X, a passionate designer who loves coffee" portfolio cliché. Tier-filtered per § Applicability Matrix — see `references/anti-slop-rules.md`.
+3. **NO AI slop defaults** — no Inter font alone, no purple/blue gradient hero (marketing-only rule but watch for it leaking into generic tier), no centered 3-card feature row, no "Elevate / Seamless / Unleash" copy in headlines, no "Hi, I'm X, a passionate designer who loves coffee" portfolio cliché, **no fabricated metrics / testimonials / logos / case-study counts** — use em-dash placeholder (`— metric to confirm`) when user doesn't supply data, OR pick a different macrostructure, OR refuse the section entirely. Hero H1 line count per vibe (universal 4+ ban), no meta-label headers ("SECTION 01" / "CHAPTER THREE"), no hero filler text ("Scroll to explore" / "Swipe down"). Tier-filtered per § Applicability Matrix — see `references/anti-slop-rules.md` § Honest Copy Mandate.
 4. **NO AI-generated 3D models as hero subject** — no rotating product GLB, no AI-generated 3D character, no GLTF showcase. **2D illustration is the default.** Static 3D renders (Blender/Spline export → PNG) are 2D images, allowed. User-provided real-product GLB allowed only with logged override.
 5. **3D = effects only** — Phase 5 (Visual Effect Layer) is for shaders, particles, atmospheric layers. Geometry exists as canvas for shader, not as visible "model". CSS first, WebGL only when CSS can't.
 6. **Always propose Visual Effect Layer** — every page gets the proposal. User accepts or declines.
@@ -62,7 +62,8 @@ If user says only "design a website" or "build a site" → ask via `AskUserQuest
 
 ```mermaid
 flowchart TD
-    M[Phase 0: Detect Mode: new vs redesign] --> T[Phase 0.5: Detect Type → tier route]
+    M[Phase 0: Detect Mode: new vs redesign] --> P[Phase 0.1: Pre-flight scan — auto-detect existing tokens]
+    P --> T[Phase 0.5: Detect Type → tier route]
     T --> B[Phase 1: Discovery — inline brainstorm protocol, branched per type]
     B --> C[Phase 2: Visual Direction — palette/typo/spatial/effect/motion]
     C --> D[Phase 3: Custom Icon Set]
@@ -301,6 +302,7 @@ Run the audit inline (see `references/workflow-phases.md` § Phase 8) with `--ty
 
 | Phase | Method | Purpose |
 |-------|--------|---------|
+| 0.1 | Auto-detect pre-flight scan (see `references/preflight-scan.md`) | Read existing tokens / fonts / motion lib; preserve found tokens, introduce only what's missing |
 | 1 | Inline brainstorm protocol (see `references/workflow-phases.md` § Phase 1) | Vibe + type-branched brief |
 | 2 | Inline + `AskUserQuestion` | Lock palette/typo/effect-layer |
 | 3 | Direct SVG OR vector icon design pipeline (text-to-SVG, or text-to-image + vector trace) | Custom icons |
@@ -317,6 +319,7 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 | Topic | File |
 |-------|------|
 | Detailed phase walkthrough | `references/workflow-phases.md` |
+| Pre-flight scan (auto-detect existing tokens before Phase 2) | `references/preflight-scan.md` |
 | Visual direction patterns + commitment audit | `references/visual-direction-guide.md` |
 | Custom icon pipeline | `references/custom-icon-pipeline.md` |
 | 2D illustration catalog (11 vibes × styles) | `references/2d-illustration-catalog.md` |

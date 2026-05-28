@@ -347,3 +347,20 @@ Before declaring complete, verify:
 - [ ] Real project covers, not stylized mockups
 - [ ] Email + availability visible in contact section
 - [ ] Plus all generic anti-slop rules from `anti-slop-rules.md`
+
+## Strategic Omissions — what AI typically forgets
+
+Audit before ship. Each item tagged with applicability condition.
+
+- Privacy policy + terms-of-service links in footer `[always]`
+- Custom 404 page `[when multi-page site]` (portfolios with per-project subpages)
+- Form validation (client-side, inline) `[when contact form]`
+- "Skip to main content" a11y link `[always]`
+- "Back" navigation in case-study subpages `[when case studies have own pages]`
+- Page metadata (`<title>`, description, OG image, social cards) `[always]`
+- Working contact mechanism that actually mailtos / submits — not a dead form `[always]`
+- Honest copy — no fabricated work / clients / awards; see `anti-slop-rules.md § Honest Copy Mandate` `[always]`
+
+Cookie consent + sitemap typically skipped for single-page portfolios; revisit if multi-page or analytics-heavy.
+
+Tag vocabulary — same as landing-anatomy.md § Strategic Omissions (single definition shared across anatomy files).

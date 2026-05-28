@@ -278,3 +278,29 @@ Always remove:
 - Asymmetric heroes → reflow to stacked image-above-text or text-above-image
 - 3D scenes → degrade to poster image at <768px (use `useMediaQuery`)
 - Testimonial carousels → vertical stacked or single rotating
+
+## Strategic Omissions — what AI typically forgets
+
+Audit before ship. Each item tagged with applicability condition.
+
+- Privacy policy + terms-of-service links in footer `[always]`
+- Custom 404 page `[when multi-page site]`
+- Form validation (client-side, inline) `[when form present]`
+- "Skip to main content" a11y link (visually-hidden, focus-visible) `[always]`
+- Cookie consent banner `[EU/UK/EEA jurisdiction]`
+- "Back" navigation in any flow >1 step `[when multi-step flow]`
+- Page metadata (`<title>`, description, OG image, social cards) `[always]`
+- Sitemap link or visible site index `[when multi-page site]`
+- Working unsubscribe link in email-capture flows `[when email capture]`
+- Honest copy — no fabricated metrics; see `anti-slop-rules.md § Honest Copy Mandate` `[always]`
+
+If item applies (per its tag condition) but is missing from output, flag in Phase 8 audit as Strategic Omission (Tier 2 severity).
+
+### Tag vocabulary
+
+- `[always]` — applies to every landing regardless of context
+- `[EU/UK/EEA jurisdiction]` — applies when site serves users in those jurisdictions
+- `[when form present]` — applies when page contains any form (signup, contact, etc.)
+- `[when multi-page site]` — applies when site has >1 indexed page
+- `[when multi-step flow]` — applies for funnels, signup wizards, multi-step CTAs
+- `[when email capture]` — applies when page captures email addresses

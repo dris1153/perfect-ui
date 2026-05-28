@@ -82,6 +82,27 @@ For generic-tier pages:
 
 All four are driven by the Page-Purpose Exercise above. Resist the temptation to template — that's how slop happens.
 
+## Strategic Omissions — what AI typically forgets
+
+Audit before ship. Items conditional on Page-Purpose Exercise answer.
+
+### Universal (any page type)
+
+- Privacy policy + terms-of-service links in footer `[always]` (skip on legal pages — they ARE the policy)
+- Page metadata (`<title>`, description, OG image, social cards) `[always]`
+- "Skip to main content" a11y link `[always]`
+- Honest copy — no fabricated metrics / testimonials; see [`anti-slop-rules.md § Honest Copy Mandate`](anti-slop-rules.md) `[always]`
+
+### Conditional on page-purpose
+
+- **Purpose = convert / collect:** Form validation `[when form present]` · Cookie consent `[EU jurisdiction + data persistence]` · Working unsubscribe `[when email capture]`
+- **Purpose = display data (dashboard, admin):** Empty / loading / error states `[always for data UI]` · Keyboard nav for grids / tables `[always]`
+- **Purpose = navigate (index, hub):** Sitemap visible OR clean hierarchical IA `[when multi-page]`
+- **Purpose = tell a story (case-study standalone, manifesto):** Reading progress indicator OR clear section navigation `[when long-form]`
+- **Purpose = inform (blog, about, legal):** Last-updated date `[always for time-sensitive content]` · Author + bio `[when blog]`
+
+Tag vocabulary — same as [`landing-anatomy.md § Strategic Omissions`](landing-anatomy.md) (single definition shared across anatomy files).
+
 ## Cross-References
 
 - [`workflow-phases.md`](workflow-phases.md) § Phase 0.5 (type detection routes here)

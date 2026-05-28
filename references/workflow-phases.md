@@ -27,6 +27,20 @@ Then proceed to Phase 0.5 with audit context attached.
 
 ---
 
+## Phase 0.1 — Pre-flight scan (auto-detect)
+
+See `preflight-scan.md` for full protocol. Auto-detect logic:
+
+- If target directory has existing project files (`package.json` / `tailwind.config.*` / framework configs / `*.css` / `index.html`) → run scan, emit findings block before Phase 0.5
+- If empty repo → silent, one-line note (`Pre-flight: no signals`), proceed to Phase 0.5
+- Cache findings in `.perfect-ui/preflight.json` at project root; reuse unless user requests `refresh pre-flight` OR config mtimes are newer than cache
+
+Preserved tokens / fonts / motion library are carried into Phase 2 visual direction dialog. perfect-ui only introduces what's missing. If user explicitly says `ignore existing project` / `fresh start`, skip scan and proceed.
+
+For redesign mode (Phase 0 set `redesign`), pre-flight runs IN ADDITION to `redesign-audit-checklist.md` — preflight scans tokens, audit assesses visual design.
+
+---
+
 ## Phase 0.5 — Type Detection (No Refusals)
 
 Two tiers based on `--type`:
@@ -612,6 +626,7 @@ Follow `plan.md` dependency graph. Default sequential unless plan marks phases p
 **Copy:**
 - Real draft copy — no Lorem, no AI cliché vocabulary (per applicability matrix tier)
 - Realistic data (no John Doe / 99.99% / Acme Corp)
+- **Honest copy** — if metric / testimonial / logo / case-study count not supplied by user, use em-dash placeholder + label (`— metric to confirm`) rendered as visible grey block. Never invent. See `anti-slop-rules.md § Honest Copy Mandate` for 3 accepted paths.
 
 **Motion (per `visual-direction.md` § Motion Intensity, locked Phase 2e):**
 - Apply motion ONLY at locked intensity (0/3 → 3/3)

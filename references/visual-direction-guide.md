@@ -248,6 +248,26 @@ Default motion intensity per vibe. User confirms or overrides during Phase 2e (l
 ### Per-vibe easing
 Each vibe pairs with a specific cubic-bezier or spring config. Full list: `motion-patterns.md` § Easing Library.
 
+## Vibe × Hero H1 Line Range
+
+Recommended H1 line count per vibe. Universal ceiling: 4+ lines = catastrophic failure regardless of vibe. Enforced as Tier 1 anti-slop rule (see `anti-slop-rules.md § Tier 1 rule #11`).
+
+| Vibe | Hero H1 lines |
+|------|---------------|
+| Minimal | 1-2 |
+| Editorial | 1-3 |
+| Brutalist | 1 |
+| Retro-futuristic | 1-2 |
+| Organic | 2-3 |
+| Luxury | 1-2 |
+| Playful | 2-3 |
+| Industrial | 1-2 |
+| Art-deco | 1-2 |
+| Glass-tech | 1-2 |
+| Hand-crafted | 2-3 |
+
+**Universal ceiling:** 4+ lines never allowed. Enforcement: container `max-w-5xl` / `max-w-6xl` + H1 `clamp(3rem, 5vw, 5.5rem)`. If headline copy exceeds 90 chars, rewrite shorter; never break the line cap by reducing font below `--text-display-s`.
+
 ## Output Artifact Template
 
 Save to `plans/{date}-{slug}/visual-direction.md`:

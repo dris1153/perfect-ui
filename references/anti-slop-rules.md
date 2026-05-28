@@ -26,6 +26,8 @@ Tells are CUMULATIVE — a single rule break is sometimes compensable, but stack
 8. **Generic SaaS CTA labels in hero**: "Get Started", "Sign In", "Subscribe", "Start Free", "Sign Up Free" — without product-specific framing.
 9. **AI-generated 3D model as hero subject**. Default Octane render aesthetic — glossy plastic shading, balanced studio lighting, generic primitive arrangement. Includes `.glb`/`.gltf` imports rendered real-time + AI-generated 3D blobs/characters/scenes. **Use static 3D render → 2D image (Augen pattern) OR shader effect OR 2D illustration instead.** Direct evidence: 0/7 human-crafted landings used real-time AI-generated 3D models.
 10. **OrbitControls enabled in landing/portfolio** — signals "viewer demo" not designed page. Visitor doesn't want to "explore 3D."
+11. **Hero H1 line count exceeds vibe-specific limit** — see `visual-direction-guide.md` § Hero H1 line range column. Universal ceiling: 4+ lines is catastrophic failure regardless of vibe. Enforcement: container `max-w-5xl` / `max-w-6xl` + H1 `clamp(3rem, 5vw, 5.5rem)`. If headline copy exceeds 90 chars, rewrite shorter; never break the line cap by reducing font below `--text-display-s`.
+12. **Meta-label headers** — "SECTION 01" / "QUESTION 05" / "ABOUT US" / "CHAPTER THREE" / numbered eyebrows / uppercase mono-cap section labels. No exception even for ordinal content. Vibe-paired typography hierarchy (display weight, color) communicates section identity instead.
 
 ### Tier 2 — AI compositional tendencies (MUST FIX in combination)
 
@@ -36,6 +38,7 @@ Tells are CUMULATIVE — a single rule break is sometimes compensable, but stack
 15. **Centered hero with centered H1** at high DESIGN_VARIANCE. Compensable only when vibe is genuinely minimal AND visual carries the page.
 16. **3D model used purely as decoration** without narrative purpose (e.g., rotating cube/torusKnot in middle of viewport). Even with user-provided GLB exception, model must serve the product story, not be eye-candy.
 17. **Style mixing across 2D illustrations** in same site (silkscreen poster hero + synthwave gradient mid-section). All illustrations must share style language per `2d-illustration-catalog.md` § Asset Cohesion Rules.
+18. **Hero filler text** — "Scroll to explore" / "Swipe down" / "Continue below" / similar prompt-text in hero. Hero composition must communicate "more below" without typed instructions. Icons (↓, chevron, bouncing arrow) are OK — they're visual hints, not text filler. Aggressive bouncing animation = additional Tier 2 hit (generic motion-on-everything rule).
 
 ### Tier 3 — Style preferences (compensable with visual craft)
 
@@ -75,6 +78,10 @@ Phase 8 audit filters rules by `--type` tier. Two tiers:
 | Generic SaaS CTA labels ("Get Started" / "Sign In" / "Subscribe") | `[marketing-only]` | 1 |
 | AI-generated 3D model as hero subject | `[marketing-only]` | 1 |
 | `OrbitControls` enabled | `[marketing-only]` | 1 |
+| Hero H1 line count exceeds vibe-specific limit (see `visual-direction-guide.md`) | `[universal]` | 1 |
+| Meta-label headers ("SECTION 01" / "CHAPTER THREE" / numbered eyebrows) | `[universal]` | 1 |
+| Hero filler text ("Scroll to explore" / "Swipe down") — icons OK | `[marketing-only]` | 2 |
+| Fabricated metrics / testimonials / logos / case-study counts — see § Honest Copy Mandate | `[universal]` | (positive guidance — flag in audit when fabrication detected) |
 | Generic browser-mockup right-half hero | `[marketing-only]` | 2 |
 | Friendly bullet checkbox reassurance row under CTA | `[marketing-only]` | 2 |
 | Round fake stats (10K+ / 99.99% / 10x faster) | `[marketing-only]` | 2 |
@@ -131,6 +138,29 @@ Phase 8 audit filters rules by `--type` tier. Two tiers:
 - `--type 404` with marketing intent = false → ~25 rules apply
 
 Untagged rules in this file default to `[universal]` — safest assumption.
+
+
+## Honest Copy Mandate (universal)
+
+If the user did not supply a metric / testimonial / logo / case-study count, the skill does NOT invent one. Three accepted paths:
+
+1. **Em-dash placeholder + label (default)** — `— metric to confirm` rendered as a visible grey block. Layout reserves space; user fills in later. HTML/JSX pattern:
+   ```tsx
+   <span className="placeholder bg-bg-muted px-2 rounded text-ink-muted">
+     — metric to confirm
+   </span>
+   ```
+2. **Pick a different macrostructure** — if a stat-led hero requires N metrics and only M < N are available, switch to a non-stat hero (typography-led, image-led).
+3. **Refuse the section entirely** — if a "trusted by 50,000+ teams" logo bar has 0 real logos to show, do not include the logo bar. Honest absence beats fabricated presence.
+
+Forbidden fabrications (already in tier matrix; restated here for context):
+- "+47% conversion", "trusted by 50,000+ teams", "10× faster" with no source
+- John Doe / Jane Smith testimonials with realistic-looking avatars
+- Generic startup logos (Acme / Globex / Initech / Nexus)
+- "1M+ users", "99.99% uptime", round-fake numbers
+- Fabricated case-study counts (8 case studies displayed when user has 2)
+
+Phase 7 implementation must use placeholder rendering; Phase 8 audit greps for forbidden numbers + names per `[marketing-only]` rules.
 
 
 ## Typography

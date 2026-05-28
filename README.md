@@ -2,7 +2,7 @@
 
 > Skill for Claude Code — designs and ships **landing pages** and **portfolios** that look human-crafted, not AI-generated.
 
-**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.2.0 &nbsp;·&nbsp; **License:** MIT
+**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.3.0 &nbsp;·&nbsp; **License:** MIT
 
 ---
 
@@ -13,6 +13,8 @@ Most LLMs default to the same SaaS slop when asked to design a website: Inter fo
 **v2.1.0 update:** Skill scope opens beyond landing/portfolio. `--type` now accepts any page type. Landing and portfolio keep rich anatomy + skeleton + section archetypes. All other types (blog, about, pricing, contact, coming-soon, error pages, legal, dashboard, admin, e-commerce, custom) use generic anatomy + skeleton with the same universal craft toolkit (vibe + palette + typography + custom icons + 2D illustrations + motion + anti-slop). No refusals.
 
 **v2.2.0 update:** Workflow is now self-contained. All orchestration (brainstorm, plan, implement, audit) is inlined in `references/workflow-phases.md`. Asset generation tools are described by capability (text-to-image with style control, vision-capable analysis, vector tracing, React Three Fiber as shader runner, etc.) — no specific external skill dependencies. Skill runs in any Claude Code setup.
+
+**v2.3.0 update:** Completeness pass. Skill now enforces what AI typically forgets — Strategic Omissions checklist (legal links / 404 / form validation / a11y skip-link / cookie consent / etc.) added to all 3 anatomy files. Honest copy mandate explicit: no fabricated metrics; use em-dash placeholder (`— metric to confirm`) when data missing. Pre-flight scan (auto-detect) reads existing project tokens / fonts / motion library before designing — preserves what's there, introduces what's missing. Hero discipline tightened: line-count limit per vibe (universal 4+ ban) + meta-label ban ("SECTION 01" / "CHAPTER THREE" headers forbidden) + filler-text ban ("Scroll to explore" / "Swipe down" forbidden; icons OK).
 
 The skill drives a self-contained 8-phase pipeline:
 
@@ -326,6 +328,9 @@ A: Refuse once. If they request again with reason, log override in `plans/{date}
 **Q: Is the workflow self-contained?**
 A: Yes (as of v2.2.0). All brainstorm / plan / implement / audit protocols are inline in `references/workflow-phases.md`. Skill no longer depends on external orchestration skills. Asset generation (icons, illustrations, effects) is described by capability — use any text-to-image / vision / vector tool that fits the capability description. Skill runs in any Claude Code setup.
 
+**Q: What does the pre-flight scan do (v2.3.0+)?**
+A: Before Phase 2 visual direction locks, skill auto-detects existing project state — fonts loaded via `next/font` or `<link>`, palette in `:root`, motion libraries (`framer-motion`, `gsap`), spacing scale, framework, existing icon library (flagged for replacement per Hard Rule #2). On greenfield repos, silent. On populated repos, emits a findings block: what perfect-ui will preserve, what it will introduce. Cache in `.perfect-ui/preflight.json`; refresh with "refresh pre-flight". See `references/preflight-scan.md`.
+
 **Q: How do I add a new vibe (e.g., `dystopian`, `vaporwave`)?**
 A: Add palette + typography pair to [`references/visual-direction-guide.md`](references/visual-direction-guide.md), add archetype mapping to [`assets/nextjs-skeleton/section-archetypes.md`](assets/nextjs-skeleton/section-archetypes.md), add 3D-pairing row if relevant.
 
@@ -397,6 +402,7 @@ Validate after changes: `python ~/.claude/skills/skill-creator/scripts/quick_val
 - AI vs human evidence research: 2026-05-09 (`plans/260509-ai-vs-human-analysis/synthesis.md`)
 - Vibe palettes adapted from contemporary editorial / branding references
 - Typography recommendations from current premium foundries (Pangram Pangram, Klim, Grilli, Commercial Type)
+- v2.3.0+ patterns inspired by the taste-skill ecosystem (Hallmark, gpt-taste, stitch-design-taste, motion-design, redesign-existing-projects, et al.)
 
 Author: dris1153
 
