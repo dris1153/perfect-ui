@@ -21,10 +21,13 @@
   <link rel="icon" type="image/svg+xml" href="favicon-dark.svg" media="(prefers-color-scheme: dark)" />
   <link rel="icon" type="image/svg+xml" href="favicon-light.svg" />
 
-  <!-- Fonts -->
+  <!-- Fonts — Latin (Instrument Serif + Geist + Geist Mono) + CJK fallback (Noto SC/KR/JP) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/tokens.css" />
@@ -45,10 +48,12 @@
     button_contrast: install CTA + nav CTA both have focus-visible + AA contrast (ink on cream)
     honest_copy: stat counts are real (8 phases / 11 vibes / 3 tiers / 7 hard rules); zero fabricated metrics
     gsap_decision: motion 2/3 + scroll choreography keyword → GSAP loaded (CDN); fallback CSS-only via reveal classes
+    lenis_decision: motion 2/3 → Lenis loaded (CDN); guards = prefers-reduced-motion + touch-primary devices skip; ScrollTrigger synced via gsap.ticker; lerp 0.1, duration 1.2 (Premium personality)
+    i18n: en + vi + zh + ko + ja + es with glossary lock (technical terms stay EN)
     pre_emit_verdict: ALL PASS
   -->
 </head>
-<body>
+<body class="i18n-loading lang-en">
 
 <a href="#main" class="skip-link">Skip to content</a>
 
@@ -64,20 +69,59 @@
     </a>
 
     <ul class="nav-links" role="list">
-      <li><a href="#install">Install</a></li>
-      <li><a href="#why">Why</a></li>
-      <li><a href="#pipeline">Pipeline</a></li>
-      <li><a href="#vibes">Vibes</a></li>
-      <li><a href="#examples">Examples</a></li>
-      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#install" data-i18n="nav.install">Install</a></li>
+      <li><a href="#why" data-i18n="nav.why">Why</a></li>
+      <li><a href="#pipeline" data-i18n="nav.pipeline">Pipeline</a></li>
+      <li><a href="#vibes" data-i18n="nav.vibes">Vibes</a></li>
+      <li><a href="#examples" data-i18n="nav.examples">Examples</a></li>
+      <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
     </ul>
 
-    <a class="nav-cta" href="https://github.com/dris1153/perfect-ui" target="_blank" rel="noopener">
-      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-      </svg>
-      Repo
-    </a>
+    <div class="nav-right" style="display:inline-flex; align-items:center; gap:12px;">
+      <!-- LANGUAGE SWITCHER -->
+      <div class="lang-switcher" data-lang-switcher data-open="false">
+        <button class="lang-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"
+                data-i18n-attr-aria-label="_meta.switcher_label" aria-label="Select language">
+          <span class="lang-trigger-code">EN</span>
+          <svg class="lang-chev" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M1 1l4 4 4-4"/>
+          </svg>
+        </button>
+        <div class="lang-menu" role="listbox">
+          <button type="button" role="option" data-lang-option="en">
+            <span class="lang-name">English</span>
+            <span class="lang-code">EN</span>
+          </button>
+          <button type="button" role="option" data-lang-option="vi">
+            <span class="lang-name">Tiếng Việt</span>
+            <span class="lang-code">VI</span>
+          </button>
+          <button type="button" role="option" data-lang-option="zh">
+            <span class="lang-name">中文</span>
+            <span class="lang-code">ZH</span>
+          </button>
+          <button type="button" role="option" data-lang-option="ko">
+            <span class="lang-name">한국어</span>
+            <span class="lang-code">KO</span>
+          </button>
+          <button type="button" role="option" data-lang-option="ja">
+            <span class="lang-name">日本語</span>
+            <span class="lang-code">JA</span>
+          </button>
+          <button type="button" role="option" data-lang-option="es">
+            <span class="lang-name">Español</span>
+            <span class="lang-code">ES</span>
+          </button>
+        </div>
+      </div>
+
+      <a class="nav-cta" href="https://github.com/dris1153/perfect-ui" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span data-i18n="nav.repo">Repo</span>
+      </a>
+    </div>
   </div>
 </nav>
 
@@ -90,38 +134,38 @@
       <span class="meta">
         <span>v2.5.0</span>
         <span>MIT</span>
-        <a href="../README.md">README</a>
+        <a href="../README.md" data-i18n="hero.readme_link">README</a>
       </span>
     </div>
 
     <div class="grid-12">
       <h1 class="h1 split-lines" aria-label="Landing pages and portfolios that don't look AI-made.">
-        <span class="line-mask"><span class="line-inner">Landing pages</span></span>
-        <span class="line-mask"><span class="line-inner">and portfolios</span></span>
-        <span class="line-mask"><span class="line-inner">that don't <em>look</em></span></span>
-        <span class="line-mask"><span class="line-inner"><em>AI-made.</em></span></span>
+        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line1">Landing pages</span></span>
+        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line2">and portfolios</span></span>
+        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line3">that don't <em>look</em></span></span>
+        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line4"><em>AI-made.</em></span></span>
       </h1>
 
-      <p class="hero-sub reveal" data-reveal-stage="3">
+      <p class="hero-sub reveal" data-reveal-stage="3" data-i18n="hero.sub">
         A Claude Code skill orchestrating vibe discovery, custom icons, 2D illustrations, optional shader effects, and vibe-scaled motion — built to enforce cohesion, not generate slop.
       </p>
 
       <div class="hero-stats stagger">
         <div>
           <div class="stat-num counter" data-target="8">8</div>
-          <div class="stat-label">Phases</div>
+          <div class="stat-label" data-i18n="hero.stat_phases">Phases</div>
         </div>
         <div>
           <div class="stat-num counter" data-target="11">11</div>
-          <div class="stat-label">Vibe anchors</div>
+          <div class="stat-label" data-i18n="hero.stat_vibes">Vibe anchors</div>
         </div>
         <div>
           <div class="stat-num counter" data-target="3">3</div>
-          <div class="stat-label">Anti-slop tiers</div>
+          <div class="stat-label" data-i18n="hero.stat_tiers">Anti-slop tiers</div>
         </div>
         <div>
           <div class="stat-num"><em style="font-style:italic;color:var(--accent);">∞</em></div>
-          <div class="stat-label">Page types — 2 special tiers</div>
+          <div class="stat-label" data-i18n="hero.stat_types">Page types — 2 special tiers</div>
         </div>
       </div>
     </div>
@@ -131,9 +175,9 @@
   <section id="install" aria-label="Install">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— Install</span>
-        <h2><em>One command.</em> No build step. No config.</h2>
-        <span class="sec-meta">via npx skills</span>
+        <span class="label" data-i18n="install.label">— Install</span>
+        <h2 data-i18n-html="install.h2"><em>One command.</em> No build step. No config.</h2>
+        <span class="sec-meta" data-i18n="install.meta">via npx skills</span>
       </div>
 
       <div class="install-grid">
@@ -141,24 +185,24 @@
           <div class="install-prompt reveal-soft">
             <span class="prompt-tag">$</span>
             <span class="prompt-cmd" id="install-cmd">npx skills add dris1153/perfect-ui</span>
-            <button class="copy-btn" data-copy-target="install-cmd" aria-label="Copy install command">Copy</button>
+            <button class="copy-btn" data-copy-target="install-cmd" aria-label="Copy install command" data-i18n="install.copy_btn">Copy</button>
           </div>
-          <p class="install-caption">
+          <p class="install-caption" data-i18n-html="install.caption1">
             <strong>Auto-discovered.</strong> Drops a <code>SKILL.md</code> into <code>~/.claude/skills/perfect-ui/</code>. Activates on phrases like <em>"design a landing page"</em>, <em>"build my portfolio"</em>, <em>"redesign this site"</em>, or any page-type trigger. No registration step, no slash-command. Skill name lives in frontmatter.
           </p>
-          <p class="install-caption" style="margin-top: 6px;">
+          <p class="install-caption" style="margin-top: 6px;" data-i18n-html="install.caption2">
             <strong>Works with</strong> the open <code>npx skills</code> ecosystem — Claude Code, OpenCode, Codex, Cursor, and 40+ AI agents.
           </p>
         </div>
 
         <aside class="install-side">
-          <h3>+ optional companion</h3>
+          <h3 data-i18n="install.side_heading">+ optional companion</h3>
           <div class="install-prompt reveal-soft">
             <span class="prompt-tag">$</span>
             <span class="prompt-cmd" id="gsap-cmd">npx skills add greensock/gsap-skills</span>
-            <button class="copy-btn" data-copy-target="gsap-cmd" aria-label="Copy GSAP install command">Copy</button>
+            <button class="copy-btn" data-copy-target="gsap-cmd" aria-label="Copy GSAP install command" data-i18n="install.copy_btn">Copy</button>
           </div>
-          <p>
+          <p data-i18n-html="install.side_desc">
             For motion intensity 3/3 or briefs mentioning <em>ScrollTrigger / scroll choreography</em>, perfect-ui auto-detects and invokes these. <strong>Optional</strong> — falls back to inline patterns if absent.
           </p>
           <ul>
@@ -180,33 +224,33 @@
   <section id="why" aria-label="Why it exists">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— Why</span>
-        <h2><em>Made because</em> AI pages stack defaults.</h2>
-        <span class="sec-meta">plans/260509-ai-vs-human-analysis</span>
+        <span class="label" data-i18n="why.label">— Why</span>
+        <h2 data-i18n-html="why.h2"><em>Made because</em> AI pages stack defaults.</h2>
+        <span class="sec-meta" data-i18n="why.meta">plans/260509-ai-vs-human-analysis</span>
       </div>
 
       <div class="why-stats stagger">
         <div>
           <div class="stat-num counter" data-target="12">12</div>
-          <div class="stat-label">Landings analyzed</div>
+          <div class="stat-label" data-i18n="why.stat_analyzed">Landings analyzed</div>
         </div>
         <div>
           <div class="stat-num counter" data-target="5">5</div>
-          <div class="stat-label">AI-generated</div>
+          <div class="stat-label" data-i18n="why.stat_ai">AI-generated</div>
         </div>
         <div>
           <div class="stat-num counter" data-target="7">7</div>
-          <div class="stat-label">Human-crafted</div>
+          <div class="stat-label" data-i18n="why.stat_human">Human-crafted</div>
         </div>
         <div>
           <div class="stat-num">10+</div>
-          <div class="stat-label">Violations stacked / AI page</div>
+          <div class="stat-label" data-i18n="why.stat_violations">Violations stacked / AI page</div>
         </div>
       </div>
 
       <div class="why-compare">
         <div class="why-col why-col-ai reveal">
-          <h3>AI defaults — stacked</h3>
+          <h3 data-i18n="why.ai_heading">AI defaults — stacked</h3>
           <ul>
             <li>Inter font alone</li>
             <li>Purple/blue gradient hero</li>
@@ -222,7 +266,7 @@
         <div class="why-compare-rule" aria-hidden="true"></div>
 
         <div class="why-col why-col-human reveal">
-          <h3>Human commitment — singular</h3>
+          <h3 data-i18n="why.human_heading">Human commitment — singular</h3>
           <ul>
             <li>One vibe locked end-to-end</li>
             <li>Custom SVG icon set</li>
@@ -236,7 +280,7 @@
         </div>
       </div>
 
-      <p class="why-close">Cohesion is the multiplier on craft. This skill encodes that as enforceable rules.</p>
+      <p class="why-close" data-i18n="why.close">Cohesion is the multiplier on craft. This skill encodes that as enforceable rules.</p>
     </div>
   </section>
 
@@ -244,13 +288,13 @@
   <section aria-label="Scope">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— Scope</span>
-        <h2><em>Two tiers.</em> No refusals.</h2>
+        <span class="label" data-i18n="scope.label">— Scope</span>
+        <h2 data-i18n-html="scope.h2"><em>Two tiers.</em> No refusals.</h2>
         <span class="sec-meta">SKILL.md § Scope</span>
       </div>
       <div class="scope-grid">
         <div class="scope-col reveal">
-          <h3>Special tier — rich treatment</h3>
+          <h3 data-i18n="scope.special_heading">Special tier — rich treatment</h3>
           <ul>
             <li><code>landing</code> — marketing, sales, product launch</li>
             <li><code>portfolio</code> — work showcase, hire-me, personal site</li>
@@ -261,7 +305,7 @@
           </ul>
         </div>
         <div class="scope-col reveal">
-          <h3>Generic tier — universal craft</h3>
+          <h3 data-i18n="scope.generic_heading">Generic tier — universal craft</h3>
           <ul>
             <li><code>blog</code>, <code>about</code>, <code>pricing</code>, <code>contact</code>, <code>coming-soon</code></li>
             <li><code>error-page</code>, <code>legal</code>, <code>dashboard</code>, <code>admin</code>, <code>e-commerce</code></li>
@@ -272,7 +316,7 @@
           </ul>
         </div>
       </div>
-      <p class="why-close" style="grid-column: 1 / span 12;">
+      <p class="why-close" style="grid-column: 1 / span 12;" data-i18n-html="scope.close">
         Universal toolkit applies to both — vibe lock, palette, typography, custom icons, 2D illustrations, visual effects, motion intensity. Companion approaches suggested in <a href="#beyond">§ Beyond</a>.
       </p>
     </div>
@@ -282,93 +326,93 @@
   <section id="pipeline" aria-label="Pipeline">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— Pipeline</span>
-        <h2><em>Eight phases,</em> each with a single concern.</h2>
+        <span class="label" data-i18n="pipeline.label">— Pipeline</span>
+        <h2 data-i18n-html="pipeline.h2"><em>Eight phases,</em> each with a single concern.</h2>
         <span class="sec-meta">workflow-phases.md</span>
       </div>
 
       <div class="pipeline stagger">
         <div class="phase">
           <span class="phase-num">— 00</span>
-          <h3>Detect mode</h3>
-          <p>New build vs redesign. URL or screenshot triggers redesign audit.</p>
+          <h3 data-i18n="pipeline.p00_title">Detect mode</h3>
+          <p data-i18n="pipeline.p00_desc">New build vs redesign. URL or screenshot triggers redesign audit.</p>
           <span class="ref">redesign-audit-checklist.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 00a</span>
-          <h3>Study mode</h3>
-          <p><code>--study &lt;URL&gt;</code>. URL safety refusal → fetch → DNA extraction (fonts + OKLCH palette + macrostructure) → 3-way branch.</p>
+          <h3 data-i18n="pipeline.p00a_title">Study mode</h3>
+          <p data-i18n-html="pipeline.p00a_desc"><code>--study &lt;URL&gt;</code>. URL safety refusal → fetch → DNA extraction (fonts + OKLCH palette + macrostructure) → 3-way branch.</p>
           <span class="ref">study-mode.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 00.5</span>
-          <h3>Detect type</h3>
-          <p>Any <code>--type</code> accepted. Routes to special tier (landing / portfolio) or generic tier. No refusals.</p>
+          <h3 data-i18n="pipeline.p005_title">Detect type</h3>
+          <p data-i18n-html="pipeline.p005_desc">Any <code>--type</code> accepted. Routes to special tier (landing / portfolio) or generic tier. No refusals.</p>
           <span class="ref">SKILL.md § Phase 0.5</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 00.5b</span>
-          <h3>Component-scope</h3>
-          <p>Multi-signal detect: brief ≤30 words + UI keyword + <code>--component</code> flag. Emits component + <code>.preview.*</code> 8-state wrapper.</p>
+          <h3 data-i18n="pipeline.p005b_title">Component-scope</h3>
+          <p data-i18n-html="pipeline.p005b_desc">Multi-signal detect: brief ≤30 words + UI keyword + <code>--component</code> flag. Emits component + <code>.preview.*</code> 8-state wrapper.</p>
           <span class="ref">component-scope.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 01</span>
-          <h3>Discovery</h3>
-          <p>Inline brainstorm. Brief branches per type. Locks vibe + audience + conversion goal.</p>
+          <h3 data-i18n="pipeline.p01_title">Discovery</h3>
+          <p data-i18n="pipeline.p01_desc">Inline brainstorm. Brief branches per type. Locks vibe + audience + conversion goal.</p>
           <span class="ref">workflow-brainstorm.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 02</span>
-          <h3>Visual direction</h3>
-          <p>Lock palette, typography pair, spatial language, effect layer, motion intensity. Commitment audit ≥48/60.</p>
+          <h3 data-i18n="pipeline.p02_title">Visual direction</h3>
+          <p data-i18n="pipeline.p02_desc">Lock palette, typography pair, spatial language, effect layer, motion intensity. Commitment audit ≥48/60.</p>
           <span class="ref">visual-direction-guide.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 03</span>
-          <h3>Custom icon set</h3>
-          <p>Direct SVG or AI-generated + traced. Single stroke weight, single fill style, fresh metaphors.</p>
+          <h3 data-i18n="pipeline.p03_title">Custom icon set</h3>
+          <p data-i18n="pipeline.p03_desc">Direct SVG or AI-generated + traced. Single stroke weight, single fill style, fresh metaphors.</p>
           <span class="ref">custom-icon-pipeline.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 04</span>
-          <h3>2D visual assets</h3>
-          <p>Pick illustration style from 11×11 catalog. Cohesion across all assets. Static 3D renders as PNG.</p>
+          <h3 data-i18n="pipeline.p04_title">2D visual assets</h3>
+          <p data-i18n="pipeline.p04_desc">Pick illustration style from 11×11 catalog. Cohesion across all assets. Static 3D renders as PNG.</p>
           <span class="ref">2d-illustration-catalog.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 05</span>
-          <h3>Visual effect layer</h3>
-          <p>Optional. Shaders, particles, atmospheric. CSS-first; WebGL only when CSS can't. NO 3D models.</p>
+          <h3 data-i18n="pipeline.p05_title">Visual effect layer</h3>
+          <p data-i18n="pipeline.p05_desc">Optional. Shaders, particles, atmospheric. CSS-first; WebGL only when CSS can't. NO 3D models.</p>
           <span class="ref">visual-effect-patterns.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 06</span>
-          <h3>Plan</h3>
-          <p>Inline plan protocol. Type-aware: landing sections vs portfolio sections + case study route vs generic page-purpose-driven.</p>
+          <h3 data-i18n="pipeline.p06_title">Plan</h3>
+          <p data-i18n="pipeline.p06_desc">Inline plan protocol. Type-aware: landing sections vs portfolio sections + case study route vs generic page-purpose-driven.</p>
           <span class="ref">workflow-plan.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 07</span>
-          <h3>Implement</h3>
-          <p>Pre-emit <code>&lt;design_plan&gt;</code> verification gates code emission. Apply locked motion intensity. Custom icons only.</p>
+          <h3 data-i18n="pipeline.p07_title">Implement</h3>
+          <p data-i18n-html="pipeline.p07_desc">Pre-emit <code>&lt;design_plan&gt;</code> verification gates code emission. Apply locked motion intensity. Custom icons only.</p>
           <span class="ref">workflow-implement.md</span>
         </div>
 
         <div class="phase">
           <span class="phase-num">— 08</span>
-          <h3>Anti-slop audit</h3>
-          <p>Inline tier-filtered audit. Tier 1 hits = block ship. Grep + visual checks. Marketing-only rules skipped for non-marketing types.</p>
+          <h3 data-i18n="pipeline.p08_title">Anti-slop audit</h3>
+          <p data-i18n="pipeline.p08_desc">Inline tier-filtered audit. Tier 1 hits = block ship. Grep + visual checks. Marketing-only rules skipped for non-marketing types.</p>
           <span class="ref">workflow-audit.md</span>
         </div>
       </div>
@@ -379,8 +423,8 @@
   <section id="vibes" aria-label="Vibes">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— Vibes</span>
-        <h2><em>Eleven anchors.</em> One + one wildcard. Locked at design time.</h2>
+        <span class="label" data-i18n="vibes_sec.label">— Vibes</span>
+        <h2 data-i18n-html="vibes_sec.h2"><em>Eleven anchors.</em> One + one wildcard. Locked at design time.</h2>
         <span class="sec-meta">visual-direction-guide.md</span>
       </div>
 
@@ -488,15 +532,15 @@
   <section aria-label="Anti-slop tiers">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— Anti-slop</span>
-        <h2><em>Tier 1</em> auto-fail. <em>Tier 2</em> caution. <em>Tier 3</em> compensable.</h2>
+        <span class="label" data-i18n="tiers.label">— Anti-slop</span>
+        <h2 data-i18n-html="tiers.h2"><em>Tier 1</em> auto-fail. <em>Tier 2</em> caution. <em>Tier 3</em> compensable.</h2>
         <span class="sec-meta">anti-slop-rules.md</span>
       </div>
 
       <div class="tiers stagger">
         <div class="tier tier-1">
-          <span class="tier-tag">Tier 1 — Must fix</span>
-          <h3>Auto-fail patterns</h3>
+          <span class="tier-tag" data-i18n="tiers.t1_tag">Tier 1 — Must fix</span>
+          <h3 data-i18n="tiers.t1_heading">Auto-fail patterns</h3>
           <ul>
             <li><code>DM Sans + Space Grotesk</code> pair</li>
             <li>Purple/blue gradient hero with gradient text</li>
@@ -512,8 +556,8 @@
         </div>
 
         <div class="tier">
-          <span class="tier-tag">Tier 2 — Caution</span>
-          <h3>Compositional drift</h3>
+          <span class="tier-tag" data-i18n="tiers.t2_tag">Tier 2 — Caution</span>
+          <h3 data-i18n="tiers.t2_heading">Compositional drift</h3>
           <ul>
             <li>Generic browser-mockup right-half of split hero</li>
             <li>Friendly bullet checkbox reassurance row</li>
@@ -528,15 +572,15 @@
         </div>
 
         <div class="tier">
-          <span class="tier-tag">Tier 3 — Compensable</span>
-          <h3>Cohesion ≥ 8/10 saves</h3>
+          <span class="tier-tag" data-i18n="tiers.t3_tag">Tier 3 — Compensable</span>
+          <h3 data-i18n="tiers.t3_heading">Cohesion ≥ 8/10 saves</h3>
           <ul>
             <li><code>Inter</code> body when paired with distinctive display</li>
             <li>AI cliché phrases in non-load-bearing copy</li>
             <li>Generic startup names (Acme, Globex)</li>
             <li>Title Case On Every Header</li>
           </ul>
-          <p style="font-size: 12px; color: var(--ink-muted); margin-top: 16px; line-height: 1.5; font-style: italic;">
+          <p style="font-size: 12px; color: var(--ink-muted); margin-top: 16px; line-height: 1.5; font-style: italic;" data-i18n="tiers.t3_footnote">
             Allowed only IF visual craft cohesion ≥ 8/10. Override path: user requests twice + reason logged.
           </p>
         </div>
@@ -548,23 +592,23 @@
   <section id="examples" aria-label="In practice — example flows">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— In practice</span>
-        <h2><em>Four real flows.</em> One discipline.</h2>
+        <span class="label" data-i18n="examples_sec.label">— In practice</span>
+        <h2 data-i18n-html="examples_sec.h2"><em>Four real flows.</em> One discipline.</h2>
         <span class="sec-meta">README.md § Examples</span>
       </div>
 
       <div class="tabs">
         <div class="tabs-list" role="tablist" aria-label="Example flows">
-          <button role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true" tabindex="0">Coffee landing</button>
-          <button role="tab" id="tab-portfolio" aria-controls="panel-portfolio" aria-selected="false" tabindex="-1">Portfolio redesign</button>
-          <button role="tab" id="tab-blog" aria-controls="panel-blog" aria-selected="false" tabindex="-1">Blog page</button>
-          <button role="tab" id="tab-dashboard" aria-controls="panel-dashboard" aria-selected="false" tabindex="-1">Dashboard</button>
+          <button role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true" tabindex="0" data-i18n="examples_sec.tab_coffee">Coffee landing</button>
+          <button role="tab" id="tab-portfolio" aria-controls="panel-portfolio" aria-selected="false" tabindex="-1" data-i18n="examples_sec.tab_portfolio">Portfolio redesign</button>
+          <button role="tab" id="tab-blog" aria-controls="panel-blog" aria-selected="false" tabindex="-1" data-i18n="examples_sec.tab_blog">Blog page</button>
+          <button role="tab" id="tab-dashboard" aria-controls="panel-dashboard" aria-selected="false" tabindex="-1" data-i18n="examples_sec.tab_dashboard">Dashboard</button>
         </div>
 
         <div class="tabs-panels">
 
           <div class="tab-panel" id="panel-coffee" role="tabpanel" aria-labelledby="tab-coffee" data-active="true">
-            <p class="tab-quote">"Design a landing page for a new specialty coffee subscription service targeting home-brewing enthusiasts in Japan. Vibe should feel editorial and warm."</p>
+            <p class="tab-quote" data-i18n="examples_sec.coffee_quote">"Design a landing page for a new specialty coffee subscription service targeting home-brewing enthusiasts in Japan. Vibe should feel editorial and warm."</p>
             <ol class="tab-flow">
               <li>Phase 0 detects <code>--new</code> (no URL provided)</li>
               <li>Phase 0.5 detects <code>landing</code> from "landing page"</li>
@@ -574,9 +618,9 @@
               <li>Phase 4 → silkscreen-style poster hero illustration via text-to-image with style control</li>
               <li>Phase 6-8 → inline plan + implement + Tier 1/2/3 audit; ships</li>
             </ol>
-            <p class="tab-outcome">Editorial coffee landing with custom assets, vibe-paired type, zero AI slop. No 3D, no icon library, no purple gradient anywhere.</p>
+            <p class="tab-outcome" data-i18n="examples_sec.coffee_outcome">Editorial coffee landing with custom assets, vibe-paired type, zero AI slop. No 3D, no icon library, no purple gradient anywhere.</p>
             <a class="tab-link" href="examples/coffee-landing.html">
-              See the example page
+              <span data-i18n="examples_sec.coffee_link">See the example page</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path d="M3 8h10M9 4l4 4-4 4"/>
               </svg>
@@ -584,7 +628,7 @@
           </div>
 
           <div class="tab-panel" id="panel-portfolio" role="tabpanel" aria-labelledby="tab-portfolio" data-active="false">
-            <p class="tab-quote">"Redesign this portfolio: example.com — I want it to feel more elegant and let my work speak. Currently has too many flashy hover effects."</p>
+            <p class="tab-quote" data-i18n="examples_sec.portfolio_quote">"Redesign this portfolio: example.com — I want it to feel more elegant and let my work speak. Currently has too many flashy hover effects."</p>
             <ol class="tab-flow">
               <li>Phase 0 detects <code>--redesign</code> (URL provided)</li>
               <li>Audit per <code>redesign-audit-checklist.md</code> — keep portfolio cover photo + custom monogram; kill hover-effect overload, skill-bar percentages, "Hi I'm passionate" opener</li>
@@ -593,11 +637,11 @@
               <li>Phase 3-5 → minimal icon set (5 icons) · editorial environmental portrait · 3D logo accent approved</li>
               <li>Phase 6-8 → Plan with <code>app/work/[slug]</code> case study route → audit catches "Welcome to my portfolio" leftover copy → fixes → ships</li>
             </ol>
-            <p class="tab-outcome">Restrained portfolio that lets the work breathe. Atmospheric, not flashy. Audit-caught copy leftover prevented a slop-shipped redesign.</p>
+            <p class="tab-outcome" data-i18n="examples_sec.portfolio_outcome">Restrained portfolio that lets the work breathe. Atmospheric, not flashy. Audit-caught copy leftover prevented a slop-shipped redesign.</p>
           </div>
 
           <div class="tab-panel" id="panel-blog" role="tabpanel" aria-labelledby="tab-blog" data-active="false">
-            <p class="tab-quote">"Design a blog landing for a typography studio's writing. Editorial vibe, long-form serif."</p>
+            <p class="tab-quote" data-i18n="examples_sec.blog_quote">"Design a blog landing for a typography studio's writing. Editorial vibe, long-form serif."</p>
             <ol class="tab-flow">
               <li>Phase 0 detects <code>--new</code></li>
               <li>Phase 0.5 detects <code>blog</code> keyword → <em>generic tier</em></li>
@@ -608,12 +652,12 @@
               <li>Phase 6 → generic plan: nav + hero + article-list + footer (page-purpose, not template)</li>
               <li>Phase 8 → audit runs <code>[universal]</code> + <code>[marketing-only]</code> subset; passes</li>
             </ol>
-            <p class="tab-outcome">Editorial blog landing with the same craft discipline as a landing page. Section stack picked from generic anatomy, not templated.</p>
+            <p class="tab-outcome" data-i18n="examples_sec.blog_outcome">Editorial blog landing with the same craft discipline as a landing page. Section stack picked from generic anatomy, not templated.</p>
           </div>
 
           <div class="tab-panel" id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard" data-active="false">
-            <p class="tab-quote">"Design a dashboard for a self-hosted analytics tool. Brutalist vibe, dense info, dark mode."</p>
-            <div class="tab-refusal">
+            <p class="tab-quote" data-i18n="examples_sec.dashboard_quote">"Design a dashboard for a self-hosted analytics tool. Brutalist vibe, dense info, dark mode."</p>
+            <div class="tab-refusal" data-i18n-html="examples_sec.dashboard_disclosure">
               <strong>Evidence-base disclosure (logged at Phase 0.5):</strong> skill's evidence base (12 marketing landings analyzed) does NOT cover dashboard / admin / e-commerce / app-surface patterns directly. Universal craft toolkit still applies. Output quality is best-effort.
             </div>
             <ol class="tab-flow">
@@ -626,7 +670,7 @@
               <li>Phase 6 → app-shell (sidebar + topbar) + filter-bar + data-grid + empty-state — no hero, no CTA, purpose-driven</li>
               <li>Phase 8 → audit runs <code>[universal]</code> rules only; marketing-only rules skipped</li>
             </ol>
-            <p class="tab-outcome">Dashboard with vibe lock, custom icons, motion discipline — without false-positive audit warnings about marketing patterns that don't apply.</p>
+            <p class="tab-outcome" data-i18n="examples_sec.dashboard_outcome">Dashboard with vibe lock, custom icons, motion discipline — without false-positive audit warnings about marketing patterns that don't apply.</p>
           </div>
 
         </div>
@@ -638,65 +682,65 @@
   <section aria-label="Hard rule mandates">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— Mandates</span>
-        <h2><em>Ten mandates.</em> Non-negotiable.</h2>
+        <span class="label" data-i18n="mandates.label">— Mandates</span>
+        <h2 data-i18n-html="mandates.h2"><em>Ten mandates.</em> Non-negotiable.</h2>
         <span class="sec-meta">SKILL.md § Hard Rules</span>
       </div>
 
-      <p class="mandates-intro">
+      <p class="mandates-intro" data-i18n-html="mandates.intro">
         <strong>Mandates</strong> are doctrine — what the skill MUST and MUST NOT do. <strong>Anti-slop tiers</strong> above are audit patterns the skill greps for. Mandates are the <em>why</em> behind tier-1 patterns.
       </p>
 
       <div class="mandates stagger">
         <div class="mandate">
           <span class="mandate-num">— 01</span>
-          <h3>NO emoji — anywhere</h3>
-          <p>Not in copy, headings, or as icons. Use a custom SVG instead.</p>
+          <h3 data-i18n="mandates.m1_title">NO emoji — anywhere</h3>
+          <p data-i18n="mandates.m1_desc">Not in copy, headings, or as icons. Use a custom SVG instead.</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 02</span>
-          <h3>NO icon libraries</h3>
-          <p>Lucide, Heroicons, Phosphor, Tabler, Font Awesome, Material, react-icons — all forbidden.</p>
+          <h3 data-i18n="mandates.m2_title">NO icon libraries</h3>
+          <p data-i18n="mandates.m2_desc">Lucide, Heroicons, Phosphor, Tabler, Font Awesome, Material, react-icons — all forbidden.</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 03</span>
-          <h3>NO AI slop defaults</h3>
-          <p>Inter alone, purple/blue gradient hero, two equal CTAs, "Elevate / Seamless" copy, fabricated metrics, meta-label headers, hero filler text.</p>
+          <h3 data-i18n="mandates.m3_title">NO AI slop defaults</h3>
+          <p data-i18n="mandates.m3_desc">Inter alone, purple/blue gradient hero, two equal CTAs, "Elevate / Seamless" copy, fabricated metrics, meta-label headers, hero filler text.</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 04</span>
-          <h3>NO 3D models as hero</h3>
-          <p>Static render → PNG OK. Real-time GLB forbidden (user-product GLB needs logged override).</p>
+          <h3 data-i18n="mandates.m4_title">NO 3D models as hero</h3>
+          <p data-i18n="mandates.m4_desc">Static render → PNG OK. Real-time GLB forbidden (user-product GLB needs logged override).</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 05</span>
-          <h3>3D = effects only</h3>
-          <p>Phase 5 = shaders, particles, atmosphere. CSS first; WebGL only when CSS can't.</p>
+          <h3 data-i18n="mandates.m5_title">3D = effects only</h3>
+          <p data-i18n="mandates.m5_desc">Phase 5 = shaders, particles, atmosphere. CSS first; WebGL only when CSS can't.</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 06</span>
-          <h3>Always propose effect layer</h3>
-          <p>Every site gets the proposal. User accepts or declines. Default = decline.</p>
+          <h3 data-i18n="mandates.m6_title">Always propose effect layer</h3>
+          <p data-i18n="mandates.m6_desc">Every site gets the proposal. User accepts or declines. Default = decline.</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 07</span>
-          <h3>Vibe before pixels</h3>
-          <p>Never write code or generate assets before vibe + palette + typography are locked.</p>
+          <h3 data-i18n="mandates.m7_title">Vibe before pixels</h3>
+          <p data-i18n="mandates.m7_desc">Never write code or generate assets before vibe + palette + typography are locked.</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 08</span>
-          <h3>Type-aware where it matters</h3>
-          <p>Landing / portfolio get rich anatomy. All other types use generic anatomy + skeleton. Phase 8 audit filters per <code>--type</code>.</p>
+          <h3 data-i18n="mandates.m8_title">Type-aware where it matters</h3>
+          <p data-i18n-html="mandates.m8_desc">Landing / portfolio get rich anatomy. All other types use generic anatomy + skeleton. Phase 8 audit filters per <code>--type</code>.</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 09</span>
-          <h3>Diversify each run</h3>
-          <p>Macrostructure must differ from last 3 entries in <code>.perfect-ui/log.json</code>. Vibe / dials should differ from last entry.</p>
+          <h3 data-i18n="mandates.m9_title">Diversify each run</h3>
+          <p data-i18n-html="mandates.m9_desc">Macrostructure must differ from last 3 entries in <code>.perfect-ui/log.json</code>. Vibe / dials should differ from last entry.</p>
         </div>
         <div class="mandate">
           <span class="mandate-num">— 10</span>
-          <h3>Pre-emit verification</h3>
-          <p>Phase 7 entry gates code behind a 10-field <code>&lt;design_plan&gt;</code> block. Any FAIL routes back. Stamped in CSS + plan.md.</p>
+          <h3 data-i18n="mandates.m10_title">Pre-emit verification</h3>
+          <p data-i18n-html="mandates.m10_desc">Phase 7 entry gates code behind a 10-field <code>&lt;design_plan&gt;</code> block. Any FAIL routes back. Stamped in CSS + plan.md.</p>
         </div>
       </div>
     </div>
@@ -706,8 +750,8 @@
   <section id="faq" aria-label="Frequently asked questions">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— FAQ</span>
-        <h2><em>Questions</em> already asked.</h2>
+        <span class="label" data-i18n="faq.label">— FAQ</span>
+        <h2 data-i18n-html="faq.h2"><em>Questions</em> already asked.</h2>
         <span class="sec-meta">README.md § FAQ</span>
       </div>
 
@@ -715,13 +759,13 @@
 
         <article class="faq-item" data-open="true">
           <button class="faq-question" aria-expanded="true">
-            <span><em>Can I</em> use Inter font?</span>
+            <span data-i18n-html="faq.q1"><em>Can I</em> use Inter font?</span>
             <span class="faq-toggle" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>
             </span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">
+            <div class="faq-answer-inner" data-i18n-html="faq.a1">
               <p>As body text only, IF paired with a distinctive display font (Instrument Serif, PP Neue Montreal, Migra, etc.). Inter alone = AI fingerprint (Tier 3 — compensable but discouraged).</p>
             </div>
           </div>
@@ -729,13 +773,13 @@
 
         <article class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span><em>Does</em> this work with non-Claude agents?</span>
+            <span data-i18n-html="faq.q2"><em>Does</em> this work with non-Claude agents?</span>
             <span class="faq-toggle" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>
             </span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">
+            <div class="faq-answer-inner" data-i18n-html="faq.a2">
               <p>Yes. The skill ships as <code>SKILL.md</code> via the open <code>npx skills</code> ecosystem (<code>vercel-labs/skills</code>) — installs into Claude Code, OpenCode, Codex, Cursor, and 40+ agents. Same file, same behavior.</p>
             </div>
           </div>
@@ -743,13 +787,13 @@
 
         <article class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span><em>What's a</em> macrostructure?</span>
+            <span data-i18n-html="faq.q3"><em>What's a</em> macrostructure?</span>
             <span class="faq-toggle" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>
             </span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">
+            <div class="faq-answer-inner" data-i18n-html="faq.a3">
               <p>A named page-shape archetype, independent of vibe. Seven exist: Marquee Hero, Bento Grid, Long Document, Manifesto, Stat-Led, Workbench, Letter. Vibe locks the surface; macrostructure locks the shape. Diversification rule: macrostructure pick must differ from the last 3 entries in <code>.perfect-ui/log.json</code>.</p>
             </div>
           </div>
@@ -757,13 +801,13 @@
 
         <article class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span><em>Can I add</em> a rotating 3D product GLB to my hero?</span>
+            <span data-i18n-html="faq.q4"><em>Can I add</em> a rotating 3D product GLB to my hero?</span>
             <span class="faq-toggle" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>
             </span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">
+            <div class="faq-answer-inner" data-i18n-html="faq.a4">
               <p>Generally no. Direct evidence from 12 real landings showed 0/7 human-crafted pages used real-time 3D models. Use one of these instead:</p>
               <p>1. <strong>Static 3D render → 2D image</strong> (recommended) — render in Blender / Spline / KeyShot, export PNG/WebP.</p>
               <p>2. <strong>2D illustration</strong> matching vibe — from the 11×11 catalog.</p>
@@ -775,13 +819,13 @@
 
         <article class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span><em>When does</em> the GSAP companion fire?</span>
+            <span data-i18n-html="faq.q5"><em>When does</em> the GSAP companion fire?</span>
             <span class="faq-toggle" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>
             </span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">
+            <div class="faq-answer-inner" data-i18n-html="faq.a5">
               <p>At Phase 7 entry, perfect-ui detects motion intensity 3/3 OR brief keywords (<code>GSAP</code>, <code>ScrollTrigger</code>, <code>scroll choreography</code>, <code>scrub</code>, <code>pin section</code>). If the gsap-* skills are installed at <code>~/.claude/skills/gsap-*</code>, it invokes them via active Skill calls. If missing, it suggests <code>npx skills add greensock/gsap-skills</code> once, then falls back to inline patterns — non-blocking. See <code>references/gsap-integration.md</code>.</p>
             </div>
           </div>
@@ -789,13 +833,13 @@
 
         <article class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span><em>What does</em> <code>--study &lt;URL&gt;</code> do?</span>
+            <span data-i18n-html="faq.q6"><em>What does</em> <code>--study &lt;URL&gt;</code> do?</span>
             <span class="faq-toggle" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>
             </span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">
+            <div class="faq-answer-inner" data-i18n-html="faq.a6">
               <p>Runs URL safety refusal first (7 patterns blocked: themeforest, framer-templates, dribbble shots, behance galleries, gumroad UI-kits, webflow-templates, generic marketplaces). If safe, fetches the page as untrusted data, extracts DNA (fonts + OKLCH palette + macrostructure + nav/footer archetypes), emits a diagnosis report. You pick a 3-way branch: build with this DNA / lock DNA to <code>design.md</code> / stop. Diversification rule suspended when build-with-DNA chosen.</p>
             </div>
           </div>
@@ -803,13 +847,13 @@
 
         <article class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span><em>When does</em> component-scope trigger?</span>
+            <span data-i18n-html="faq.q7"><em>When does</em> component-scope trigger?</span>
             <span class="faq-toggle" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>
             </span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">
+            <div class="faq-answer-inner" data-i18n-html="faq.a7">
               <p>Multi-signal detect — perfect-ui counts: brief ≤30 words + UI element keyword (button / card / modal / dropdown / nav / form / etc.) + <code>--component</code> flag + single-file target + "just the X" phrasing. 2+ signals → component scope confirmed. 1 signal → skill asks "one component or whole page?". Component scope skips macrostructure / hero / nav-footer / Phase 8 visual / <code>log.json</code> and outputs the component + <code>.preview.*</code> 8-state wrapper.</p>
             </div>
           </div>
@@ -817,13 +861,13 @@
 
         <article class="faq-item">
           <button class="faq-question" aria-expanded="false">
-            <span><em>How do I</em> add a new vibe like vaporwave?</span>
+            <span data-i18n-html="faq.q8"><em>How do I</em> add a new vibe like vaporwave?</span>
             <span class="faq-toggle" aria-hidden="true">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v12M2 8h12"/></svg>
             </span>
           </button>
           <div class="faq-answer">
-            <div class="faq-answer-inner">
+            <div class="faq-answer-inner" data-i18n-html="faq.a8">
               <p>Add palette + typography pair to <code>references/visual-direction-guide.md</code>, add an archetype mapping to <code>assets/nextjs-skeleton/section-archetypes.md</code>, add an illustration-style row to <code>references/2d-illustration-catalog.md</code>, add a 3D-pairing row to visual-direction-guide if relevant. Then run validate.</p>
             </div>
           </div>
@@ -837,19 +881,19 @@
   <section id="beyond" aria-label="Beyond perfect-ui — companion approaches">
     <div class="grid-12">
       <div class="sec-head">
-        <span class="label">— Beyond</span>
-        <h2><em>Companion approaches</em> for deeper architecture.</h2>
+        <span class="label" data-i18n="beyond.label">— Beyond</span>
+        <h2 data-i18n-html="beyond.h2"><em>Companion approaches</em> for deeper architecture.</h2>
         <span class="sec-meta">SKILL.md § Beyond perfect-ui</span>
       </div>
 
-      <p class="mandates-intro">
+      <p class="mandates-intro" data-i18n="beyond.intro">
         Skill no longer refuses any page type. For these specific deeper-architecture cases, another workflow is genuinely a better fit — perfect-ui suggests, doesn't force-redirect. The visible page surface stays in scope regardless.
       </p>
 
       <div class="beyond stagger">
         <div class="beyond-row">
-          <div>If you need</div>
-          <div>Suggested approach</div>
+          <div data-i18n="beyond.header_need">If you need</div>
+          <div data-i18n="beyond.header_skill">Suggested approach</div>
         </div>
 
         <div class="beyond-row">
@@ -876,15 +920,15 @@
 <footer>
   <div class="container">
     <div class="foot-row">
-      <span><em>perfect-ui</em> — v2.5.0</span>
-      <span>Skill name in <code>SKILL.md</code> frontmatter</span>
+      <span data-i18n-html="footer.version"><em>perfect-ui</em> — v2.5.0</span>
+      <span data-i18n-html="footer.tagline">Skill name in <code>SKILL.md</code> frontmatter</span>
       <span>
         <a href="../README.md">README</a> ·
         <a href="../SKILL.md">SKILL.md</a> ·
         <a href="https://github.com/dris1153/perfect-ui" target="_blank" rel="noopener">GitHub</a>
       </span>
     </div>
-    <div class="foot-credit">
+    <div class="foot-credit" data-i18n="footer.credit">
       Designed with perfect-ui · editorial vibe · cream + ink + dusk-rose · Instrument Serif + Geist · motion personality: premium
     </div>
   </div>
@@ -897,7 +941,12 @@
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
-<!-- Site scripts -->
+<!-- Lenis (smooth scroll — Tier 2 motion, guarded by reduced-motion + touch checks) -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+<!-- Site scripts (load order matters: i18n → lenis → animations → main) -->
+<script src="js/i18n.js"></script>
+<script src="js/lenis.js"></script>
 <script src="js/tabs.js"></script>
 <script src="js/faq.js"></script>
 <script src="js/animations.js"></script>

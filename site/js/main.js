@@ -43,8 +43,12 @@
   }
 
   // ---------------------------------------------------------------
-  // NAV — anchor offset so sticky header doesn't cover target
+  // NAV — anchor offset so sticky header doesn't cover target.
+  // Routes through Lenis when available (smoother), falls back to
+  // native window.scrollTo otherwise.
   // ---------------------------------------------------------------
+  var NAV_OFFSET = 60 + 12;
+
   document.querySelectorAll('a[href^="#"]').forEach(function (link) {
     link.addEventListener('click', function (e) {
       var hash = link.getAttribute('href');
@@ -52,10 +56,15 @@
       var target = document.querySelector(hash);
       if (!target) return;
       e.preventDefault();
-      var rect = target.getBoundingClientRect();
-      var navHeight = 60;
-      var y = window.pageYOffset + rect.top - navHeight - 12;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+
+      if (window.__lenis && typeof window.__lenis.scrollTo === 'function') {
+        // Lenis handles offset internally via the offset option
+        window.__lenis.scrollTo(target, { offset: -NAV_OFFSET, duration: 1.4 });
+      } else {
+        var rect = target.getBoundingClientRect();
+        var y = window.pageYOffset + rect.top - NAV_OFFSET;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
     });
   });
 })();

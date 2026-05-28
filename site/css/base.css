@@ -7,6 +7,29 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Lenis smooth scroll — disable native CSS smooth-scroll when Lenis is driving,
+   keep native smooth-scroll as graceful fallback when Lenis is off (reduced-motion,
+   touch devices, CDN failure). Both states handled by .lenis-* root classes. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+html.lenis-disabled {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   background: var(--bg);

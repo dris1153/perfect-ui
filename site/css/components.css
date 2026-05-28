@@ -839,3 +839,171 @@ footer {
 .h1 .h1-line .h1-inner {
   display: inline-block;
 }
+
+/* ============ LANGUAGE SWITCHER ============ */
+.lang-switcher {
+  position: relative;
+  display: inline-flex;
+}
+.lang-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border: 1px solid var(--rule);
+  padding: 8px 10px 8px 12px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: color var(--dur-standard) var(--ease-signature),
+              border-color var(--dur-standard) var(--ease-signature);
+}
+.lang-trigger:hover { color: var(--ink); border-color: var(--ink); }
+.lang-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.lang-trigger .lang-chev {
+  width: 10px;
+  height: 10px;
+  transition: transform var(--dur-standard) var(--ease-signature);
+}
+.lang-switcher[data-open="true"] .lang-chev { transform: rotate(180deg); }
+
+.lang-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 160px;
+  background: var(--bg-elev);
+  border: 1px solid var(--ink);
+  box-shadow: 4px 4px 0 0 var(--ink);
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity var(--dur-standard) var(--ease-signature),
+              transform var(--dur-standard) var(--ease-signature);
+}
+.lang-switcher[data-open="true"] .lang-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.lang-menu [data-lang-option] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  text-align: left;
+  transition: background var(--dur-quick) var(--ease-signature),
+              color var(--dur-quick) var(--ease-signature);
+}
+.lang-menu [data-lang-option]:last-child { border-bottom: none; }
+.lang-menu [data-lang-option]:hover,
+.lang-menu [data-lang-option]:focus-visible {
+  background: var(--bg-muted);
+  color: var(--ink);
+  outline: none;
+}
+.lang-menu [data-lang-option] .lang-name {
+  font-family: var(--font-body);
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink);
+}
+.lang-menu [data-lang-option] .lang-code {
+  font-size: 11px;
+  color: var(--ink-muted);
+  letter-spacing: 0.15em;
+}
+.lang-menu [data-lang-option][data-current="true"] {
+  background: var(--bg-muted);
+}
+.lang-menu [data-lang-option][data-current="true"] .lang-name { color: var(--accent); }
+.lang-menu [data-lang-option][data-current="true"]::after {
+  content: '';
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .lang-menu { right: auto; left: 0; }
+}
+
+/* ============ i18n LOADING STATE ============ */
+/* Prevent FOUC: hide translatable content until JSON loads.
+   Only applies to non-EN initial state — if EN is detected, content is already correct. */
+.i18n-loading.i18n-fade [data-i18n],
+.i18n-loading.i18n-fade [data-i18n-html] {
+  opacity: 0;
+  transition: opacity 0s;
+}
+body:not(.i18n-loading) [data-i18n],
+body:not(.i18n-loading) [data-i18n-html] {
+  transition: opacity var(--dur-standard) var(--ease-signature);
+}
+
+/* ============ CJK FONT FALLBACK ============
+   When lang switches to zh/ko/ja, the body font-family chain falls back
+   to Noto Sans/Serif for CJK glyphs. Latin glyphs still render Geist/Instrument Serif.
+   Fonts loaded conditionally via Google Fonts link in HTML head. */
+
+body.lang-zh {
+  font-family: var(--font-body), 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+body.lang-zh h1,
+body.lang-zh h2,
+body.lang-zh h3,
+body.lang-zh h4 {
+  font-family: var(--font-display), 'Noto Serif SC', 'Songti SC', 'STSong', serif;
+}
+
+body.lang-ko {
+  font-family: var(--font-body), 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+body.lang-ko h1,
+body.lang-ko h2,
+body.lang-ko h3,
+body.lang-ko h4 {
+  font-family: var(--font-display), 'Noto Serif KR', 'Nanum Myeongjo', serif;
+}
+
+body.lang-ja {
+  font-family: var(--font-body), 'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', 'Meiryo', sans-serif;
+}
+body.lang-ja h1,
+body.lang-ja h2,
+body.lang-ja h3,
+body.lang-ja h4 {
+  font-family: var(--font-display), 'Noto Serif JP', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+}
+
+/* Reduce H1 size for CJK languages — denser glyphs need less aggressive clamping */
+body.lang-zh .h1,
+body.lang-ko .h1,
+body.lang-ja .h1 {
+  font-size: clamp(40px, 6.5vw, 92px);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+/* CJK examples-page heading scale adjustment (if used) */
+body.lang-zh .ex-h1,
+body.lang-ko .ex-h1,
+body.lang-ja .ex-h1 {
+  font-size: clamp(44px, 7vw, 104px);
+}
