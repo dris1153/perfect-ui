@@ -40,6 +40,27 @@ Follow `plan.md` dependency graph. Default sequential unless plan marks phases p
 - `prefers-reduced-motion` MUST be respected (Framer Motion `useReducedMotion()` or CSS `@media`)
 - Mobile auto-degrades intensity by 1 step at < 768px
 - Total motion JS bundle ≤ 100KB gz
+- **GSAP integration (v2.4.1+):** if intensity = 3/3 OR GSAP keyword detected, invoke gsap-* skills or fallback inline patterns. See Step 2.5 below + `gsap-integration.md`.
+
+## Step 2.5 — GSAP integration check (v2.4.1+)
+
+If motion intensity (Phase 2e) = 3/3 OR brief contains keywords (`GSAP` / `ScrollTrigger` / `scrub` / `pin` / `scroll choreography` / `scroll-driven`), invoke GSAP skill integration workflow per `gsap-integration.md`.
+
+Auto-detect at entry to Phase 7:
+
+```
+1. Check trigger conditions:
+   - motion_intensity == 3/3?
+   - brief.text contains GSAP keyword?
+   - phase_2d_effect == "scroll-driven distortion"?
+2. If any condition true:
+   a. Check skills installed: `ls ~/.claude/skills/gsap-core/SKILL.md`
+   b. If installed: invoke gsap-* skills per selection logic (see `gsap-integration.md § The 8 gsap skills`)
+   c. If not installed: use fallback inline patterns (see `gsap-integration.md § Fallback inline patterns`)
+3. If all conditions false: skip GSAP integration; CSS / Framer Motion / Lenis cover intensity 0-2/3
+```
+
+See `gsap-integration.md` for full detection rules + skill selection table + invocation pseudo-code + fallback patterns.
 
 ## Step 3 — Mid-implementation spot-checks
 After each section completes, verify:

@@ -133,6 +133,27 @@ For key sections (hero, mid-page, footer):
    - `generic` + marketing intent → no AI gradient hero, no fake stats, no two-equal-weight CTAs
    - `generic` + no marketing intent (dashboard / 404 / legal) → vibe consistency + icon cohesion only
 
+### Step F.5 — GSAP-specific checks (v2.4.1+, run only if GSAP detected in Phase 7)
+
+If GSAP is imported in app code, run these 3 checks (per `gsap-integration.md § Anti-slop GSAP-specific checks`):
+
+```bash
+# Check 1: GSAP imported but unused / underused (<3 use cases) — Tier 2 bundle bloat
+gsap_imports=$(grep -rE "from ['\"]gsap['\"]" app/ | wc -l)
+gsap_use_count=$(grep -rE "gsap\.(to|from|fromTo|timeline|set|killTweensOf)" app/ | wc -l)
+# If gsap_imports > 0 AND gsap_use_count < 3 → FAIL (Tier 2)
+
+# Check 2: GSAP imported but motion intensity locked at 0-1/3 — Tier 2 mismatch
+# Read motion_intensity from session context (visual-direction.md)
+# If gsap imported AND motion_intensity ≤ 1 → FAIL (Tier 2)
+
+# Check 3: window.addEventListener('scroll') for scroll animation when ScrollTrigger available — Tier 2 perf
+grep -rE "window\.addEventListener\(['\"]scroll['\"]" app/
+# If matches found AND gsap-scrolltrigger imported AND used elsewhere → FAIL (Tier 2)
+```
+
+Document violations in audit report per `Step H — Output report` template. Reference `gsap-integration.md` for fix guidance.
+
 ### Step G — Performance + a11y checks
 
 - Lighthouse mobile performance ≥ 90 (≥ 80 if 3D or data-heavy app surface)

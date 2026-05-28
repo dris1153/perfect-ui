@@ -473,6 +473,29 @@ grep -rE 'duration:\s*0\.3|duration-300' app/  # spot-check, may be intentional
 grep -rE 'useReducedMotion|prefers-reduced-motion' app/  # must have ≥1 hit if motion library imported
 ```
 
+## GSAP skill integration (v2.4.1+)
+
+When motion intensity hits 3/3 OR user brief contains GSAP-specific keywords (`GSAP` / `ScrollTrigger` / `scroll choreography` / `scrub` / `pin`), perfect-ui can auto-invoke official gsap-* skills (8 skills: gsap-core, gsap-scrolltrigger, gsap-react, gsap-timeline, gsap-plugins, gsap-performance, gsap-frameworks, gsap-utils) for implementation guidance.
+
+Skills are OPTIONAL — if not installed at `~/.claude/skills/gsap-*`, perfect-ui falls back to inline patterns documented in `gsap-integration.md § Fallback inline patterns`.
+
+Detection happens at Phase 7 entry (see `workflow-implement.md § Step 2.5`). Skill selection (which gsap-* to invoke) follows the table in `gsap-integration.md § The 8 gsap skills`.
+
+### Quick reference
+
+| Use case | gsap-* skill |
+|----------|-------------|
+| Basic tweens, easing | `gsap-core` |
+| Scroll-driven animation | `gsap-scrolltrigger` |
+| React / Next.js | `gsap-react` |
+| Vue / Svelte | `gsap-frameworks` |
+| Multi-step choreography | `gsap-timeline` |
+| Flip / Draggable / SplitText / MorphSVG | `gsap-plugins` |
+| Performance optimization | `gsap-performance` |
+| Math / array helpers | `gsap-utils` |
+
+For full integration logic, invocation pseudo-code, and fallback patterns, see `gsap-integration.md`.
+
 ## Cross-Reference
 
 - Vibe palettes + typography: `visual-direction-guide.md`

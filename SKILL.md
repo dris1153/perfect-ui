@@ -4,7 +4,7 @@ description: "Design and build cohesive web pages with custom visual identity �
 license: MIT
 metadata:
   author: dris1153
-  version: "2.4.0"
+  version: "2.4.1"
 argument-hint: "[description OR existing site URL/screenshot] [--type any_page_type] [--new|--redesign] [--no-3d] [--stack nextjs|astro|vanilla]"
 ---
 
@@ -315,7 +315,7 @@ Run the audit inline (see `references/workflow-phases.md` § Phase 8) with `--ty
 | 2.5 | Macrostructure pick (see `references/macrostructure-catalog.md`) | Type-independent page shape (one of 7 macros); diversification check against `.perfect-ui/log.json` |
 | 2.6 | Brand Motion Identity (see `references/motion-patterns.md § Motion Personalities`) | Lock 3 motion constants — signature easing + duration palette + entrance pattern |
 | 6 | Inline plan protocol (see `references/workflow-plan.md`) | Type-aware implementation plan |
-| 7 | Inline implement protocol (see `references/workflow-implement.md`) — writes log.json at end | Build the site |
+| 7 | Inline implement protocol (see `references/workflow-implement.md`) — writes log.json at end + auto-detects GSAP need (see `references/gsap-integration.md`) | Build the site |
 | 8 | Inline tier-filtered audit (see `references/workflow-audit.md`) | Anti-slop audit |
 
 Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landing|portfolio}/`, `app/components/effects/`.
@@ -327,6 +327,7 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 | Detailed phase walkthrough | `references/workflow-phases.md` |
 | Pre-flight scan (auto-detect existing tokens before Phase 2) | `references/preflight-scan.md` |
 | Macrostructure catalog (7 page-shape archetypes — Marquee Hero / Bento Grid / Long Document / Manifesto / Stat-Led / Workbench / Letter) | `references/macrostructure-catalog.md` |
+| GSAP skill integration (intensity 3/3 + keyword detection → optional gsap-* skill triggering with inline fallback) | `references/gsap-integration.md` |
 | Workflow — Phase 1 brainstorm protocol (inline) | `references/workflow-brainstorm.md` |
 | Workflow — Phase 6 plan protocol (inline) | `references/workflow-plan.md` |
 | Workflow — Phase 7 implement protocol (inline) | `references/workflow-implement.md` |

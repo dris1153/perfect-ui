@@ -2,7 +2,7 @@
 
 > Skill for Claude Code — designs and ships **landing pages** and **portfolios** that look human-crafted, not AI-generated.
 
-**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.4.0 &nbsp;·&nbsp; **License:** MIT
+**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.4.1 &nbsp;·&nbsp; **License:** MIT
 
 ---
 
@@ -17,6 +17,8 @@ Most LLMs default to the same SaaS slop when asked to design a website: Inter fo
 **v2.3.0 update:** Completeness pass. Skill now enforces what AI typically forgets — Strategic Omissions checklist (legal links / 404 / form validation / a11y skip-link / cookie consent / etc.) added to all 3 anatomy files. Honest copy mandate explicit: no fabricated metrics; use em-dash placeholder (`— metric to confirm`) when data missing. Pre-flight scan (auto-detect) reads existing project tokens / fonts / motion library before designing — preserves what's there, introduces what's missing. Hero discipline tightened: line-count limit per vibe (universal 4+ ban) + meta-label ban ("SECTION 01" / "CHAPTER THREE" headers forbidden) + filler-text ban ("Scroll to explore" / "Swipe down" forbidden; icons OK).
 
 **v2.4.0 update:** Diversification pass. Skill enforces structural variety across runs — `.perfect-ui/log.json` tracks past picks (macrostructure / vibe / dials / motion personality); macrostructure pick must differ from last 3 entries (hard rule). NEW macrostructure layer adds 7 page-shape archetypes (Marquee Hero / Bento Grid / Long Document / Manifesto / Stat-Led / Workbench / Letter) independent of vibe — 7 macros × 11 vibes = 77 valid combinations. 2 new dials (DESIGN_VARIANCE + VISUAL_DENSITY with atmosphere spectrum labels) + per-vibe defaults locked at Phase 2. 4 motion personalities (Playful / Premium / Corporate / Energetic) with Brand Motion Identity (3 locked constants: signature easing + duration palette + entrance pattern) added as Phase 2.6. Hero composition catalog extended A1-A16 (9 new alternatives). Gapless Bento Grid mandate (`grid-flow-dense` required, empty cells = Tier 1 violation). workflow-phases.md split into 4 sub-references (workflow-brainstorm.md / workflow-plan.md / workflow-implement.md / workflow-audit.md) for navigability.
+
+**v2.4.1 update:** GSAP skill integration patch. When motion intensity hits 3/3 OR user brief mentions GSAP / ScrollTrigger / scroll choreography keywords, perfect-ui auto-detects and invokes installed official gsap-* skills (8 skills: gsap-core, gsap-scrolltrigger, gsap-react, gsap-timeline, gsap-plugins, gsap-performance, gsap-frameworks, gsap-utils) via active Skill tool calls — no logic duplication. Skills are OPTIONAL: perfect-ui falls back to inline GSAP patterns (useGSAP hook, ScrollTrigger basic setup, timeline chain) if skills not installed, preserving v2.2.0 self-contained behavior. Architecture extensible for future Framer Motion / Lenis / Lottie integrations when official skills become available. See `references/gsap-integration.md`.
 
 The skill drives a self-contained 8-phase pipeline:
 
@@ -339,6 +341,9 @@ A: A macrostructure is a named page-shape archetype — independent of vibe. 7 m
 **Q: What's the Brand Motion Identity (v2.4.0+)?**
 A: At Phase 2.6, skill picks 1 of 4 motion personalities — Playful, Premium, Corporate, or Energetic. Personality locks 3 constants for the entire project: signature easing curve (used in 80% of animations), duration palette (3 values: quick / standard / slow), entrance pattern (consistent reveal style). Personality is independent of motion intensity (0-3/3 from Phase 2e) — Premium personality can be 1/3 or 3/3 intensity. See `references/motion-patterns.md § Motion Personalities`.
 
+**Q: What about GSAP skills (v2.4.1+)?**
+A: If you have official gsap-* skills installed at `~/.claude/skills/gsap-*` (gsap-core / gsap-scrolltrigger / gsap-react / gsap-timeline / gsap-plugins / gsap-performance / gsap-frameworks / gsap-utils), perfect-ui auto-detects GSAP need (motion intensity 3/3 OR keyword match in brief — "GSAP" / "ScrollTrigger" / "scroll choreography" / "scrub" / "pin") and invokes the relevant skills via active Skill tool calls — no source logic duplication. Skills are optional; if missing, perfect-ui falls back to inline GSAP patterns (useGSAP hook, ScrollTrigger basic setup, timeline chain). Detection trigger conditions, skill selection logic, invocation pseudo-code, and fallback patterns live in `references/gsap-integration.md`.
+
 **Q: How do I add a new vibe (e.g., `dystopian`, `vaporwave`)?**
 A: Add palette + typography pair to [`references/visual-direction-guide.md`](references/visual-direction-guide.md), add archetype mapping to [`assets/nextjs-skeleton/section-archetypes.md`](assets/nextjs-skeleton/section-archetypes.md), add 3D-pairing row if relevant.
 
@@ -413,6 +418,7 @@ Validate after changes: `python ~/.claude/skills/skill-creator/scripts/quick_val
 - v2.3.0+ patterns inspired by the taste-skill ecosystem (Hallmark, gpt-taste, stitch-design-taste, motion-design, redesign-existing-projects, et al.)
 - v2.4.0 macrostructure layer (7 named page-shapes) adopted from Hallmark's named-archetype framework
 - v2.4.0 motion personalities (Playful / Premium / Corporate / Energetic) adapted from LottieFiles motion-design skill
+- v2.4.1 GSAP skill integration leverages official GreenSock gsap-* skills (gsap-core, gsap-scrolltrigger, gsap-react, gsap-timeline, gsap-plugins, gsap-performance, gsap-frameworks, gsap-utils) when installed
 
 Author: dris1153
 
