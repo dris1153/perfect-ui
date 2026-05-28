@@ -248,7 +248,7 @@ If user explicitly says "I have a GLB of my real product, I want it on the landi
    - Reason: hardware brand showcasing actual product
    - Date: 2026-MM-DD
    ```
-3. Apply standard ck:threejs guidance (Draco compression, Suspense fallback, dpr cap)
+3. Apply standard React Three Fiber guidance (Draco compression, `<Suspense>` fallback, `dpr={[1, 2]}` cap, lazy-load with `dynamic({ ssr: false })`)
 4. Performance budget: GLB ≤ 500KB, total 3D bundle ≤ 200KB JS
 
 ## Performance Guardrails (all effects)

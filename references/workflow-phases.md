@@ -1,6 +1,6 @@
 # Workflow Phases — Detailed Walkthrough
 
-Complete phase-by-phase guidance with exact prompts to feed to delegated skills. Many phases branch by `--type` (landing | portfolio).
+Self-contained 8-phase pipeline. The skill conducts every phase directly — no external orchestration skills are invoked. Phases branch by `--type` and tier (special / generic). For asset generation, the skill describes the *capability* required and uses whichever tool fits (text-to-image, vision-capable analysis, vector trace, React Three Fiber, etc.).
 
 ## Phase 0 — Mode Detection
 
@@ -99,68 +99,109 @@ The skill does NOT refuse any `--type` value. Dashboard / admin / SaaS-app / e-c
 
 ---
 
-## Phase 1 — Discovery (delegate to ck:brainstorm, branched per type)
+## Phase 1 — Discovery (inline brainstorm protocol)
 
-### If type = landing — Activation prompt
+Skill conducts brainstorm directly via `AskUserQuestion`. Output: `plans/{date}-{slug}/brief.md`.
+
+### Step 1 — Scope sanity check
+- If user request describes 3+ independent concerns (e.g. "build a landing + dashboard + admin"), flag for decomposition before continuing. Each becomes its own brief → plan → implement cycle.
+- If trivial (single-section update, copy tweak, color swap), produce a 5-line brief inline and skip the approval gate.
+
+### Step 2 — Question script (branched by type)
+
+Use `AskUserQuestion` in this order. Lock each answer before asking next.
+
+#### If type = landing
+1. **Product** — one sentence: what + who + why now
+2. **Audience** — specific role (e.g. "freelance designer earning $80k+ who codes side projects" — NOT "everyone" / "users")
+3. **Conversion goal** — single CTA destination: signup / demo / buy / waitlist / contact
+4. **Vibe anchor** — pick 1 of: minimal | editorial | brutalist | retro-futuristic | organic | luxury | playful | industrial | art-deco | glass-tech | hand-crafted
+5. **Wildcard adjective** — 1 word the brand owns (e.g. "agrarian", "harsh", "tender")
+6. **Inspirations** — 3 reference URLs (real, current)
+7. **Anti-references** — 2 landings to avoid
+8. **Constraints** — technical / deadline / budget
+
+#### If type = portfolio
+1. **Owner one-liner** — you + craft, plainly stated. NOT cute.
+2. **Audience** — specific: hiring managers at tech cos / agency clients / freelance leads / fellow craft community
+3. **Single goal** — hire me / book a call / freelance inquiry / "available from {date}"
+4. **Work focus** — project types featured + count: 4 / 6 / 8 / 12
+5. **Case study depth** — gallery thumbnails | 1-2 deep dives | hybrid (drives Phase 6 plan complexity)
+6. **Vibe anchor** — same 11-option list as landing
+7. **Wildcard adjective** — 1 word tied to your craft
+8. **Inspirations** — 3 portfolio URLs you admire
+9. **Anti-references** — 2 portfolio styles to avoid (e.g. "no hover-overload bento grids")
+10. **Constraints**
+
+#### If tier = generic (any other type)
+1. **Page purpose** — pick ONE: inform / convert / navigate / display data / collect input / tell a story
+2. **Marketing intent flag** — true / false (drives which anti-slop rules apply in Phase 8)
+3. **Audience** + **primary action** (may be "none" for legal / 404)
+4. **Vibe anchor** + **wildcard adjective** (same 11-option list)
+5. **Inspirations** — 3 URLs (or 2 + 1 visual-style reference)
+6. **Anti-references** — 2 to avoid
+7. **Constraints** — technical / deadline / chrome density
+
+### Step 3 — Write brief.md
+
+Output `plans/{date}-{slug}/brief.md`:
+
+```markdown
+# Brief — {slug}
+
+## Type & tier
+- Type: {landing | portfolio | blog | pricing | dashboard | ...}
+- Tier: {special | generic}
+- Marketing intent: {true | false}  # generic tier only
+
+## Audience
+{specific role}
+
+## Goal / primary action
+{single CTA destination, or "none" for informational}
+
+## Vibe
+- Anchor: {one of 11}
+- Wildcard: {adjective}
+
+## Inspirations
+1. {URL}
+2. {URL}
+3. {URL}
+
+## Anti-references
+1. {URL or pattern}
+2. {URL or pattern}
+
+## Constraints
+{technical / deadline / budget / chrome density}
+
+## (generic tier only) Page-Purpose Exercise
+- Job: {inform / convert / navigate / display / collect / story}
+- Success: {metric or qualitative}
+- Primary action: {action, or "none"}
 ```
-Task: Run a landing-page discovery brainstorm.
-Mode: {new|redesign}
-Type: landing
-Audit context: {paste audit.md if redesign}
 
-Output: plans/{date}-{slug}/brief.md with these exact sections:
-1. Product (one sentence: what + who + why now)
-2. Audience (specific role, e.g. "freelance designer earning $80k+ who codes side projects")
-3. Conversion goal (single CTA — pick ONE: signup, demo, buy, waitlist, contact)
-4. Vibe shortlist:
-   - Pick 1 of: minimal | editorial | brutalist | retro-futuristic | organic |
-     luxury | playful | industrial | art-deco | glass-tech | hand-crafted
-   - Plus 1 wildcard adjective the brand owns
-5. Inspirations (3 reference URLs)
-6. Anti-references (2 landings to avoid)
-7. Constraints (technical, deadline, budget)
+### Step 4 — Approval gate
+User reviews `brief.md`. Skill does NOT propose colors, fonts, or copy yet. Only proceed to Phase 2 once user explicitly approves.
 
-DO NOT propose specific colors, fonts, or copy yet.
-End with user approval of the brief before returning.
-```
+### Step 5 — Forbidden brief patterns (auto-refuse, ask user to refine)
+- "Build a website" without audience or conversion goal → push back, ask for specifics
+- Generic vibe ("modern", "clean", "professional") without anchor → push back, force pick from 11
+- 3 inspirations all from the same era or aesthetic → ask for variety (at least 1 wildcard reference)
+- Vibe + wildcard that obviously contradict (e.g. "minimal + maximalist") → ask user to reconcile
 
-### If type = portfolio — Activation prompt
-```
-Task: Run a portfolio discovery brainstorm.
-Mode: {new|redesign}
-Type: portfolio
-Audit context: {paste audit.md if redesign}
-
-Output: plans/{date}-{slug}/brief.md with these exact sections:
-1. Owner one-liner (you + craft, plainly stated — NOT cute)
-2. Audience (specific: hiring managers at tech cos / agency clients /
-   freelance leads / fellow craft community)
-3. Single goal (hire me / book a call / freelance inquiry / "available from {date}")
-4. Work focus (project types featured + count: 4 / 6 / 8 / 12)
-5. Case study depth (gallery thumbnails | 1-2 deep dives | hybrid)
-6. Vibe shortlist:
-   - Pick 1 of: minimal | editorial | brutalist | retro-futuristic | organic |
-     luxury | playful | industrial | art-deco | glass-tech | hand-crafted
-   - Plus 1 wildcard adjective tied to your craft
-7. Inspirations (3 portfolio URLs you admire)
-8. Anti-references (2 portfolio styles to avoid — e.g., "no hover-overload bento grids")
-9. Constraints
-
-DO NOT propose specific colors, fonts, or copy yet.
-End with user approval of the brief before returning.
-```
-
-### Quality bar (both types)
+### Quality bar (all tiers)
 Brief is approved only when:
-- [ ] Audience is specific (not "everyone", "users")
-- [ ] Single goal locked (one CTA destination)
-- [ ] Vibe is one anchor + one wildcard, not a list
-- [ ] 3 inspirations are real URLs
+- [ ] Audience is specific
+- [ ] Goal locked (one destination, or explicitly "none" for informational)
+- [ ] Vibe is exactly 1 anchor + 1 wildcard (not a list)
+- [ ] 3 real inspiration URLs (or ≥2 + visual-style reference)
 
-### Portfolio-specific extra checks
+### Portfolio-specific extra quality checks
 - [ ] Work focus is specific ("brand identity for early-stage tech" not "design")
-- [ ] Case study depth chosen (drives Phase 6 plan complexity)
-- [ ] Anti-references include hover-overload / "Hi I'm passionate" if applicable
+- [ ] Case study depth chosen
+- [ ] Anti-references include hover-overload / "Hi I'm passionate" if user mentioned similar issues
 
 ---
 
@@ -261,7 +302,7 @@ If a needed icon can't fit the cohesion, redesign the metaphor — don't break c
 
 ### Generation
 - **Direct SVG:** Claude writes inline. Target viewBox `0 0 24 24` for system icons, `0 0 48 48` for hero glyphs.
-- **AI gen + trace:** invoke `ckm:design` icon CLI or `ck:ai-multimodal` Imagen. Then trace via Inkscape Trace Bitmap (mention to user; don't auto-trace) OR feed to a vectorizer.
+- **AI gen + trace:** use a vector icon design pipeline (text-to-SVG, or text-to-image with high-quality palette + lighting + composition control, followed by vector tracing via Inkscape Trace Bitmap or equivalent vectorizer). Mention the trace step to user; don't auto-trace.
 
 ### Output structure (Next.js)
 ```
@@ -319,17 +360,17 @@ Aspect ratio: {1:1 | 16:9 | 9:16}
 
 Examples in `visual-asset-prompt-library.md`. Static 3D render templates in same file § Static 3D Render → 2D Image Templates.
 
-### Tool routing (by style)
-| Style | Primary tool | Notes |
-|-------|--------------|-------|
-| Silkscreen / hand-drawn / cut-paper / risograph / watercolor | `ck:ai-artist` --mode search | Best style match from 129 curated prompts |
-| Engraved line-art / vintage patent | `ck:ai-artist` --mode wild | Random artistic transformation includes "vintage patent document" |
-| Geometric flat (SVG) | Direct SVG code (Claude inline) | Preferred for production-quality vector |
-| Architectural schematic | `ck:ai-artist` or vector tool | Technical aesthetic |
-| Static 3D render → 2D | Blender / Spline / KeyShot manually OR `ck:ai-multimodal` Imagen Ultra with strict prompt | Output is PNG/WebP, NEVER `.glb` |
-| Photographic | Real photos preferred for portfolios with real work; AI fallback only with anti-stock negative prompt | `ck:ai-multimodal` Nano Banana 2 |
-| Synthwave gradient | `ck:ai-artist` --mode search "synthwave" | Retro-futuristic vibe ONLY |
-| OG image | `ckm:design` social-photos | Manual composition fallback |
+### Capability routing (by style)
+| Style | Capability needed | Notes |
+|-------|-------------------|-------|
+| Silkscreen / hand-drawn / cut-paper / risograph / watercolor | Text-to-image with style control (curated style prompt library) | Best style match from a catalog of style references |
+| Engraved line-art / vintage patent | Text-to-image with creative direction freedom (wild / non-deterministic mode) | Useful for atmospheric / non-photographic outputs |
+| Geometric flat (SVG) | Direct SVG generation by LLM (inline code) | Preferred for production-quality vector |
+| Architectural schematic | Text-to-image with technical aesthetic, or direct SVG | Crisp lines + measurement annotations |
+| Static 3D render → 2D | 3D modeling tool (Blender / Spline / KeyShot) exporting PNG/WebP — OR high-quality text-to-image with palette + lighting + composition control | Output is PNG/WebP, NEVER `.glb` |
+| Photographic | Real photos preferred for portfolios with real work; AI fallback uses text-to-image with photorealism + anti-stock negatives | Avoid stock-photo aesthetic |
+| Synthwave gradient | Text-to-image with style control (synthwave preset) | Retro-futuristic vibe ONLY |
+| OG image | Multi-platform social image composition (HTML→screenshot or text-to-image) | Manual composition fallback |
 
 ### Forbidden in this phase
 - AI-generated 3D models (`.glb`/`.gltf`) — even if "for the hero"
@@ -340,7 +381,7 @@ Examples in `visual-asset-prompt-library.md`. Static 3D render templates in same
 
 ### Validation loop
 After every generation:
-1. View image with `ck:ai-multimodal` analyze
+1. View image with a vision-capable model (analyze image content)
 2. Check: does it match locked palette? (extract dominant colors, compare)
 3. Check: does it match the chosen catalog style? (describe style in 3 words, compare to row)
 4. Check: does it match vibe adjective from brief?
@@ -366,16 +407,12 @@ Skip entirely if Phase 2d returned "none". **Scope: shaders, particles, atmosphe
 **Tier 1 = CSS preferred. Try CSS first, only escalate to WebGL when CSS proves insufficient.**
 
 ### Pattern lookup (only if shader/particle approach chosen)
-```bash
-# Shader background patterns
-python3 ~/.claude/skills/threejs/scripts/search.py "fragment shader noise" -n 5
-
-# Particle systems
-python3 ~/.claude/skills/threejs/scripts/search.py "particle field gpu compute" -n 5
-
-# Scroll-driven shader effects
-python3 ~/.claude/skills/threejs/scripts/search.py "scroll shader uniform" -n 5
-```
+See `visual-effect-patterns.md` for inline shader/particle patterns. Common targets:
+- Fragment shader noise (background atmospheric layer)
+- Particle field with GPU compute (~5000+ shader-driven points)
+- Scroll-driven shader uniform (Lenis + GSAP ScrollTrigger driving displacement)
+- Cursor-reactive shader (mouse coords → uniform)
+- Postprocessing grain (CSS noise PNG preferred; shader fallback for procedural)
 
 ### Forbidden in this phase
 - AI-generated `.glb`/`.gltf` as hero subject (use Phase 4 static 3D render instead)
@@ -388,66 +425,100 @@ python3 ~/.claude/skills/threejs/scripts/search.py "scroll shader uniform" -n 5
 If user explicitly provides real-product GLB:
 1. Confirm model shows real shippable product (not generic shape)
 2. Log override in `plans/{date}-{slug}/overrides.md`
-3. Apply standard ck:threejs guardrails (Draco compression, Suspense fallback, dpr cap)
+3. Apply standard React Three Fiber guardrails (Draco compression, `<Suspense>` fallback, `dpr={[1, 2]}` cap, lazy-load with `dynamic({ ssr: false })`)
 
 See `visual-effect-patterns.md` for full integration guide.
 
 ---
 
-## Phase 6 — Plan (delegate to ck:plan)
+## Phase 6 — Plan (inline plan protocol)
 
-### Activation prompt
+Skill writes plan files directly. Output: `plans/{date}-{slug}/plan.md` + `phase-XX-*.md` files.
+
+### Step 1 — plan.md frontmatter + body schema
+
+```markdown
+---
+name: {slug}
+status: pending
+priority: {high|medium|low}
+created: {date}
+target: {type} {new|redesign}
+blockedBy: []
+blocks: []
+---
+
+# Plan — {summary}
+
+## Source of truth
+[brief.md](./brief.md) · [visual-direction.md](./visual-direction.md)
+
+## Context links
+- Existing icons: `app/components/icons/`
+- Existing assets: `public/{type}/`
+
+## Goal
+{1-3 sentence outcome statement}
+
+## Phases
+{table with #, name, file link, status, effort}
+
+## Key dependencies
+{which phases block which}
+
+## File ownership
+{table mapping file paths → owner phase}
+
+## Success criteria (overall)
+{checkbox list — measurable per phase}
+
+## Risks
+{table — risk, mitigation}
 ```
-Task: Plan a Next.js 14+ App Router landing page implementation.
-Stack: Next.js, Tailwind, shadcn/ui, React Three Fiber {if 3D}.
 
-Inputs (read these files):
-- plans/{date}-{slug}/brief.md
-- plans/{date}-{slug}/visual-direction.md
-- app/components/icons/ (already populated)
-- public/{landing|portfolio}/ (already populated)
+### Step 2 — Phase decomposition rules
 
-### If type = landing — phase output
-1. Project scaffold + Tailwind theme tokens from visual-direction.md
-2. Font loading via next/font (display + body)
-3. Layout primitives (Container, Section, Grid)
+Each phase = one logical concern. Tier-branched output:
+
+**If type = landing — phases (in order):**
+1. Project scaffold + Tailwind theme tokens from `visual-direction.md`
+2. Font loading via `next/font` (display + body)
+3. Layout primitives (`Container`, `Section`, `Grid`)
 4. Hero section
-5. Each content section (social-proof, features, how-it-works, testimonials, pricing?, FAQ, final-CTA, footer)
-6. {if 3D} Three.js integration phase
-7. Animations + scroll behavior
-8. Responsive + a11y polish
+5. Content sections (social-proof, features, how-it-works, testimonials, pricing?, FAQ, final-CTA, footer)
+6. *{if 3D}* Visual effect layer integration
+7. Animations + scroll behavior (locked Phase 2e intensity)
+8. Responsive + a11y polish + tier-filtered anti-slop audit
 
-### If type = portfolio — phase output
+**If type = portfolio — phases (in order):**
 1. Project scaffold + Tailwind theme tokens
-2. Font loading via next/font
-3. Layout primitives (Container, Section, Grid)
+2. Font loading via `next/font`
+3. Layout primitives
 4. Hero (intro) section
 5. Selected Work Grid section
 6. Featured Case Study section(s) — count from brief
 7. About / Bio section
-8. {if applicable} Process / Approach section
+8. *{if applicable}* Process / Approach section
 9. Contact / Availability CTA section
 10. Footer
-11. {if case studies have own pages} Per-project page template at `app/work/[slug]/page.tsx`
-12. {if 3D} Three.js integration phase
+11. *{if case studies have own pages}* Per-project page template at `app/work/[slug]/page.tsx`
+12. *{if 3D}* Visual effect layer integration
 13. Animations + scroll behavior
-14. Responsive + a11y polish
+14. Responsive + a11y polish + tier-filtered anti-slop audit
 
-### If tier = generic (any other type) — phase output
-Sections are driven by the Page-Purpose Exercise (`generic-page-anatomy.md` § Page-Purpose Exercise), NOT a fixed template.
-
-1. Project scaffold + Tailwind theme tokens from visual-direction.md
-2. Font loading via next/font (display + body)
-3. Layout primitives (Container, Section, Grid) — adjust to page chrome density
+**If tier = generic (any other type) — phases driven by Page-Purpose Exercise (NOT a fixed template):**
+1. Project scaffold + Tailwind theme tokens
+2. Font loading via `next/font`
+3. Layout primitives (adjust to page chrome density)
 4. Page-purpose definition (consume Phase 1 brief answers)
 5. Section selection — pick from `generic-page-anatomy.md` § Section Pattern Library based on purpose. Do NOT default to a hero+features+CTA stack.
-6. Implement chosen sections in dependency order (e.g. dashboard: sidebar → topbar → data-grid → filter-bar; pricing: hero → tiers → FAQ → CTA; blog: hero → article-list → footer; 404: minimal banner + return-home link)
-7. {if 3D} Visual effect layer integration
+6. Implement chosen sections in dependency order
+7. *{if 3D}* Visual effect layer integration
 8. Animations + scroll behavior (respect locked motion intensity from Phase 2e)
 9. Responsive + a11y polish
-10. Phase 8 anti-slop audit — filtered subset per § Applicability Matrix
+10. Tier-filtered anti-slop audit per § Applicability Matrix
 
-Example section stacks by type:
+Example section stacks by generic type:
 - `blog` → nav + hero + article-list + footer
 - `pricing` → nav + hero + pricing-tiers + FAQ + final-CTA + footer
 - `about` → nav + hero + team-grid + values + contact-cta + footer
@@ -457,52 +528,122 @@ Example section stacks by type:
 - `legal` → nav + long-form-prose + footer
 - custom → user / page-purpose drives
 
-### Hard constraints (all tiers) — call out in plan
-- Custom icons only (NEVER lucide-react / heroicons / phosphor)
-- Locked palette as Tailwind tokens — no inline hex
-- Real draft copy, no Lorem, no AI clichés (per applicability matrix tier)
-- min-h-[100dvh] not h-screen
+### Step 3 — Dependency analysis (per phase)
+
+For each phase, identify:
+- **Inputs:** files produced by previous phases (read-only)
+- **Outputs:** files / components produced by this phase
+- **Blockers:** must wait for which phases
+- **Parallel candidates:** can run alongside which other phases
+
+Default rule: Layout primitives → Sections (sections depend on primitives). Sections within the same depth are parallel-safe.
+
+### Step 4 — File ownership contracts (parallel-safe)
+
+For each phase, declare exact file paths owned. No other phase may write to these files. File-level granularity, not function-level.
+
+Example:
+```
+| File | Owner phase | Action |
+|------|-------------|--------|
+| app/page.tsx | 04 (Hero) | CREATE/MODIFY |
+| app/components/sections/hero.tsx | 04 | CREATE |
+| app/components/sections/features.tsx | 05 | CREATE |
+```
+
+If two phases need to modify the same file, restructure tasks OR designate one phase as "shared file integrator" (which handles all modifications to that file).
+
+### Step 5 — Per-phase success criteria + risks
+
+Each `phase-XX-*.md` must include:
+- **Explicit checkable success criteria** (measurable, not "looks good")
+- **≥2 identified risks** with mitigations
+
+### Step 6 — Hard constraints to surface in every phase
+
+- Custom icons only (NEVER icon library imports)
+- Locked palette as Tailwind tokens — no inline hex outside SVG paths
+- Real draft copy — no Lorem, no AI clichés (per applicability matrix tier)
+- `min-h-[100dvh]` not `h-screen`
+- All fonts via `next/font` — no `<link>` CDN
+- 3D components: `'use client'` + `dynamic({ ssr: false })`
 - Type-specific anti-slop:
   - portfolio → no "Hi I'm passionate" opener, no skill bars
   - landing → no two equal-weight CTAs, no 3-col equal-feature-grid
-  - generic with marketing intent → no AI gradient hero, no fake stats
-  - generic without marketing intent (e.g. dashboard, 404, legal) → universal rules only
-```
+  - generic + marketing intent → no AI gradient hero, no fake stats, no generic SaaS CTA labels
+  - generic + no marketing intent (dashboard / 404 / legal) → `[universal]` rules only
 
-User reviews plan. Iterate until approved.
+### Step 7 — Approval gate
+User reviews `plan.md` + each `phase-XX-*.md`. Iterate until approved. Only proceed to Phase 7 once approved.
+
+### Step 8 — Forbidden plan patterns (auto-refuse, push back)
+- Phase that touches >10 files = too broad; decompose
+- Phase that exceeds ~200 lines of phase file detail = too large; split
+- Two phases owning the same file = conflict; restructure
+- Vague success criteria ("works correctly") = push back, force measurable
 
 ---
 
-## Phase 7 — Implement (delegate to ck:cook)
+## Phase 7 — Implement (inline implement protocol)
 
-### Activation prompt
-```
-/ck:cook plans/{date}-{slug}/plan.md
+Skill implements directly from `plan.md` + `phase-XX-*.md` files. Per CLAUDE.md: NO auto-commit — user reviews + commits manually after each phase.
 
-Constraints (enforce throughout):
-- Import icons from app/components/icons — never npm install icon libraries
-- Use Tailwind theme tokens for all colors — no inline hex
-- All fonts via next/font — no <link> CDN
-- 3D components: 'use client' + dynamic import with ssr:false
-- Copy is real draft, not Lorem, not AI cliché vocabulary
-- Hero composition follows visual-direction.md (no centered-H1 unless minimal vibe)
+### Step 1 — Phase execution order
+Follow `plan.md` dependency graph. Default sequential unless plan marks phases parallel-safe. Mark each phase status `in_progress` before starting; `completed` after success criteria all check.
 
-Motion constraints (per visual-direction.md § Motion Intensity, locked Phase 2e):
+### Step 2 — Per-phase constraints (enforce throughout)
+
+**Imports:**
+- Import icons from `app/components/icons` — NEVER `npm install` any icon library
+- All fonts via `next/font/local` or `next/font/google` — NO `<link>` CDN
+- 3D components: `'use client'` + `dynamic(() => import(...), { ssr: false })`
+- React Three Fiber used as shader runner only — no `<GLTFLoader>` / `useGLTF` / `<OrbitControls>` unless user-GLB override logged
+
+**Colors + tokens:**
+- Use Tailwind theme tokens for all colors — no inline hex outside SVG icon paths
+- Single accent token, ≤ 10% surface area
+- Off-black / off-white only (never pure `#000` / `#FFF`)
+
+**Layout + composition:**
+- Hero composition follows `visual-direction.md` § Spatial Language (no centered-H1 unless vibe = minimal)
+- `min-h-[100dvh]` not `h-screen`
+- `text-wrap: balance` on h1/h2/h3; `text-wrap: pretty` on `<p>`
+
+**Copy:**
+- Real draft copy — no Lorem, no AI cliché vocabulary (per applicability matrix tier)
+- Realistic data (no John Doe / 99.99% / Acme Corp)
+
+**Motion (per `visual-direction.md` § Motion Intensity, locked Phase 2e):**
 - Apply motion ONLY at locked intensity (0/3 → 3/3)
-- Stack escalation: CSS → FM → Lenis → GSAP (only escalate if prior tier insufficient)
-- NO generic fade-up on every element (≤30% sections at 2/3 intensity)
-- NO motion on body <p> text
-- Use vibe-paired cubic-bezier easing (see motion-patterns.md § Easing Library) — NOT ease-in-out
-- prefers-reduced-motion MUST be respected (FM useReducedMotion or CSS @media)
-- Mobile auto-degrades intensity by 1 step at <768px
-- Total motion JS bundle ≤100KB gz
-```
+- Stack escalation: CSS → Framer Motion → Lenis → GSAP (only escalate if prior tier insufficient)
+- NO generic fade-up on every element (≤30% sections animate at 2/3 intensity)
+- NO motion on body `<p>` text
+- Use vibe-paired `cubic-bezier(...)` easing (see `motion-patterns.md` § Easing Library) — NOT `ease-in-out` / `ease-out` named keywords
+- `prefers-reduced-motion` MUST be respected (Framer Motion `useReducedMotion()` or CSS `@media`)
+- Mobile auto-degrades intensity by 1 step at < 768px
+- Total motion JS bundle ≤ 100KB gz
 
-### Mid-implementation checks (run during ck:cook)
-After each section completes, spot-check:
-- Imports list — any forbidden library?
-- Color values — any inline hex outside theme?
-- Copy — any "Elevate / Seamless / Unleash"?
+### Step 3 — Mid-implementation spot-checks
+After each section completes, verify:
+- **Imports list** — any forbidden icon / font library?
+- **Color values** — any inline hex outside theme tokens (excluding SVG paths)?
+- **Copy** — any "Elevate / Seamless / Unleash / Empower / Game-changer / Next-gen"?
+- **Motion** — any `ease-in-out 0.3s` default? Any motion on body `<p>`?
+- **Icons** — any emoji used in place of icon?
+- **3D** — any `OrbitControls` / `MeshNormalMaterial` / `useGLTF` without override log?
+
+### Step 4 — Commit pattern (when user commits manually)
+- One phase = one focused commit (not one mega-commit at end)
+- Commit message: conventional commits format (`feat:` / `fix:` / `refactor:` / `docs:` / `chore:`)
+- No AI-tool references in commit messages
+- Stage files explicitly (no `git add .`) to avoid accidentally committing secrets / build artifacts
+- Pre-commit hooks pass (lint, type-check) — never `--no-verify`
+
+### Step 5 — Phase completion check
+- Mark phase status `completed` in `phase-XX-*.md`
+- Update `plan.md` phase table status
+- Update `plan.md` § Success criteria checkboxes
+- Notify user phase is done; await confirmation before starting next phase
 
 ---
 
@@ -521,52 +662,143 @@ See `anti-slop-rules.md` § Final Audit for the full machine-runnable checklist 
 4. Run grep checks on filtered subset
 5. Output PASS/FAIL with applicable-rule count and skipped-rule count
 
-### Run as code-reviewer agent task
+### Inline audit runner
+
+Skill runs audit directly in-thread — no external agent delegation. Output: `plans/{date}-{slug}/anti-slop-report.md`.
+
+#### Step A — Session context inputs
+- `--type` (set in Phase 0.5)
+- Tier (special / generic — set in Phase 0.5)
+- Marketing intent flag (set in Phase 1 for generic tier; implicit `true` for special tier)
+
+#### Step B — `[universal]` grep checks (always run)
+
+```bash
+# Emoji (Tier 1)
+grep -rE '[\x{1F300}-\x{1FAFF}]' app/
+
+# Icon libraries (Tier 1)
+grep -rE 'lucide-react|@heroicons|phosphor|@tabler|react-icons|font-awesome|material-icons' app/ package.json
+
+# Forbidden fonts alone (Tier 3, compensable if paired with distinctive display)
+grep -rE 'Inter|Roboto|"Open Sans"|Space Grotesk|Poppins|Lato|Montserrat|Nunito' app/ tailwind.config.*
+
+# DM Sans + Space Grotesk pair (Tier 1 — both present together = fail)
+# Run two greps and confirm both return matches → fail
+
+# h-screen (Tier 1)
+grep -rE '\bh-screen\b' app/
+
+# Inline hex outside tokens (universal hygiene)
+grep -rE '#[0-9a-fA-F]{6}' app/components/
+
+# Generic ease-in-out / ease-out (Tier 2 motion)
+grep -rE '(ease-in-out|ease-out|"easeInOut"|"easeOut")' app/components/
+
+# prefers-reduced-motion respect (required when motion library imported)
+grep -rE 'useReducedMotion|prefers-reduced-motion' app/
+
+# 3D model imports (Tier 1 — must be empty unless user-GLB override logged)
+grep -rE 'GLTFLoader|FBXLoader|OBJLoader|useGLTF|gltfjsx|OrbitControls' app/
+
+# Default Three.js material clichés
+grep -rE 'MeshNormalMaterial' app/
 ```
-Task: Audit {type} for AI slop violations (tier-filtered).
-Type: {type}
-Tier: {special | generic}
-Marketing intent: {true | false}     # generic tier only
-Reference: references/anti-slop-rules.md § Applicability Matrix + § Final Audit
-Source: app/ directory
 
-[universal] grep checks — always run:
-- Emoji: grep -rE '[\\x{1F300}-\\x{1FAFF}]' app/
-- Icon libraries: grep -rE 'lucide-react|@heroicons|phosphor|@tabler|react-icons|font-awesome' app/
-- Forbidden fonts alone: grep -rE 'Inter|Roboto|"Open Sans"|Space Grotesk|Poppins|Lato|Montserrat|Nunito' app/ tailwind.config.* (allow Inter when paired with distinctive display font)
-- DM Sans + Space Grotesk pair (Tier 1): both present together = fail
-- h-screen: grep -rE '\\bh-screen\\b' app/
-- Inline hex outside tokens: grep -rE '#[0-9a-fA-F]{6}' app/components/ (exclude SVG paths)
-- Generic ease-in-out / ease-out (Tier 2 motion): grep -rE '(ease-in-out|ease-out|"easeInOut"|"easeOut")' app/components/
-- prefers-reduced-motion respect: grep -rE 'useReducedMotion|prefers-reduced-motion' app/ (required when motion library imported)
-- Style mixing across illustrations: visual check via screenshot
+#### Step C — `[marketing-only]` grep checks (run if tier = special OR generic+marketing-intent)
 
-[marketing-only] grep checks — run if tier = special OR (tier = generic AND marketing intent = true):
-- AI clichés: grep -rEi 'elevate|seamless|unleash|empower|unlock|game.?changer|next.?gen|cutting.?edge|delve|tapestry|leverage' app/lib/content.ts app/components
-- Round fake stats: grep -rE '10K\\+|99\\.99%|10x faster|1M\\+' app/
-- Generic SaaS CTA: grep -rE '"Get Started"|"Sign In"|"Subscribe"|"Start Free"|"Sign Up Free"' app/
-- AI purple/blue gradient: grep -rE 'from-purple-.*to-blue-|from-blue-.*to-purple-' app/
-- Generic placeholders: grep -rE 'John Doe|Jane Smith|Acme Corp|Lorem ipsum' app/
+```bash
+# AI clichés in load-bearing copy
+grep -rEi 'elevate|seamless|unleash|empower|unlock|game.?changer|next.?gen|cutting.?edge|delve|tapestry|leverage' app/lib/content.ts app/components
 
-[landing/portfolio-only] grep checks — run only if type = portfolio:
-- Cliché openers: grep -rEi "hi,?\\s+i'?m\\s|hello,?\\s+world|welcome to my (portfolio|corner)|passionate (designer|developer|creative)" app/
-- Skill bar / proficiency: grep -rEi 'proficiency|years of experience.{0,30}\\d+\\+|skill.bar' app/
-- 4D framework: grep -rEi 'discover.{0,5}define.{0,5}develop.{0,5}deliver' app/
-- Multi-disciplinary cliché: grep -rEi 'multi.?disciplinary creative|based in [a-z ]+' app/
+# Round fake stats
+grep -rE '10K\+|99\.99%|10x faster|1M\+' app/
 
-Visual checks (screenshot-driven):
-- Single accent color enforced (count distinct accents in render)
+# Generic SaaS CTA labels
+grep -rE '"Get Started"|"Sign In"|"Subscribe"|"Start Free"|"Sign Up Free"' app/
+
+# AI purple/blue gradient hero (Tier 1)
+grep -rE 'from-purple-.*to-blue-|from-blue-.*to-purple-' app/
+
+# Generic placeholders
+grep -rE 'John Doe|Jane Smith|Acme Corp|Lorem ipsum' app/
+```
+
+#### Step D — `[landing/portfolio-only]` grep checks (run only if type = portfolio)
+
+```bash
+# Cliché openers (Tier 1)
+grep -rEi "hi,?\s+i'?m\s+\w+|hello,?\s+world|welcome to my (portfolio|corner)|passionate (designer|developer|creative)" app/
+
+# Skill bar / proficiency (Tier 1)
+grep -rEi 'proficiency|years of experience.{0,30}\d+\+|skill.?bar' app/
+
+# 4D framework cliché
+grep -rEi 'discover.{0,5}define.{0,5}develop.{0,5}deliver' app/
+
+# Multi-disciplinary cliché
+grep -rEi 'multi.?disciplinary creative|based in [a-z ]+' app/
+```
+
+#### Step E — Visual checks (screenshot-driven, via vision-capable model)
+
+For key sections (hero, mid-page, footer):
+1. Render screenshot (browser automation or static render)
+2. Send to vision-capable model with prompt:
+   > Extract dominant colors. Count distinct accent values. Describe vibe in 3 words. Score vibe-match (1-10) against `{locked vibe}`. Identify any AI tells visible: purple gradient, browser-mockup, generic illustration, centered-H1 at high variance, equal-weight dual CTAs.
+3. Tier-specific visual gates:
+   - `landing` → hero NOT centered-H1 at variance > 4 (unless vibe = minimal)
+   - `portfolio` → actual work visible above the fold (not just bio + personality)
+   - `generic` + marketing intent → no AI gradient hero, no fake stats, no two-equal-weight CTAs
+   - `generic` + no marketing intent (dashboard / 404 / legal) → vibe consistency + icon cohesion only
+
+#### Step F — Performance + a11y checks
+
 - Lighthouse mobile performance ≥ 90 (≥ 80 if 3D or data-heavy app surface)
-- Tier-specific:
-  - landing → hero NOT centered-H1 at variance > 4 (unless minimal vibe)
-  - portfolio → actual work visible above the fold (not just bio)
-  - generic (marketing intent) → no AI gradient hero, no fake stats, no two-equal-weight CTAs
-  - generic (no marketing intent, e.g. dashboard) → vibe consistency + icon cohesion only
+- LCP ≤ 2.5s; CLS ≤ 0.1
+- Color contrast WCAG AA pass
+- Keyboard navigable (tab through interactive elements)
+- All icons have `aria-hidden="true"` or `aria-label`
 
-Output: plans/{date}-{slug}/anti-slop-report.md with
+#### Step G — Output report
+
+Write `plans/{date}-{slug}/anti-slop-report.md`:
+
+```markdown
+# Anti-slop audit — {slug}
+
+## Context
+- Type: {type}
+- Tier: {special | generic}
+- Marketing intent: {true | false}
+
+## Filter
 - Applicable rules: N
-- Skipped rules: M
-- Per-check PASS/FAIL
+- Skipped rules: M (per § Applicability Matrix)
+
+## Grep results
+| Check | Result | Notes |
+|-------|--------|-------|
+| Emoji | PASS / FAIL ({count} hits) | {file:line if FAIL} |
+| Icon libraries | PASS / FAIL | ... |
+| ... | ... | ... |
+
+## Visual checks
+| Check | Score | Notes |
+|-------|-------|-------|
+| Vibe match | {1-10} | {3 words from model} |
+| Distinct accents | {count} | (target: 1) |
+| ... | ... | ... |
+
+## Performance / a11y
+- Lighthouse mobile: {score}
+- LCP: {ms}
+- CLS: {value}
+- Contrast pass: {yes/no}
+
+## Verdict
+- PASS — no Tier 1 violations, ≤ 0 Tier 2 stacked with Tier 1
+- FAIL — return to Phase 7 to fix {list specific items}
 ```
 
-If any FAIL, return to Phase 7 to fix. Repeat until clean.
+If any Tier 1 violation OR (≥1 Tier 1 + ≥2 Tier 2 stacked) → return to Phase 7 to fix. Repeat audit until clean.

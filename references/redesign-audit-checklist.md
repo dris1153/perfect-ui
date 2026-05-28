@@ -15,11 +15,11 @@ Use `AskUserQuestion` to collect:
 ## Audit Steps
 
 ### Step 1 — Capture current state
-Use `ck:ai-multimodal` analyze on the provided URL/screenshot:
+Use a vision-capable model to analyze the provided URL/screenshot:
 
-```bash
-gemini -y -m gemini-2.5-flash <"current-landing-screenshot.png" \
-  "Analyze this landing page. Output:
+```
+prompt: |
+  Analyze this landing page. Output:
   - Current vibe in one sentence
   - Color palette (extract 5 dominant hex codes)
   - Typography (identify display + body fonts if recognizable)
@@ -29,7 +29,8 @@ gemini -y -m gemini-2.5-flash <"current-landing-screenshot.png" \
   - 3D / motion presence
   - 3 strongest moments
   - 3 weakest moments
-  - Likely target audience based on visual signals"
+  - Likely target audience based on visual signals
+input: current-landing-screenshot.png
 ```
 
 Save output to `plans/{date}-{slug}/audit-current-state.md`.
@@ -62,7 +63,7 @@ grep -rE 'Inter|Roboto' app/  # forbidden fonts
 grep -rEi 'elevate|seamless|unleash' app/  # AI clichés
 ```
 
-If only screenshot, use `ck:ai-multimodal` to detect visually:
+If only screenshot, use a vision-capable model to detect visually:
 ```
 "Looking at this landing, identify any of these AI-default patterns:
 - Inter or Roboto typography
@@ -96,7 +97,7 @@ Save to `plans/{date}-{slug}/audit.md`:
 # Redesign Audit — {Project Name}
 
 ## Current State
-- Vibe (one sentence): {from ck:ai-multimodal analysis}
+- Vibe (one sentence): {from vision-capable model analysis}
 - Palette: {5 hex codes}
 - Typography: {display + body if identifiable}
 - Layout: {section list in order}
@@ -137,7 +138,7 @@ Save to `plans/{date}-{slug}/audit.md`:
 
 ## Hand-off to Phase 1
 
-When passing the audit to `ck:brainstorm` for Phase 1, prepend the audit context:
+When entering Phase 1 (inline brainstorm protocol — see `workflow-phases.md` § Phase 1), prepend the audit context:
 
 ```
 We are redesigning an existing landing page. Audit attached at
@@ -148,7 +149,7 @@ Critical context:
 - Kill these 5 elements: {list}
 - Redesign scope: {scope}
 
-Now run the standard discovery brainstorm (Product / Audience / Conversion goal /
+Now run the standard discovery questions (Product / Audience / Conversion goal /
 Vibe / Inspirations / Anti-references / Constraints), but factor in the audit
 findings. The vibe choice in particular must reconcile with {scope}:
 - Refresh → same vibe, sharper execution

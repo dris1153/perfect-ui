@@ -1,10 +1,10 @@
 ---
 name: perfect-ui
-description: "Design and build cohesive web pages with custom visual identity — landing pages and portfolios get rich anatomy + section archetypes; any other page type (blog, about, pricing, contact, coming-soon, dashboard, admin, e-commerce, custom) is supported through generic anatomy + skeleton. Use this skill whenever the user mentions: landing page, portfolio, personal site, hero section, marketing page, product page, sales page, splash page, blog page, about page, pricing page, contact page, coming-soon, waitlist, dashboard, admin panel, e-commerce store, redesign my site, design my portfolio, build a portfolio, work showcase, hire-me page, perfect-ui, perfect landing, or asks to create any web page surface. Two tiers: special (landing | portfolio — rich treatment) and generic (everything else — universal craft toolkit). Orchestrates ck:brainstorm (vibe) → visual direction (color/typography/mood) → custom icon set (NO emoji, NO icon library) → AI-generated visuals → optional Three.js 3D layer → ck:plan + ck:cook implementation on Next.js + Tailwind + shadcn. Always proposes 3D as optional. No refusals; outputs distinctive sites, not AI slop."
+description: "Design and build cohesive web pages with custom visual identity — landing pages and portfolios get rich anatomy + section archetypes; any other page type (blog, about, pricing, contact, coming-soon, dashboard, admin, e-commerce, custom) is supported through generic anatomy + skeleton. Use this skill whenever the user mentions: landing page, portfolio, personal site, hero section, marketing page, product page, sales page, splash page, blog page, about page, pricing page, contact page, coming-soon, waitlist, dashboard, admin panel, e-commerce store, redesign my site, design my portfolio, build a portfolio, work showcase, hire-me page, perfect-ui, perfect landing, or asks to create any web page surface. Two tiers: special (landing | portfolio — rich treatment) and generic (everything else — universal craft toolkit). Self-contained 8-phase pipeline: vibe discovery → visual direction (color/typography/mood) → custom icon set (NO emoji, NO icon library) → AI-generated visuals → optional shader effects layer → inline plan + implement on Next.js + Tailwind + shadcn. Always proposes effect layer as optional. No refusals; outputs distinctive sites, not AI slop."
 license: MIT
 metadata:
   author: dris1153
-  version: "2.1.0"
+  version: "2.2.0"
 argument-hint: "[description OR existing site URL/screenshot] [--type any_page_type] [--new|--redesign] [--no-3d] [--stack nextjs|astro|vanilla]"
 ---
 
@@ -31,7 +31,7 @@ Vibe lock + palette + typography + custom SVG icons + 2D illustrations + visual 
 
 - Backend APIs, auth flows, payment integration (out of UI scope)
 - Raw Figma file generation
-- Full app frontends with complex client-side routing, state machines, deep IA — perfect-ui still builds the visible page surface, but for app architecture see `ck:frontend-development`
+- Full app frontends with complex client-side routing, state machines, deep IA — perfect-ui still builds the visible page surface, but for app architecture see § Beyond perfect-ui for a general frontend engineering workflow
 
 For these, perfect-ui suggests companion skills via § Beyond perfect-ui — it does not refuse.
 
@@ -63,15 +63,15 @@ If user says only "design a website" or "build a site" → ask via `AskUserQuest
 ```mermaid
 flowchart TD
     M[Phase 0: Detect Mode: new vs redesign] --> T[Phase 0.5: Detect Type → tier route]
-    T --> B[Phase 1: Discovery via ck:brainstorm — branched per type]
+    T --> B[Phase 1: Discovery — inline brainstorm protocol, branched per type]
     B --> C[Phase 2: Visual Direction — palette/typo/spatial/effect/motion]
     C --> D[Phase 3: Custom Icon Set]
     D --> E[Phase 4: 2D Visual Assets — illustration / static 3D render / photo / SVG]
     E --> F{Phase 5: Visual Effect Layer?}
-    F -->|Yes| G[Shader / Particle / Atmospheric via ck:threejs or CSS]
-    F -->|No| H[Phase 6: Plan via ck:plan — type-aware]
+    F -->|Yes| G[Shader / Particle / Atmospheric via React Three Fiber or CSS]
+    F -->|No| H[Phase 6: Plan — inline plan protocol, type-aware]
     G --> H
-    H --> I[Phase 7: Implement via ck:cook — apply locked motion intensity]
+    H --> I[Phase 7: Implement — inline protocol, apply locked motion intensity]
     I --> J[Phase 8: Anti-Slop Review + Polish]
     J --> K[Done]
 ```
@@ -100,7 +100,7 @@ Routes to one of two tiers. See `references/workflow-phases.md` § Phase 0.5 for
 
 Carry chosen type AND tier AND marketing-intent flag into ALL downstream phases. Tier controls: brief template (Phase 1), plan template (Phase 6), implementation skeleton (Phase 7), audit subset (Phase 8 — see `anti-slop-rules.md` § Applicability Matrix).
 
-## Phase 1 — Discovery (delegate to ck:brainstorm, branched per type)
+## Phase 1 — Discovery (inline brainstorm protocol, branched per type)
 
 ### If type = landing
 ```
@@ -215,7 +215,7 @@ If Phase 2d returned "none", skip this phase. Patterns: `references/visual-effec
 - Landing: shader background OR scroll-driven distortion most common
 - Portfolio: cursor-reactive accent on logo OR scroll-triggered work reveal. Avoid full-canvas effects that overshadow work.
 
-## Phase 6 — Plan (delegate to ck:plan, branched per type)
+## Phase 6 — Plan (inline plan protocol, branched per type)
 
 ### If type = landing
 ```
@@ -261,14 +261,14 @@ Example section stacks by type:
 
 User reviews plan before Phase 7.
 
-## Phase 7 — Implement (delegate to ck:cook)
+## Phase 7 — Implement (inline implement protocol)
 
-Activate `ck:cook` with the plan path. Skeleton reference per tier:
+Implement directly from `plan.md` + `phase-XX-*.md`. See `references/workflow-phases.md` § Phase 7 for the full inline implement protocol. Skeleton reference per tier:
 - Landing (special): `assets/nextjs-skeleton/landing-skeleton.md`
 - Portfolio (special): `assets/nextjs-skeleton/portfolio-skeleton.md`
 - Anything else (generic): `assets/nextjs-skeleton/generic-page-skeleton.md`
 
-Constraints `ck:cook` MUST follow (all types):
+Constraints to enforce throughout (all types):
 - Custom icons only (NEVER `npm install lucide-react` etc.)
 - Locked palette as Tailwind tokens (no inline hex outside icons)
 - Fonts via `next/font`
@@ -295,20 +295,20 @@ Type-specific extras still flagged when applicable:
 - Generic + marketing intent: refuse AI gradient hero, fake stats, generic SaaS CTA labels
 - Generic + no marketing intent: vibe consistency + icon cohesion + universal hygiene only
 
-Delegate audit to `code-reviewer` agent with `--type` + tier + marketing-intent flag in the prompt. Do NOT mark complete with open items.
+Run the audit inline (see `references/workflow-phases.md` § Phase 8) with `--type` + tier + marketing-intent flag from session context. Do NOT mark complete with open items.
 
-## Skill Orchestration Map
+## Phase Method Map
 
-| Phase | Skill / agent | Purpose |
-|-------|---------------|---------|
-| 1 | `ck:brainstorm` | Vibe + type-branched brief |
-| 2 | inline + `AskUserQuestion` | Lock palette/typo/effect-layer |
-| 3 | `ckm:design` icon gen and/or `ck:ai-multimodal` | Custom icons |
-| 4 | `ck:ai-artist`, `ck:ai-multimodal`, `ck:media-processing` | 2D visual assets (illustration / static 3D render → 2D / photo / SVG) |
-| 5 | `ck:threejs` (shaders only) OR CSS / Lottie | Visual Effect Layer — shaders, particles, atmospheric |
-| 6 | `ck:plan` | Type-aware implementation plan |
-| 7 | `ck:cook` | Build the site |
-| 8 | `code-reviewer` agent | Anti-slop audit |
+| Phase | Method | Purpose |
+|-------|--------|---------|
+| 1 | Inline brainstorm protocol (see `references/workflow-phases.md` § Phase 1) | Vibe + type-branched brief |
+| 2 | Inline + `AskUserQuestion` | Lock palette/typo/effect-layer |
+| 3 | Direct SVG OR vector icon design pipeline (text-to-SVG, or text-to-image + vector trace) | Custom icons |
+| 4 | Text-to-image (style control / photorealism) + image post-processing | 2D visual assets (illustration / static 3D render → 2D / photo / SVG) |
+| 5 | React Three Fiber as shader runner (shaders only) OR CSS / Lottie | Visual Effect Layer — shaders, particles, atmospheric |
+| 6 | Inline plan protocol (see `references/workflow-phases.md` § Phase 6) | Type-aware implementation plan |
+| 7 | Inline implement protocol (see `references/workflow-phases.md` § Phase 7) | Build the site |
+| 8 | Inline tier-filtered audit (see `references/workflow-phases.md` § Phase 8) | Anti-slop audit |
 
 Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landing|portfolio}/`, `app/components/effects/`.
 
@@ -335,11 +335,11 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 
 This skill no longer refuses any page type. But for a few specific cases, another skill is genuinely a better fit. perfect-ui suggests these — it does not force-redirect:
 
-| Need | Better fit |
-|------|-----------|
-| Full app architecture, complex client-side state, deep multi-page IA | `ck:frontend-development` |
-| Full Shopify backend (products, cart, checkout, inventory) | `ck:shopify` |
-| Exact design replication from a screenshot / Figma reference | `ck:frontend-design` |
+| Need | Suggested approach |
+|------|--------------------|
+| Full app architecture, complex client-side state, deep multi-page IA | General frontend engineering workflow (state management, routing framework, type-safe API layer) |
+| Full e-commerce backend (products, cart, checkout, inventory, payment integration) | Dedicated e-commerce platform workflow with backend orchestration |
+| Exact design replication from screenshot / Figma reference | Vision-driven design-to-code workflow (multimodal model + visual diff loop) |
 
 For everything else — pricing pages, blog landings, about pages, dashboards, admin panels, storefront homepages, custom page types — proceed inside perfect-ui. The visible page surface is in scope regardless of what the rest of the product is.
 
@@ -365,7 +365,7 @@ For everything else — pricing pages, blog landings, about pages, dashboards, a
 | "AI purple gradient looks modern" | It looks generated. Pick a desaturated single accent. |
 | "User said 'website', default to landing" | NO. Ask via Phase 0.5 — landing, portfolio, and generic-tier types differ in anatomy and audit. |
 | "Portfolio just needs an 'About me' opener" | NO. Lead with work, not personality. See portfolio-anatomy.md. |
-| "User wants a dashboard, refuse them like the old SKILL said" | NO. Open scope as of v2.1.0. Log evidence-base disclosure and proceed with generic tier. |
+| "User wants a dashboard, refuse them like the old SKILL said" | NO. Open scope as of v2.1.0; self-contained as of v2.2.0. Log evidence-base disclosure and proceed with generic tier. |
 | "Dashboard / admin doesn't need vibe lock, it's just a UI" | NO. Universal toolkit applies to every type. Vibe lock + custom icons + motion intensity + applicability-matrix audit still run. |
 | "Apply full anti-slop tier 1-3 to a 404 page" | NO. Phase 8 filters by `[universal]` / `[marketing-only]` / `[landing/portfolio-only]` tag. A 404 has no hero CTA — that rule shouldn't trigger. |
 

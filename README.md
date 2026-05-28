@@ -2,7 +2,7 @@
 
 > Skill for Claude Code — designs and ships **landing pages** and **portfolios** that look human-crafted, not AI-generated.
 
-**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.1.0 &nbsp;·&nbsp; **License:** MIT
+**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.2.0 &nbsp;·&nbsp; **License:** MIT
 
 ---
 
@@ -12,16 +12,18 @@ Most LLMs default to the same SaaS slop when asked to design a website: Inter fo
 
 **v2.1.0 update:** Skill scope opens beyond landing/portfolio. `--type` now accepts any page type. Landing and portfolio keep rich anatomy + skeleton + section archetypes. All other types (blog, about, pricing, contact, coming-soon, error pages, legal, dashboard, admin, e-commerce, custom) use generic anatomy + skeleton with the same universal craft toolkit (vibe + palette + typography + custom icons + 2D illustrations + motion + anti-slop). No refusals.
 
-It orchestrates a strict 8-phase pipeline:
+**v2.2.0 update:** Workflow is now self-contained. All orchestration (brainstorm, plan, implement, audit) is inlined in `references/workflow-phases.md`. Asset generation tools are described by capability (text-to-image with style control, vision-capable analysis, vector tracing, React Three Fiber as shader runner, etc.) — no specific external skill dependencies. Skill runs in any Claude Code setup.
+
+The skill drives a self-contained 8-phase pipeline:
 
 1. **Detect mode** — new build vs redesign of existing site
-2. **Detect type** — landing page vs portfolio (asks if unclear)
-3. **Discover vibe** via [`ck:brainstorm`](https://docs.claude.com) — 1 anchor + 1 wildcard adjective
+2. **Detect type** — landing page vs portfolio vs generic (asks if unclear)
+3. **Discover vibe** via inline brainstorm protocol — 1 anchor + 1 wildcard adjective
 4. **Lock visual direction** — palette, typography pair, spatial language, optional Visual Effect Layer
-5. **Custom icon set** — direct SVG OR AI-generated + traced. **Zero emoji. Zero icon libraries.**
+5. **Custom icon set** — direct SVG OR AI-generated + vector trace. **Zero emoji. Zero icon libraries.**
 6. **2D visual assets** — illustrations, photos, static 3D renders (exported as PNG), SVG. Style picked from 11 vibes × 11 styles catalog. **2D craft is the default visual language.**
-7. **Optional Visual Effect Layer** — shaders, particles, atmospheric effects via CSS-first / `ck:threejs`-as-shader-runner. **NO 3D models as hero subjects** (rotating GLB / AI characters forbidden).
-8. **Implementation** via `ck:plan` + `ck:cook` on Next.js + Tailwind + shadcn
+7. **Optional Visual Effect Layer** — shaders, particles, atmospheric effects via CSS-first / React Three Fiber as shader runner. **NO 3D models as hero subjects** (rotating GLB / AI characters forbidden).
+8. **Implementation** via inline plan + implement protocols on Next.js + Tailwind + shadcn
 
 A final anti-slop audit (Tier 1/2/3 system) blocks ship if AI fingerprints stack.
 
@@ -69,9 +71,9 @@ The skill activates on any of these (auto-detected from user message):
 - Free-text page-type description (any custom string accepted as `--type`)
 
 **Suggested (not refused) — see § Beyond perfect-ui in SKILL.md:**
-- Full app architecture / complex multi-page IA → `ck:frontend-development` is a better fit
-- Full Shopify backend (cart, checkout, inventory) → `ck:shopify` is a better fit
-- Exact design replication from screenshot/Figma → `ck:frontend-design` is a better fit
+- Full app architecture / complex multi-page IA → general frontend engineering workflow is a better fit
+- Full e-commerce backend (cart, checkout, inventory, payment) → dedicated e-commerce platform workflow is a better fit
+- Exact design replication from screenshot/Figma → vision-driven design-to-code workflow is a better fit
 
 Skill still handles these page types if asked — it just suggests companions for the deeper architecture.
 
@@ -100,7 +102,7 @@ Skill still handles these page types if asked — it just suggests companions fo
 **Skill flow:**
 1. Phase 0 — detects `new` (no URL provided)
 2. Phase 0.5 — detects `landing` from "landing page"
-3. Phase 1 — delegates to `ck:brainstorm`:
+3. Phase 1 — inline brainstorm protocol:
    - Product: "Specialty single-origin coffee delivered weekly to home brewers"
    - Audience: "Home espresso enthusiasts age 28-45 in Tokyo / Osaka"
    - Conversion goal: signup
@@ -112,10 +114,10 @@ Skill still handles these page types if asked — it just suggests companions fo
    - Spatial: asymmetric editorial
    - 3D: declined (vibe doesn't fit)
 5. Phase 3 — 8 custom icons designed (nav-mark, brewing-step icons via direct SVG, social marks)
-6. Phase 4 — hero illustration generated via `ck:ai-artist` — silkscreen-style poster of folded letter releasing coffee beans
+6. Phase 4 — hero illustration generated via text-to-image with style control — silkscreen-style poster of folded letter releasing coffee beans
 7. Phase 5 — skipped (declined)
-8. Phase 6 — `ck:plan` produces phased Next.js implementation
-9. Phase 7 — `ck:cook` builds it
+8. Phase 6 — inline plan protocol produces phased Next.js implementation
+9. Phase 7 — inline implement protocol builds it
 10. Phase 8 — Tier-1/2/3 anti-slop audit passes; ships
 
 ### Example 2 — Portfolio redesign
@@ -130,13 +132,13 @@ Skill still handles these page types if asked — it just suggests companions fo
    - Keep: portfolio cover photo quality, custom monogram
    - Kill: hover-effect overload, skill-bar percentages, "Hi I'm passionate" opener
 3. Phase 0.5 — detects `portfolio` from "redesign this portfolio"
-4. Phase 1 — `ck:brainstorm` runs portfolio brief variant (asks about work focus, case study depth, etc.)
+4. Phase 1 — inline brainstorm protocol runs portfolio brief variant (asks about work focus, case study depth, etc.)
 5. Phase 2 — locks elegant vibe (PP Neue Montreal display, off-white palette, atmospheric spatial)
 6. Phase 3 — minimal icon set (5 icons: monogram, project-arrow, contact-mark, 2 social)
 7. Phase 4 — owner portrait re-generated as editorial environmental shot
 8. Phase 5 — 3D proposed: interactive 3D logo accent. Approved.
-9. Phase 6 — `ck:plan` outputs portfolio plan with `app/work/[slug]` case study route
-10. Phase 7 — `ck:cook` implements
+9. Phase 6 — inline plan protocol outputs portfolio plan with `app/work/[slug]` case study route
+10. Phase 7 — inline implement protocol implements
 11. Phase 8 — audit catches "Welcome to my portfolio" copy left over from old site → fixes → ships
 
 ### Example 3 — Blog page (generic tier)
@@ -147,13 +149,13 @@ Skill still handles these page types if asked — it just suggests companions fo
 **Skill flow:**
 1. Phase 0 — detects `new` (no URL)
 2. Phase 0.5 — detects `blog` keyword → generic tier
-3. Phase 1 — `ck:brainstorm` runs generic brief (audience, content type, Page-Purpose Exercise → job=inform, marketing-intent=true)
+3. Phase 1 — inline brainstorm protocol runs generic brief (audience, content type, Page-Purpose Exercise → job=inform, marketing-intent=true)
 4. Phase 2 — locks editorial vibe (PP Editorial Old + Söhne, cream + ink palette + ochre accent)
 5. Phase 3 — minimal icon set (3 icons: tag-glyph, link-arrow, social)
 6. Phase 4 — letter-form silkscreen hero accent
 7. Phase 5 — declined (vibe doesn't need atmosphere)
-8. Phase 6 — `ck:plan` outputs generic-tier plan: scaffold → tokens → nav → hero → article-list → footer (sections driven by page-purpose, not template)
-9. Phase 7 — `ck:cook` builds it
+8. Phase 6 — inline plan protocol outputs generic-tier plan: scaffold → tokens → nav → hero → article-list → footer (sections driven by page-purpose, not template)
+9. Phase 7 — inline implement protocol builds it
 10. Phase 8 — audit runs `[universal]` + `[marketing-only]` subset; no `[landing/portfolio-only]` rules triggered. Passes.
 
 ### Example 4 — Dashboard (generic tier with evidence disclosure)
@@ -173,7 +175,7 @@ Skill still handles these page types if asked — it just suggests companions fo
 6. Phase 4 — schematic illustration for empty-states
 7. Phase 5 — skipped (data-heavy page, no atmosphere needed)
 8. Phase 6 — generic plan: app-shell (sidebar + topbar) + filter-bar + data-grid + empty-state (no hero, no CTA — driven by page-purpose)
-9. Phase 7 — `ck:cook` builds it
+9. Phase 7 — inline implement protocol builds it
 10. Phase 8 — audit runs `[universal]` rules only (marketing-intent=false). Marketing-only rules (two equal CTAs, AI gradient hero, 3-col feature grid) skipped — they don't apply. Passes.
 
 ---
@@ -209,7 +211,7 @@ Default output for `--stack nextjs` (recommended):
 - **Styling:** Tailwind CSS with locked palette as theme tokens
 - **Components:** shadcn/ui customized (no defaults)
 - **Fonts:** `next/font/local` or `next/font/google` for distinctive display + body pair
-- **2D illustrations:** AI-generated via `ck:ai-artist` / `ck:ai-multimodal` per [`references/2d-illustration-catalog.md`](references/2d-illustration-catalog.md), OR direct SVG, OR Blender/Spline static 3D render exported as PNG
+- **2D illustrations:** AI-generated via text-to-image with style control or photorealism per [`references/2d-illustration-catalog.md`](references/2d-illustration-catalog.md), OR direct SVG, OR Blender/Spline static 3D render exported as PNG
 - **Visual effects (if used):** CSS first, then React Three Fiber **as shader runner only** (NOT 3D model viewer), lazy-loaded with `ssr: false`
 - **Motion (vibe-scaled, locked Phase 2e):** CSS → Framer Motion → Lenis → GSAP tier system. Total motion JS ≤100KB gz. Per [`references/motion-patterns.md`](references/motion-patterns.md).
 - **Icons:** Custom SVG components in `app/components/icons/`
@@ -321,8 +323,8 @@ A: No. "Just for now" never gets replaced. Generate custom SVG up-front per [`re
 **Q: What if user explicitly requests a forbidden pattern?**
 A: Refuse once. If they request again with reason, log override in `plans/{date}-{slug}/overrides.md` and proceed. Never silent-allow.
 
-**Q: Does this skill work without `ck:brainstorm` / `ck:plan` / `ck:cook` skills?**
-A: It's designed to orchestrate them. Without them, the workflow degrades — Claude does each phase inline but loses the structured brainstorm-plan-cook discipline. Strongly recommend having them installed.
+**Q: Is the workflow self-contained?**
+A: Yes (as of v2.2.0). All brainstorm / plan / implement / audit protocols are inline in `references/workflow-phases.md`. Skill no longer depends on external orchestration skills. Asset generation (icons, illustrations, effects) is described by capability — use any text-to-image / vision / vector tool that fits the capability description. Skill runs in any Claude Code setup.
 
 **Q: How do I add a new vibe (e.g., `dystopian`, `vaporwave`)?**
 A: Add palette + typography pair to [`references/visual-direction-guide.md`](references/visual-direction-guide.md), add archetype mapping to [`assets/nextjs-skeleton/section-archetypes.md`](assets/nextjs-skeleton/section-archetypes.md), add 3D-pairing row if relevant.
@@ -331,7 +333,7 @@ A: Add palette + typography pair to [`references/visual-direction-guide.md`](ref
 A: Yes — blog is supported via generic tier (since v2.1.0). Skill applies vibe lock + custom icons + motion + universal anti-slop. Generic anatomy lets page-purpose drive sections rather than prescribing a template. Landing and portfolio remain the only types with full rich anatomy + per-vibe section archetypes.
 
 **Q: Does this skill work for dashboards / admin / e-commerce?**
-A: Yes — generic tier accepts any type (since v2.1.0). Skill logs a notice that the evidence base (12 marketing landings analyzed) doesn't cover app-surface patterns directly; output is best-effort universal craft. Vibe lock, custom icons, motion rules, and `[universal]` anti-slop rules still apply. Phase 8 audit filters out `[marketing-only]` and `[landing/portfolio-only]` rules that don't make sense for non-marketing pages. For full Shopify backend, `ck:shopify` covers commerce internals; for deep app architecture, `ck:frontend-development` covers app patterns — but perfect-ui isn't a refusal for these. See § Beyond perfect-ui in SKILL.md.
+A: Yes — generic tier accepts any type (since v2.1.0). Skill logs a notice that the evidence base (12 marketing landings analyzed) doesn't cover app-surface patterns directly; output is best-effort universal craft. Vibe lock, custom icons, motion rules, and `[universal]` anti-slop rules still apply. Phase 8 audit filters out `[marketing-only]` and `[landing/portfolio-only]` rules that don't make sense for non-marketing pages. For full e-commerce backend, a dedicated commerce platform workflow is a better fit for the backend; for deep app architecture, a general frontend engineering workflow covers app patterns — but perfect-ui isn't a refusal for the page surface in either case. See § Beyond perfect-ui in SKILL.md.
 
 **Q: How does the anti-slop audit handle generic-tier pages (e.g. a 404 or dashboard)?**
 A: Phase 8 reads `--type` and the marketing-intent flag from Page-Purpose Exercise. Rules in `references/anti-slop-rules.md` are tagged `[universal]`, `[marketing-only]`, or `[landing/portfolio-only]`. For a 404 with no marketing intent, only `[universal]` rules run (no emoji, no icon libraries, custom SVG cohesion, no h-screen, prefers-reduced-motion respect, etc.). Marketing-only rules like "no two equal-weight CTAs in hero" don't fire because a 404 has no hero. See § Applicability Matrix.
@@ -356,7 +358,7 @@ A: Only when:
 Default: skip Phase 5. The strongest human-crafted landings (Paperclip, OWO, Augen) use NO visual effects.
 
 **Q: What's the difference between "Visual Effect Layer" (Phase 5) and "Motion" (Phase 2e)?**
-A: Visual Effect = WebGL shader / particle / atmospheric layer (geometry as shader canvas). Motion = DOM elements transforming (translate, opacity, scroll-linked). Effects are atmospheric; motion is choreographic. Effects use `ck:threejs` as shader runner; motion uses CSS / Framer Motion / Lenis / GSAP. Different scope, different files, different concerns.
+A: Visual Effect = WebGL shader / particle / atmospheric layer (geometry as shader canvas). Motion = DOM elements transforming (translate, opacity, scroll-linked). Effects are atmospheric; motion is choreographic. Effects use React Three Fiber as shader runner; motion uses CSS / Framer Motion / Lenis / GSAP. Different scope, different files, different concerns.
 
 **Q: How do I add motion without it looking AI-default?**
 A: Lock intensity at Phase 2e (0/3 to 3/3) per vibe. Cap fade-up to ≤30% sections at 2/3 intensity. Use vibe-paired cubic-bezier easing (NOT `ease-in-out` 0.3s). Never animate body `<p>` text. Always respect `prefers-reduced-motion`. Full rules: [`references/motion-patterns.md`](references/motion-patterns.md).
@@ -400,12 +402,12 @@ Author: dris1153
 
 ---
 
-## Related Skills
+## Related Workflows (Suggested Companions)
 
-| Skill | When to use instead |
-|-------|---------------------|
-| `ck:frontend-development` | Full apps, dashboards, admin panels, complex multi-page IA |
-| `ck:frontend-design` | Replicating an existing design from screenshot/video |
-| `ck:ui-ux-pro-max` | Component-level UI work in existing apps |
-| `ck:shopify` | E-commerce stores |
-| `ckm:design` | Logo / CIP / banner / social-photo design (skill called by perfect-ui internally for icons) |
+perfect-ui no longer refuses any page type, but for these specific deeper-architecture cases another workflow is a better fit. Companions, not replacements — perfect-ui still owns the visible page surface in each case.
+
+| Need | Suggested approach |
+|------|--------------------|
+| Full app architecture, complex client-side state, deep multi-page IA | General frontend engineering workflow (state management, routing framework, type-safe API layer) |
+| Full e-commerce backend (products, cart, checkout, inventory, payment integration) | Dedicated e-commerce platform workflow with backend orchestration |
+| Exact design replication from screenshot / Figma reference | Vision-driven design-to-code workflow (multimodal model + visual diff loop) |

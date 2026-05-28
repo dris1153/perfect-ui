@@ -54,7 +54,7 @@ Need an icon?
 ├─ Is it illustrative / handcrafted feeling? (mascot, character, scene)
 │   └─ AI gen + trace
 └─ Is it ornate / line-art / etched? (luxury, editorial)
-    └─ AI gen + trace via ck:ai-artist with style prompt
+    └─ AI gen + trace via text-to-image with style control + vector trace
 ```
 
 ## Method 1: Direct SVG Code
@@ -112,17 +112,19 @@ export const Icon = ({ size = 24, children, ...props }: IconProps) => (
 
 **When:** Illustrative, ornate, mascot-like, or you can't draw it in 4 paths.
 
-### Path A: ckm:design icon generator (preferred for production)
-```bash
-python3 ~/.claude/skills/design/scripts/icon/generate.py \
-  --prompt "folded paper origami crane representing privacy" \
-  --style outlined \
-  --color "#1A1715" \
-  --size 24 \
-  --output app/components/icons/raw/feature-secure.svg
+### Path A: Vector icon design pipeline (preferred for production)
+
+Use a text-to-SVG generator OR text-to-image with palette / lighting / composition control followed by vector tracing. Example invocation pattern:
+
+```
+prompt: "folded paper origami crane representing privacy"
+style: outlined        # one of: outlined | filled | duotone | thin | bold | hand-drawn
+color: "#1A1715"       # locked ink token from visual-direction.md
+size: 24
+output: app/components/icons/raw/feature-secure.svg
 ```
 
-Match `--style` to the locked icon style from cohesion rules:
+Match `style` to the locked icon style from cohesion rules:
 - `outlined` for stroke-only sets
 - `filled` for solid sets
 - `duotone` for two-tone sets
@@ -130,12 +132,14 @@ Match `--style` to the locked icon style from cohesion rules:
 - `bold` for brutalist / industrial vibe
 - `hand-drawn` for organic / hand-crafted vibe
 
-### Path B: ck:ai-artist (when style prompt matters more than category)
-```bash
-python3 ~/.claude/skills/ai-artist/scripts/generate.py \
-  "minimalist line-art icon of a folded paper crane, single 1.5px stroke, no fill, on white" \
-  -o icons/raw/feature-secure.png \
-  --mode search
+### Path B: Text-to-image with style control (when style prompt matters more than category)
+
+Use a text-to-image model with curated style prompt library. Example prompt:
+
+```
+"minimalist line-art icon of a folded paper crane, single 1.5px stroke, no fill, on white"
+mode: search          # curated style prompts; use "wild" for non-deterministic exploration
+output: icons/raw/feature-secure.png
 ```
 
 Then trace the PNG to SVG. Three options:
@@ -143,13 +147,16 @@ Then trace the PNG to SVG. Three options:
 2. **autotrace CLI** (automated): `autotrace -output-format svg input.png > output.svg`
 3. **Re-write by hand**: best result for simple shapes — view AI image, write SVG manually.
 
-### Path C: ck:ai-multimodal Imagen (highest quality realistic)
-```bash
-python3 ~/.claude/skills/ai-multimodal/scripts/gemini_batch_process.py \
-  --task generate \
-  --prompt "minimalist black ink icon, folded paper crane, white background, no shadows" \
-  --output icons/raw/feature-secure.png
+### Path C: High-quality text-to-image with palette + lighting control (highest quality realistic)
+
+For icons that need photorealism or precise color control, use a high-quality text-to-image model with strict palette + lighting + composition prompts:
+
 ```
+prompt: "minimalist black ink icon, folded paper crane, white background, no shadows"
+output: icons/raw/feature-secure.png
+```
+
+Then trace as in Path B.
 
 ## Cohesion Rules (Apply to ENTIRE Set)
 

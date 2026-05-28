@@ -179,7 +179,7 @@ MeshNormalMaterial rainbow, cyberpunk hologram. Aspect ratio: 1:1.
 - **Blender** (free) — Cycles renderer, full control
 - **Spline** (web-based) — quick 3D scene + export PNG
 - **KeyShot** (paid) — product photography quality
-- **`ck:ai-multimodal` Imagen Ultra** — fallback when no 3D tool, but use ONLY with strict negative prompt list to avoid AI-default aesthetic
+- **High-quality text-to-image with palette + lighting + composition control** — fallback when no 3D tool, but use ONLY with strict negative prompt list to avoid AI-default aesthetic
 
 ### Validation
 After generation, verify:
@@ -411,20 +411,20 @@ matching {accent color}. Style references: Alvin Lustig, Saul Bass character
 work, mid-century editorial illustration. Aspect ratio: 1:1.
 ```
 
-## Tool Routing
+## Capability Routing
 
-| Asset type | Recommended tool | Command |
-|-----------|------------------|---------|
-| Hero illustration (artistic) | `ck:ai-artist` | `python3 ~/.claude/skills/ai-artist/scripts/generate.py "{prompt}" -o hero.png --mode search` |
-| Hero photo (realistic) | `ck:ai-multimodal` Imagen Ultra | `python3 ~/.claude/skills/ai-multimodal/scripts/gemini_batch_process.py --task generate --model imagen-4.0-ultra-generate-001 --prompt "{prompt}" --output hero.png` |
-| Background texture | `ck:ai-multimodal` Imagen Fast | `--model imagen-4.0-fast-generate-001` |
-| OG image | `ckm:design` social-photos | per `~/.claude/skills/design/references/social-photos-design.md` |
-| Avatar | `ck:ai-multimodal` Nano Banana 2 | `--model gemini-3.1-flash-image-preview` |
+| Asset type | Capability needed | Notes |
+|-----------|-------------------|-------|
+| Hero illustration (artistic) | Text-to-image with style control (curated style prompt library) | `--mode search` style match |
+| Hero photo (realistic) | High-quality text-to-image with palette + lighting + composition control | Strict palette + composition spec; suppress AI-default aesthetic via negative prompts |
+| Background texture | Fast text-to-image (lower fidelity, large output) | Tileable; soft / subtle aesthetic |
+| OG image | Multi-platform social image composition (HTML→screenshot or text-to-image) | Brand-consistent typography + crop |
+| Avatar | Text-to-image with photorealism + anti-stock negatives | Avoid stock-photo "diverse team smiling" tells |
 
 ## Validation
 
 After every generation:
-1. Open via `ck:ai-multimodal` analyze: `gemini -y -m gemini-2.5-flash <"image-path"`
+1. Open via a vision-capable model (analyze image content)
 2. Ask Claude: "Does this image match {palette hex codes} and feel like {vibe}? Score 1-10. List drift."
 3. If score < 7 OR palette drift > 30%, regenerate with stronger negative prompt.
 4. If score ≥ 8, save to `public/landing/`.

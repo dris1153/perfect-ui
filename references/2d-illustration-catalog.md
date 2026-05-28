@@ -14,60 +14,60 @@ Direct evidence from `plans/260509-ai-vs-human-analysis/synthesis.md`: 0/7 human
 **Look:** Hand-pulled print aesthetic. Limited palette (2-4 inks). Slight registration imperfection. Bold flat shapes with optional grain overlay.
 **Vibes:** Editorial, organic, hand-crafted, art-deco
 **Reference artists:** Saul Bass, Cassandre, contemporary risograph studios
-**Tool:** `ck:ai-artist` (search prompts include "silkscreen", "poster art")
+**Capability:** Text-to-image with style control (search prompts include "silkscreen", "poster art")
 **Avoid:** Photographic shading, chrome highlights, gradient meshes
 
 ### 2. Hand-drawn Ink (line art)
 **Look:** Single-weight or weight-varied ink lines. White space dominant. Slight imperfection in curves.
 **Vibes:** Editorial, hand-crafted, luxury (engraved variant), organic
 **Reference artists:** Alvin Lustig, mid-century book illustrators, contemporary tattoo artists
-**Tool:** `ck:ai-multimodal` Imagen with prompt anchors "single-line ink drawing", "expressive contour line"
+**Capability:** High-quality text-to-image with palette + lighting + composition control, prompt anchors "single-line ink drawing", "expressive contour line"
 **Avoid:** Heavy fills, crosshatching unless intentional, AI-generated character clichés
 
 ### 3. Geometric Flat (vector)
 **Look:** Hard-edged shapes, pure colors, no shading, mathematical composition. SVG-friendly.
 **Vibes:** Minimal, brutalist, art-deco, industrial
-**Tool:** Direct SVG code (Claude writes inline) OR `ck:ai-artist` with "geometric vector illustration"
+**Capability:** Direct SVG generation by LLM (inline code) OR text-to-image with style control "geometric vector illustration"
 **Avoid:** Gradients, shadows, soft edges (against vibe)
 
 ### 4. Cut-paper Collage
 **Look:** Layered colored paper aesthetic. Visible edges. Slight shadows under cut shapes. Sometimes with hand-cut imperfection.
 **Vibes:** Playful, hand-crafted, editorial
 **Reference artists:** Henri Matisse cut-outs, Eric Carle, contemporary children's book art
-**Tool:** `ck:ai-artist` "cut-paper collage" or "Matisse-style cut-out"
+**Capability:** Text-to-image with style control "cut-paper collage" or "Matisse-style cut-out"
 **Avoid:** Photographic textures, AI-default 3D blob shapes
 
 ### 5. Risograph / Photocopy
 **Look:** Imperfect duotone or limited palette overlay (typically pink + blue or cyan + red). Visible printing artifacts. Mid-century industrial feel.
 **Vibes:** Brutalist, hand-crafted, editorial
 **Reference:** Risograph studios (Hato Press, Risotto, ISO50)
-**Tool:** `ck:ai-artist` with "risograph print" prompt anchor
+**Capability:** Text-to-image with style control, "risograph print" prompt anchor
 **Avoid:** Smooth gradients, polished finish
 
 ### 6. Watercolor / Ink Wash
 **Look:** Translucent layered washes, organic edges, paper bleed. Loose, expressive.
 **Vibes:** Organic, hand-crafted, hand-drawn-ink companion
-**Tool:** `ck:ai-artist` "watercolor illustration", "ink wash"
+**Capability:** Text-to-image with style control "watercolor illustration", "ink wash"
 **Avoid:** Sharp digital edges, vibrant saturation
 
 ### 7. Engraved Line Art
 **Look:** Thin parallel lines or crosshatching for shading, monogram-style precision, vintage scientific drawing.
 **Vibes:** Luxury, art-deco, editorial
 **Reference:** Vintage patent illustrations, Whisky/Spirits packaging, line engraving on banknotes
-**Tool:** `ck:ai-artist` mode `wild` with "vintage 1800s patent" or `search` with "engraved illustration"
+**Capability:** Text-to-image with creative direction freedom ("wild" mode) using "vintage 1800s patent" — OR text-to-image with style control ("search" mode) using "engraved illustration"
 **Avoid:** Modern digital shading, gradient fills
 
 ### 8. Architectural Schematic / Blueprint
 **Look:** Technical drawing aesthetic — exploded views, cross-sections, dimensional lines, monospace annotations.
 **Vibes:** Industrial, brutalist, retro-futuristic
-**Tool:** `ck:ai-artist` "architectural schematic", "isometric blueprint"
+**Capability:** Text-to-image with style control "architectural schematic", "isometric blueprint"
 **Avoid:** Soft shading, decorative flourishes
 
 ### 9. Static 3D Render (export → 2D)
 **Look:** 3D scene rendered in Blender/Spline/KeyShot, exported as PNG/WebP. Visitor sees a 2D image, NOT real-time 3D.
 **Vibes:** Glass-tech, retro-futuristic, luxury (if product photography style)
 **Reference:** Augen.pro hero head, Apple keynote product shots, Spline community examples
-**Tool:** Blender / Spline / KeyShot manually OR `ck:ai-multimodal` Imagen with "studio 3D render" prompt
+**Capability:** 3D modeling tool (Blender / Spline / KeyShot) exporting PNG/WebP — OR high-quality text-to-image with palette + lighting + composition control, "studio 3D render" prompt
 **Critical rule:** This is a 2D ASSET (`<Image src="/landing/hero.webp" />`), NEVER imported as `.glb`
 **Avoid:** Default Octane render aesthetic, generic glass-balls-on-marble, AI-generated 3D blob characters
 
@@ -75,14 +75,14 @@ Direct evidence from `plans/260509-ai-vs-human-analysis/synthesis.md`: 0/7 human
 **Look:** Real photography — environmental, situational, editorial. Color-graded to match palette.
 **Vibes:** Editorial, luxury, organic, glass-tech (product photography)
 **Reference:** Saul Leiter, Wolfgang Tillmans, Annie Leibovitz environmental editorial
-**Tool:** Real photos (preferred for portfolios with real work) OR `ck:ai-multimodal` Imagen Ultra with strict negative prompt
+**Capability:** Real photos (preferred for portfolios with real work) OR text-to-image with photorealism + anti-stock negatives
 **Avoid:** Stock-photo aesthetic ("diverse team smiling at laptop"), fake-feeling smile, generic office
 
 ### 11. Synthwave Gradient / Vaporwave
 **Look:** Vibrant gradient skies, vector wireframe horizons, retro digital aesthetic. Strong magenta/cyan/violet.
 **Vibes:** Retro-futuristic ONLY
 **Reference:** TRON, vaporwave Tumblr-era art, synthwave album covers
-**Tool:** `ck:ai-artist` with "synthwave aesthetic" or "vaporwave"
+**Capability:** Text-to-image with style control, "synthwave aesthetic" or "vaporwave"
 **Avoid:** Using outside retro-futuristic vibe — instantly dates the design
 
 ## Vibe → Style Mapping (lookup table)
@@ -129,16 +129,16 @@ Use the prompt anatomy template with:
 - `Style references` field populated from this catalog's "Reference artists / sources" line
 - `Forbidden` field includes default forbidden + style-specific forbidden from this catalog
 
-### Step 3 — Generate via tool
-- Style 1, 2, 4, 5, 6, 7, 11 → `ck:ai-artist` (uses curated prompt database)
-- Style 9 (static 3D render) → external tool (Blender/Spline) OR `ck:ai-multimodal` Imagen with strict prompt
-- Style 10 (photographic) → real photos preferred; AI fallback only with anti-stock negative prompt
-- Style 3 (geometric flat) → Direct SVG code preferred (Claude writes inline)
-- Style 8 (architectural schematic) → `ck:ai-artist` or vector tool
+### Step 3 — Generate via capability
+- Style 1, 2, 4, 5, 6, 7, 11 → text-to-image with style control (curated style prompt library)
+- Style 9 (static 3D render) → 3D modeling tool (Blender / Spline / KeyShot) OR high-quality text-to-image with palette + lighting + composition control
+- Style 10 (photographic) → real photos preferred; AI fallback uses text-to-image with photorealism + anti-stock negatives
+- Style 3 (geometric flat) → direct SVG generation by LLM (inline code) preferred
+- Style 8 (architectural schematic) → text-to-image with style control, or vector tool
 
 ### Step 4 — Validate cohesion
 After EACH generation:
-1. View image with `ck:ai-multimodal` analyze
+1. View image with a vision-capable model (analyze image content)
 2. Compare to locked palette (extract dominant colors)
 3. Compare style to catalog row (does it match the style description?)
 4. If drift > 30%, regenerate with stronger negative prompt
