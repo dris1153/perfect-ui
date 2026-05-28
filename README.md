@@ -45,7 +45,57 @@ This skill encodes that finding as enforceable rules.
 
 ## Installation
 
-The skill is auto-discovered when placed in your Claude Code skills directory. Once registered, it activates on relevant phrases ("design a landing page", "build my portfolio", etc.).
+### Option 1 — `npx skills` (recommended)
+
+```bash
+npx skills add dris1153/perfect-ui
+```
+
+Or with the full GitHub URL:
+
+```bash
+npx skills add https://github.com/dris1153/perfect-ui
+```
+
+Tool: [vercel-labs/skills](https://github.com/vercel-labs/skills) — works with Claude Code, OpenCode, Codex CLI, Cursor, and 50+ other agents. No `package.json` or manifest required; the tool detects `SKILL.md` at the repo root and installs into `~/.claude/skills/perfect-ui/` (or the agent-specific equivalent).
+
+Preview what will be installed before committing:
+
+```bash
+npx skills add dris1153/perfect-ui --list
+```
+
+### Option 2 — Manual install
+
+Clone (or copy) the repo into your Claude Code skills directory:
+
+```bash
+# macOS / Linux
+git clone https://github.com/dris1153/perfect-ui.git ~/.claude/skills/perfect-ui
+
+# Windows (PowerShell)
+git clone https://github.com/dris1153/perfect-ui.git "$env:USERPROFILE\.claude\skills\perfect-ui"
+```
+
+### Activation
+
+Once installed, the skill auto-activates on relevant phrases ("design a landing page", "build my portfolio", "redesign my site", etc.) — no manual registration needed.
+
+### Optional companion skills
+
+perfect-ui is **self-contained** — runs in any Claude Code setup without external dependencies.
+
+For richer motion output (motion intensity 3/3 or briefs mentioning `GSAP` / `ScrollTrigger` / `scroll choreography` / `scrub` / `pin`), perfect-ui auto-detects and invokes the official **GSAP skills** when present. If the skills aren't installed, perfect-ui suggests them once at Phase 7 entry and **falls back to inline GSAP patterns** if you decline — no hard failure, no blocking.
+
+Install only when you plan to ship heavy scroll choreography:
+
+```bash
+npx skills add greensock/gsap-skills
+```
+
+Installs 8 skills: `gsap-core`, `gsap-scrolltrigger`, `gsap-react`, `gsap-timeline`, `gsap-plugins`, `gsap-performance`, `gsap-frameworks`, `gsap-utils`. Skip for motion intensity 0-2/3 — the inline fallback covers it. See [`references/gsap-integration.md`](references/gsap-integration.md) for detection logic + fallback patterns.
+
+> Why not bundled? GSAP skills are independent and useful beyond perfect-ui. Bundling would force-install 8 extra skills on users who only need motion intensity 0-2/3 (the majority), bloating their skills directory and Claude context. Lazy install respects the "skills are optional" design (v2.4.1).
 
 ---
 

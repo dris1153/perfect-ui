@@ -21,7 +21,39 @@ ls ~/.claude/skills/gsap-core/SKILL.md 2>/dev/null
 ```
 
 - If file exists → skills installed, proceed with active Skill tool call.
-- If missing → use fallback inline patterns (below).
+- If missing → **suggest install once, then fall back** (see § Lazy install suggestion below).
+
+## Lazy install suggestion
+
+When `gsap_needed = true` AND skills NOT installed, emit a **one-time, non-blocking** suggestion to the user at Phase 7 entry — BEFORE pre-emit verification, BEFORE code emission.
+
+**Suggestion message template:**
+
+```
+This page locks motion intensity 3/3 (or your brief mentions GSAP/ScrollTrigger).
+For richer scroll choreography, the official GSAP skills are available:
+
+    npx skills add greensock/gsap-skills
+
+Installs 8 skills: gsap-core, gsap-scrolltrigger, gsap-react, gsap-timeline,
+gsap-plugins, gsap-performance, gsap-frameworks, gsap-utils.
+
+Skip if you prefer inline patterns — perfect-ui falls back automatically.
+Proceed with inline fallback? [y/N to install first]
+```
+
+**Rules:**
+
+1. **One-time per project** — never re-prompt within the same brainstorm → plan → implement cycle. Log decision in `plans/{slug}/plan.md § GSAP decision` (`installed` / `declined-fallback` / `skipped-no-need`).
+2. **Non-blocking** — user declining = proceed with inline fallback. Do NOT halt the pipeline.
+3. **Component-scope exception** — component-scope (see `component-scope.md`) skips the suggestion entirely; component artifacts use minimal motion, inline patterns sufficient.
+4. **Skip when not needed** — if motion intensity 0-2/3 AND no keyword match AND Phase 2d effect ≠ "Scroll-driven distortion", do NOT suggest. Lazy install respects YAGNI.
+5. **Re-detect after install** — if user runs the install command, re-check `~/.claude/skills/gsap-core/SKILL.md` before proceeding to confirm success.
+
+**Why lazy, not bundled at install time:**
+- GSAP skills are independent (useful beyond perfect-ui) — bundling forces 8 extra skills on users who never use motion 3/3
+- Respects v2.4.1 design: "Skills are OPTIONAL: perfect-ui falls back to inline GSAP patterns if skills not installed"
+- `npx skills` CLI does not currently support `depends_on` (see vercel-labs/skills#515 — open feature request, no ETA)
 
 ## The 8 gsap skills (selection logic)
 
