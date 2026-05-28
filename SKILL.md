@@ -177,21 +177,34 @@ Default suggestion = vibe matrix from `references/motion-patterns.md` § Vibe ×
 
 Save to `plans/{date}-{slug}/visual-direction.md`. Detailed: `references/visual-direction-guide.md` + `references/motion-patterns.md`.
 
-### 2e.1. Smooth Scroll Decision (vibe-gated, auto)
+### 2e.1. Smooth Scroll Decision (type-gated for landing/portfolio, vibe-gated for generic)
 
 After motion intensity locked, apply the smooth-scroll 5-tier ladder per `references/smooth-scroll-flow.md` § Decision matrix.
 
-**Default = vibe-gated** (anti-slop aligned):
+**Default = type-gated (v2.5.1+)** — landing AND portfolio auto-get Lenis regardless of vibe. Generic tier remains vibe-gated.
+
+**Landing OR Portfolio** (special tier):
+
+| Motion intensity | Tier |
+|---|---|
+| 0/3 | Tier 1 (native — hard guard fires first) |
+| 1/3 | **Tier 3 (Lenis)** — minimal smooth |
+| 2/3 | **Tier 3 (Lenis)** — default landing/portfolio surface |
+| 3/3 | **Tier 4 (Lenis + ScrollTrigger sync)** — check Tier 5 escalation |
+
+Vibe is NOT gated — editorial landing, brutalist portfolio, minimal landing all get Lenis. Coffee + luxury landing examples both demo Lenis Tier 3.
+
+**Generic tier** (blog / about / pricing / contact / dashboard / admin / e-commerce / legal / coming-soon / custom):
 
 | Motion intensity | Vibe set | Tier |
 |---|---|---|
 | 0-1/3 | any | Tier 1 (native) — Tier 2 CSS if anchor-heavy |
 | 2/3 | atmospheric (`luxury` / `glass-tech` / `organic` / `retro-futuristic` / `art-deco` / `playful`) | **Tier 3 (Lenis)** |
-| 2/3 | restraint (`minimal` / `editorial` / `brutalist` / `industrial` / `hand-crafted`) | Tier 1 (native) |
+| 2/3 | restraint (`minimal` / `editorial` / `brutalist` / `industrial` / `hand-crafted`) | Tier 1 (native) — dashboards/admin/data tables benefit from native momentum |
 | 3/3 | atmospheric | **Tier 4 (Lenis + ScrollTrigger sync)** |
-| 3/3 | restraint | Tier 1 (override required for smooth scroll) |
+| 3/3 | restraint | Tier 1 (override required) |
 
-**Hard guards** (force Tier 1 at runtime regardless of authored tier): `prefers-reduced-motion: reduce`, touch-primary device (`hover: none AND pointer: coarse`), CDN failure.
+**Hard guards** (force Tier 1 at runtime regardless of authored tier): `prefers-reduced-motion: reduce`, touch-primary (`hover: none AND pointer: coarse`), motion intensity 0/3, CDN failure.
 
 **Tier 5 (GSAP ScrollSmoother, PAID)** auto-suggested ONLY when ≥2 of: 3+ parallax `data-speed`/`data-lag` sections planned, 4+ pinned scroll-scrub sections planned, Club GreenSock license confirmed. Always logged in `plans/{slug}/overrides.md`.
 
@@ -423,7 +436,7 @@ For everything else — pricing pages, blog landings, about pages, dashboards, a
 | "User pasted a URL — let me just clone its layout pixel-for-pixel" | NO. `--study` runs URL safety refusal first (themeforest / framer-templates / dribbble shots are blocked). If safe, extract DNA (palette + fonts + macrostructure) NOT pixel layout. Emit diagnosis report; user picks build-with-DNA / lock-to-design.md / stop. |
 | "It's just a button — skip the whole 8-phase pipeline" | YES, that's exactly what component-scope is for. Multi-signal detect (brief ≤30 words + UI element keyword + `--component`). Keep vibe / palette / typography / motion personality. Skip macrostructure / hero / Phase 8 visual / log.json. Emit component + `.preview.*` 8-state wrapper. |
 | "All Phases 1-6 picks look fine, let me start emitting code now" | NO. Phase 7 ENTRY runs the 10-field `<design_plan>` pre-emit verification (`references/preemit-design-plan.md`). Collect-all-errors — any FAIL routes back to the relevant phase. Block stamped in CSS + plan.md before any code. |
-| "Just add Lenis to every site, smooth scroll = premium feel" | NO. 0/7 human-crafted editorial landings analyzed (Augen, Paperclip, Marblex) use smooth scroll. *Restraint is confident.* Phase 2e.1 is vibe-gated — atmospheric vibes (luxury / glass-tech / organic / retro-futuristic / art-deco / playful) get Lenis at intensity ≥2/3; restraint vibes (editorial / brutalist / minimal / industrial / hand-crafted) default to native scroll. Hard guards (`prefers-reduced-motion` + touch-primary) always force native. See `references/smooth-scroll-flow.md`. |
+| "Add Lenis to every page type — dashboard, blog, admin too" | NO. Type gate (v2.5.1+) — landing AND portfolio auto-get Lenis regardless of vibe (per Phase 2e.1). Generic tier (blog / dashboard / admin / pricing / etc.) is still vibe-gated; restraint vibes (editorial / brutalist / minimal / industrial / hand-crafted) on generic surfaces default to Tier 1 native because data tables + app surfaces feel better with native momentum. See `references/smooth-scroll-flow.md § Step 2b`. Hard guards (reduced-motion / touch / intensity 0/3) always force Tier 1 regardless of type. |
 | "User wants ScrollSmoother, just ship it" | NO. ScrollSmoother is PAID Club GreenSock plugin. Skill cannot assume license. Tier 5 escalation requires ≥2 of: 3+ parallax `data-speed` sections, 4+ pinned scroll-scrub sections, license explicitly confirmed at brief. All Tier 5 picks logged in `plans/{slug}/overrides.md` with criteria checklist + license confirmation date. |
 
 **Remember:** A perfect page is one where icons, copy, color, type, motion, and effects feel made by the same hand. **2D illustration is the default visual language; effects are atmospheric layers; 3D models are forbidden as hero subjects.** The whole point of this skill is enforcing that cohesion regardless of page type, with rich anatomy reserved for landing/portfolio and universal craft for everything else.

@@ -2,7 +2,9 @@
 
 Decision tree + implementation patterns for adding smooth scroll to generated landing/portfolio (and generic-tier) outputs. **Activated at Phase 2e.1 (after Motion Intensity Lock at Phase 2e); implemented at Phase 7; verified at Phase 8.**
 
-Default behavior is **vibe-gated** — atmospheric vibes get Lenis, restraint vibes stay native. Hard guards (prefers-reduced-motion, touch-primary) always force native. ScrollSmoother is paid (Club GreenSock) and only escalates when explicit criteria hit.
+Default behavior is **type-gated** — landing AND portfolio types auto-get Lenis regardless of vibe (intensity 1-3/3). Generic tier (blog / about / pricing / dashboard / admin / e-commerce / etc.) remains vibe-gated. Hard guards (prefers-reduced-motion, touch-primary, motion intensity 0/3) always force Tier 1 native. ScrollSmoother is paid (Club GreenSock) and only escalates when explicit criteria hit.
+
+> **v2.5.1+ rule change:** Restraint-vibe gate (`minimal` / `editorial` / `brutalist` / `industrial` / `hand-crafted` → forced native) is REMOVED for landing/portfolio outputs. All landing + portfolio pages get Lenis. Generic tier still respects vibe restraint (dashboard/admin/blog with Lenis can feel weird on data-dense surfaces).
 
 ---
 
@@ -10,39 +12,56 @@ Default behavior is **vibe-gated** — atmospheric vibes get Lenis, restraint vi
 
 | Tier | Tool | Bundle (gz) | When |
 |------|------|-------------|------|
-| **1** | **Native scroll** | 0 KB | Default fallback. Restraint vibes. Touch-primary devices. `prefers-reduced-motion: reduce`. |
-| **2** | **CSS `scroll-behavior: smooth`** | 0 KB | Intensity 1/3 + anchor-link-heavy site. No JS overhead. |
-| **3** | **Lenis** | ~3.5 KB | Atmospheric vibes at intensity 2/3+. Default smooth-scroll runtime. |
-| **4** | **Lenis + GSAP ScrollTrigger sync** | +GSAP | Intensity 3/3 with scroll-driven motion (pinned, scrub, scroll-linked timelines). |
+| **1** | **Native scroll** | 0 KB | Hard-guard fallback. Touch-primary devices. `prefers-reduced-motion: reduce`. Motion intensity 0/3. Generic tier on restraint vibes. |
+| **2** | **CSS `scroll-behavior: smooth`** | 0 KB | Generic tier intensity 1/3 + anchor-link-heavy site. No JS overhead. |
+| **3** | **Lenis** | ~3.5 KB | **Landing / portfolio at intensity 1-2/3 (any vibe)**. Generic-tier atmospheric vibes at intensity 2/3+. Default smooth-scroll runtime. |
+| **4** | **Lenis + GSAP ScrollTrigger sync** | +GSAP | Landing / portfolio at intensity 3/3. Generic-tier atmospheric at intensity 3/3. |
 | **5** | **GSAP ScrollSmoother** (PAID, Club GreenSock) | ~7 KB + license | Intensity 3/3 with ≥2 of {3+ parallax `data-speed`/`data-lag` sections, 4+ pinned scroll-scrub, license confirmed}. |
 
-**Restraint principle:** Tier 1 (native) is the strongest default — `0/7` human-crafted editorial landings analyzed (Augen.pro, Paperclip, Marblex, et al.) use smooth scroll. *Restraint is confident.* Never default to Tier 3+ without vibe justification.
+**Type-gate principle (v2.5.1+):** Landing + portfolio are *the* surfaces where premium smooth feel reinforces conversion / brand impression. Skill ships Lenis on every landing/portfolio regardless of vibe (editorial coffee site demos this). Generic tier (blog/dashboard/etc.) still respects vibe restraint — restraint vibes on app surfaces benefit from native momentum scroll.
 
 ---
 
 ## Decision matrix (auto-applied at Phase 2e.1)
 
-**Input:** motion intensity (0-3/3 from Phase 2e) + vibe anchor (from Phase 1) + runtime detection.
+**Input:** page type (landing / portfolio / generic) + motion intensity (0-3/3 from Phase 2e) + vibe anchor (from Phase 1, generic tier only) + runtime detection.
 
-### Step 1 — Hard guards (always)
+### Step 1 — Hard guards (always force Tier 1 native)
 
-These checks run at RUNTIME on the generated page; if any fires, fall back to Tier 1 regardless of authored tier:
+These checks override any authored tier. Non-negotiable a11y/UX/intent guards:
 
-1. `prefers-reduced-motion: reduce` → **Tier 1**
-2. `(hover: none) and (pointer: coarse)` → **Tier 1** (touch-primary devices)
+1. `prefers-reduced-motion: reduce` → **Tier 1** (a11y)
+2. `(hover: none) and (pointer: coarse)` → **Tier 1** (touch-primary devices use native momentum)
+3. Motion intensity **0/3** → **Tier 1** (user explicitly chose no motion)
+4. CDN / module failure at runtime → **Tier 1** (graceful fallback)
 
-These are non-negotiable a11y/UX rules. Force into generated code, never bypass.
+Forced into generated code, never bypassed.
 
-### Step 2 — Intensity → vibe gate
+### Step 2a — Landing OR Portfolio (special tier) — TYPE-GATED auto-Lenis
 
-| Motion intensity | Vibe gate | Tier |
+| Motion intensity | Tier |
+|---|---|
+| **0/3** | **1** (native) — hard guard fires first |
+| **1/3** | **3** (Lenis) — minimal smooth feel, no GSAP needed |
+| **2/3** | **3** (Lenis) — default landing/portfolio surface |
+| **3/3** | **4** (Lenis + GSAP ScrollTrigger sync) — check Tier 5 escalation gate |
+
+**Vibe is NOT gated here.** Editorial coffee landing, brutalist sales page, minimal portfolio — all get Lenis. Type alone decides.
+
+### Step 2b — Generic tier (blog / about / pricing / contact / dashboard / admin / e-commerce / legal / coming-soon / custom) — VIBE-GATED
+
+| Motion intensity | Vibe set | Tier |
 |---|---|---|
 | **0/3** | any | **1** (native) |
 | **1/3** | any | **1** (native) — OR **2** (CSS smooth) IF anchor-link-heavy site (3+ in-page anchors) |
 | **2/3** | atmospheric: `luxury` / `glass-tech` / `organic` / `retro-futuristic` / `art-deco` / `playful` | **3** (Lenis) |
-| **2/3** | restraint: `minimal` / `editorial` / `brutalist` / `industrial` / `hand-crafted` | **1** (native) |
+| **2/3** | restraint: `minimal` / `editorial` / `brutalist` / `industrial` / `hand-crafted` | **1** (native) — dashboards / data tables / app surfaces benefit from native momentum |
 | **3/3** | atmospheric | **4** (Lenis + ScrollTrigger sync), check Tier 5 escalation criteria |
-| **3/3** | restraint | **1** (native) — explicit override required to enable smooth scroll on restraint vibe |
+| **3/3** | restraint | **1** (native) — override required |
+
+### Step 2c — Component-scope (per `component-scope.md`)
+
+Component-scope outputs skip Phase 7 macro-shell; no scroll runtime emitted regardless of tier. Component's parent page decides its own tier.
 
 ### Step 3 — ScrollSmoother (Tier 5) escalation gate
 
@@ -79,7 +98,7 @@ Write final tier choice to `plans/{date}-{slug}/visual-direction.md`:
 
 ## Tier 1 — Native scroll
 
-**Default for restraint vibes + touch + reduced-motion.** Zero JS, zero CSS overhead.
+**Hard-guard fallback** (touch + reduced-motion + intensity 0/3 + CDN failure). Also default for generic-tier restraint vibes. Zero JS, zero CSS overhead.
 
 ### Setup
 - No init code
@@ -139,7 +158,7 @@ html {
 
 ## Tier 3 — Lenis
 
-**Default for atmospheric vibes at intensity 2/3.** Lightweight (~3.5 KB gz), free, MIT.
+**Default for landing/portfolio at intensity 1-2/3 (any vibe).** Also default for generic-tier atmospheric vibes at intensity 2/3+. Lightweight (~3.5 KB gz), free, MIT.
 
 ### Install (vanilla HTML)
 
@@ -538,7 +557,7 @@ For any output where Phase 2e.1 chose Tier ≥ 2, verify at Phase 8:
 User mentions in brief: *"I have GSAP Business license, prefer ScrollSmoother"* → skill confirms criteria at Phase 6 plan, escalates if met.
 
 ### Mid-phase mismatch override
-If user requests `smoother` on restraint vibe (e.g., editorial), skill runs `AskUserQuestion`:
+If user requests `smoother` on a generic-tier restraint vibe (e.g., dashboard + brutalist), skill runs `AskUserQuestion`:
 > Smooth scroll on editorial vibe contradicts the curated default (0/7 human editorial landings analyzed use smooth scroll). Confirm override?
 > - Yes — log override + reason
 > - No — fall back to vibe-gated tier

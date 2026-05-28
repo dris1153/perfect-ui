@@ -488,30 +488,96 @@
 
 </div>
 
+<!-- Lenis (Tier 3 smooth scroll — v2.5.1+ rule: landing/portfolio auto-Lenis regardless of vibe) -->
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+
+<!-- GSAP + ScrollTrigger (Tier 4 sync — page uses scroll-triggered reveals) -->
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
 <script>
-  (function () {
-    if (typeof window.gsap === 'undefined') return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var gsap = window.gsap;
-    if (window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
-    gsap.defaults({ ease: 'power3.out', duration: 0.9 });
+/*
+  Tier 3-4 Lenis setup — verbatim pattern from references/smooth-scroll-flow.md.
+  Decision rationale (auto-applied at Phase 2e.1):
+  - Page type: landing (special tier) → type-gated auto-Lenis regardless of vibe (v2.5.1+)
+  - Vibe: editorial — previously would have stayed native (Augen/Paperclip pattern)
+  - Motion intensity: 2/3
+  - Hard guards: reduced-motion + touch-primary + CDN failure + intensity 0/3
+  → Tier 3 Lenis (editorial config: slower lerp 0.1 for premium-but-restrained feel)
+    + Tier 4 ScrollTrigger sync because page uses scroll-triggered reveals.
+*/
+(function () {
+  'use strict';
 
-    // Hero masked line reveal
-    var lines = document.querySelectorAll('.ex-h1 .line-inner');
-    var tl = gsap.timeline();
-    tl.to(document.querySelectorAll('.reveal-fade'), { opacity: 1, duration: 0.6 }, 0);
-    if (lines.length) tl.to(lines, { y: '0%', duration: 1.2, stagger: 0.12, ease: 'power4.out' }, 0.1);
+  // ---- Hard guards (NON-NEGOTIABLE) ------------------------------
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.documentElement.classList.add('lenis-disabled');
+    return; // a11y
+  }
+  if (window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+    document.documentElement.classList.add('lenis-disabled');
+    return; // touch-primary uses native momentum
+  }
+  if (typeof window.Lenis === 'undefined' || typeof window.gsap === 'undefined') {
+    document.documentElement.classList.add('lenis-disabled');
+    return; // CDN failure — graceful fallback
+  }
 
-    // Scroll reveals
-    document.querySelectorAll('.reveal').forEach(function (el) {
-      gsap.to(el, {
-        y: 0, opacity: 1, duration: 0.9,
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
-      });
+  var gsap = window.gsap;
+
+  // ---- Lenis init — editorial config (lerp 0.1, less aggressive than luxury 0.08) ----
+  var lenis = new window.Lenis({
+    lerp: 0.1,
+    duration: 1.2,
+    smoothWheel: true,
+    syncTouch: false,
+    easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); }
+  });
+
+  window.__lenis = lenis;
+
+  // ---- GSAP / ScrollTrigger sync (Tier 4) ----
+  if (window.ScrollTrigger) {
+    gsap.registerPlugin(window.ScrollTrigger);
+    gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+    lenis.on('scroll', window.ScrollTrigger.update);
+  } else {
+    requestAnimationFrame(function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
     });
-  })();
+  }
+
+  gsap.defaults({ ease: 'power3.out', duration: 0.9 });
+
+  // ---- Hero masked line reveal ----
+  var lines = document.querySelectorAll('.ex-h1 .line-inner');
+  var tl = gsap.timeline();
+  tl.to(document.querySelectorAll('.reveal-fade'), { opacity: 1, duration: 0.6 }, 0);
+  if (lines.length) tl.to(lines, { y: '0%', duration: 1.2, stagger: 0.12, ease: 'power4.out' }, 0.1);
+
+  // ---- Scroll-triggered reveals ----
+  document.querySelectorAll('.reveal').forEach(function (el) {
+    gsap.to(el, {
+      y: 0, opacity: 1, duration: 0.9,
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+    });
+  });
+
+  // ---- Anchor link routing through Lenis ----
+  var NAV_OFFSET = 56;
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var hash = link.getAttribute('href');
+      if (hash === '#' || hash.length < 2) return;
+      var target = document.querySelector(hash);
+      if (!target) return;
+      e.preventDefault();
+      lenis.scrollTo(target, { offset: -NAV_OFFSET, duration: 1.4 });
+    });
+  });
+})();
 </script>
 </body>
 </html>

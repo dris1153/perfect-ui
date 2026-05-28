@@ -85,9 +85,11 @@ Auto-detect at entry to Phase 7:
 
 See `gsap-integration.md` for full detection rules + skill selection table + invocation pseudo-code + fallback patterns.
 
-## Step 2.6 — Smooth scroll setup (vibe-gated, auto)
+## Step 2.6 — Smooth scroll setup (type-gated for landing/portfolio, vibe-gated for generic)
 
 Apply the smooth-scroll tier selected at Phase 2e.1 (stored in `plans/{slug}/visual-direction.md § Smooth Scroll`). Full decision tree + per-tier setup + guards + audit checklist live in `references/smooth-scroll-flow.md`.
+
+**v2.5.1+ rule:** landing AND portfolio outputs auto-get Lenis (Tier 3 at intensity 1-2/3, Tier 4 at 3/3) regardless of vibe. Generic tier remains vibe-gated. Hard guards (reduced-motion / touch / intensity 0/3 / CDN failure) always force Tier 1 native at runtime regardless of authored tier.
 
 ```
 Resolve smooth-scroll tier from visual-direction.md:
@@ -112,7 +114,9 @@ Resolve smooth-scroll tier from visual-direction.md:
 - `(hover: none) and (pointer: coarse)` → early return (touch-primary devices use native momentum)
 - `typeof window.Lenis === 'undefined'` (or ScrollSmoother) → early return (CDN/module failure graceful fallback)
 
-**Anti-slop check:** If selected tier ≥ 3 AND vibe is restraint set (minimal / editorial / brutalist / industrial / hand-crafted), confirm Phase 2e.1 override was logged. Otherwise force back to Tier 1 — restraint vibes default to native scroll per `smooth-scroll-flow.md § Decision matrix`.
+**Anti-slop check (v2.5.1+):** Type-aware check.
+- **Landing OR Portfolio**: NO vibe check needed — any vibe + any intensity 1-3/3 gets Lenis (Tier 3 or 4). Restraint vibes (editorial / brutalist / minimal / industrial / hand-crafted) on landing/portfolio surfaces also get Lenis — this is intentional per the type-gate rule. No override required.
+- **Generic tier**: if selected tier ≥ 3 AND vibe is restraint set, confirm Phase 2e.1 override was logged. Otherwise force back to Tier 1 — dashboards / admin / data-tables benefit from native momentum.
 
 See `smooth-scroll-flow.md` for: full setup code (vanilla + React/Next.js) per tier, anchor link routing patterns, common pitfalls (mobile rubber-band, ScrollTrigger desync, iframe blocking, sticky flicker, tab visibility rAF drain), bundle budget table, ScrollSmoother license + override protocol.
 
