@@ -85,6 +85,37 @@ Auto-detect at entry to Phase 7:
 
 See `gsap-integration.md` for full detection rules + skill selection table + invocation pseudo-code + fallback patterns.
 
+## Step 2.6 — Smooth scroll setup (vibe-gated, auto)
+
+Apply the smooth-scroll tier selected at Phase 2e.1 (stored in `plans/{slug}/visual-direction.md § Smooth Scroll`). Full decision tree + per-tier setup + guards + audit checklist live in `references/smooth-scroll-flow.md`.
+
+```
+Resolve smooth-scroll tier from visual-direction.md:
+
+1. Read tier (1-5) chosen at Phase 2e.1
+2. Branch by tier:
+   • Tier 1 (native) → no JS scroll runtime; add scroll-margin-top to anchor targets
+   • Tier 2 (CSS smooth) → html { scroll-behavior: smooth } + reduced-motion media query
+   • Tier 3 (Lenis) → emit lenis.js with hard guards (prefers-reduced-motion + touch-primary + CDN failure) + lazy rAF loop + window.__lenis export
+   • Tier 4 (Lenis + ScrollTrigger sync) → Tier 3 setup + gsap.ticker.add(lenis.raf) + lenis.on('scroll', ScrollTrigger.update)
+   • Tier 5 (ScrollSmoother, PAID) → verify license logged in overrides.md; wrap <body> content in #smooth-wrapper > #smooth-content; init ScrollSmoother.create(); apply data-speed/data-lag attrs per plan
+3. Route ALL anchor links through chosen scroll API (lenis.scrollTo / ScrollSmoother.scrollTo) — NEVER raw window.scrollTo when Tier ≥ 3
+4. Wire modal/dropdown lock pattern (Tier 3-5):
+   • MutationObserver on body.scroll-locked class → lenis.stop() / lenis.start()
+   • OR imperative pause when modal opens
+5. If Tier ≥ 4 and Phase 6 plan included pinned scroll-scrub: emit ScrollTrigger setup per gsap-integration.md
+6. If Tier 5: ensure plans/{slug}/overrides.md § ScrollSmoother Escalation log is present with ≥2 criteria + license confirmation
+```
+
+**Mandatory guards in emitted code (Tier 3-5):**
+- `prefers-reduced-motion: reduce` → early return (no smooth scroll runtime init)
+- `(hover: none) and (pointer: coarse)` → early return (touch-primary devices use native momentum)
+- `typeof window.Lenis === 'undefined'` (or ScrollSmoother) → early return (CDN/module failure graceful fallback)
+
+**Anti-slop check:** If selected tier ≥ 3 AND vibe is restraint set (minimal / editorial / brutalist / industrial / hand-crafted), confirm Phase 2e.1 override was logged. Otherwise force back to Tier 1 — restraint vibes default to native scroll per `smooth-scroll-flow.md § Decision matrix`.
+
+See `smooth-scroll-flow.md` for: full setup code (vanilla + React/Next.js) per tier, anchor link routing patterns, common pitfalls (mobile rubber-band, ScrollTrigger desync, iframe blocking, sticky flicker, tab visibility rAF drain), bundle budget table, ScrollSmoother license + override protocol.
+
 ## Step 3 — Mid-implementation spot-checks
 After each section completes, verify:
 - **Imports list** — any forbidden icon / font library?

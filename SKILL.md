@@ -177,6 +177,28 @@ Default suggestion = vibe matrix from `references/motion-patterns.md` § Vibe ×
 
 Save to `plans/{date}-{slug}/visual-direction.md`. Detailed: `references/visual-direction-guide.md` + `references/motion-patterns.md`.
 
+### 2e.1. Smooth Scroll Decision (vibe-gated, auto)
+
+After motion intensity locked, apply the smooth-scroll 5-tier ladder per `references/smooth-scroll-flow.md` § Decision matrix.
+
+**Default = vibe-gated** (anti-slop aligned):
+
+| Motion intensity | Vibe set | Tier |
+|---|---|---|
+| 0-1/3 | any | Tier 1 (native) — Tier 2 CSS if anchor-heavy |
+| 2/3 | atmospheric (`luxury` / `glass-tech` / `organic` / `retro-futuristic` / `art-deco` / `playful`) | **Tier 3 (Lenis)** |
+| 2/3 | restraint (`minimal` / `editorial` / `brutalist` / `industrial` / `hand-crafted`) | Tier 1 (native) |
+| 3/3 | atmospheric | **Tier 4 (Lenis + ScrollTrigger sync)** |
+| 3/3 | restraint | Tier 1 (override required for smooth scroll) |
+
+**Hard guards** (force Tier 1 at runtime regardless of authored tier): `prefers-reduced-motion: reduce`, touch-primary device (`hover: none AND pointer: coarse`), CDN failure.
+
+**Tier 5 (GSAP ScrollSmoother, PAID)** auto-suggested ONLY when ≥2 of: 3+ parallax `data-speed`/`data-lag` sections planned, 4+ pinned scroll-scrub sections planned, Club GreenSock license confirmed. Always logged in `plans/{slug}/overrides.md`.
+
+Override path: `--scroll=native|css|lenis|lenis-st|smoother` flag OR inline brief mention OR mid-phase `AskUserQuestion` when mismatch detected. All overrides logged.
+
+Save tier choice to `plans/{date}-{slug}/visual-direction.md § Smooth Scroll`. Full decision tree + per-tier setup + guards + audit checklist: `references/smooth-scroll-flow.md`.
+
 ## Phase 3 — Custom Icon Set (NO emoji, NO library)
 
 Type affects icon **inventory**, not pipeline:
@@ -342,6 +364,7 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 | Pre-flight scan (auto-detect existing tokens before Phase 2) | `references/preflight-scan.md` |
 | Macrostructure catalog (7 page-shape archetypes — Marquee Hero / Bento Grid / Long Document / Manifesto / Stat-Led / Workbench / Letter) | `references/macrostructure-catalog.md` |
 | GSAP skill integration (intensity 3/3 + keyword detection → optional gsap-* skill triggering with inline fallback) | `references/gsap-integration.md` |
+| Smooth scroll flow (5-tier ladder Native→CSS→Lenis→Lenis+ScrollTrigger→ScrollSmoother + vibe-gated decision matrix + per-tier setup + guards + Phase 8 audit) | `references/smooth-scroll-flow.md` |
 | Workflow — Phase 1 brainstorm protocol (inline) | `references/workflow-brainstorm.md` |
 | Workflow — Phase 6 plan protocol (inline) | `references/workflow-plan.md` |
 | Workflow — Phase 7 implement protocol (inline) | `references/workflow-implement.md` |
@@ -400,5 +423,7 @@ For everything else — pricing pages, blog landings, about pages, dashboards, a
 | "User pasted a URL — let me just clone its layout pixel-for-pixel" | NO. `--study` runs URL safety refusal first (themeforest / framer-templates / dribbble shots are blocked). If safe, extract DNA (palette + fonts + macrostructure) NOT pixel layout. Emit diagnosis report; user picks build-with-DNA / lock-to-design.md / stop. |
 | "It's just a button — skip the whole 8-phase pipeline" | YES, that's exactly what component-scope is for. Multi-signal detect (brief ≤30 words + UI element keyword + `--component`). Keep vibe / palette / typography / motion personality. Skip macrostructure / hero / Phase 8 visual / log.json. Emit component + `.preview.*` 8-state wrapper. |
 | "All Phases 1-6 picks look fine, let me start emitting code now" | NO. Phase 7 ENTRY runs the 10-field `<design_plan>` pre-emit verification (`references/preemit-design-plan.md`). Collect-all-errors — any FAIL routes back to the relevant phase. Block stamped in CSS + plan.md before any code. |
+| "Just add Lenis to every site, smooth scroll = premium feel" | NO. 0/7 human-crafted editorial landings analyzed (Augen, Paperclip, Marblex) use smooth scroll. *Restraint is confident.* Phase 2e.1 is vibe-gated — atmospheric vibes (luxury / glass-tech / organic / retro-futuristic / art-deco / playful) get Lenis at intensity ≥2/3; restraint vibes (editorial / brutalist / minimal / industrial / hand-crafted) default to native scroll. Hard guards (`prefers-reduced-motion` + touch-primary) always force native. See `references/smooth-scroll-flow.md`. |
+| "User wants ScrollSmoother, just ship it" | NO. ScrollSmoother is PAID Club GreenSock plugin. Skill cannot assume license. Tier 5 escalation requires ≥2 of: 3+ parallax `data-speed` sections, 4+ pinned scroll-scrub sections, license explicitly confirmed at brief. All Tier 5 picks logged in `plans/{slug}/overrides.md` with criteria checklist + license confirmation date. |
 
 **Remember:** A perfect page is one where icons, copy, color, type, motion, and effects feel made by the same hand. **2D illustration is the default visual language; effects are atmospheric layers; 3D models are forbidden as hero subjects.** The whole point of this skill is enforcing that cohesion regardless of page type, with rich anatomy reserved for landing/portfolio and universal craft for everything else.

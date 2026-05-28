@@ -19,10 +19,10 @@
 
   "hero": {
     "readme_link": "README",
-    "h1_line1": "Landings",
-    "h1_line2": "y portfolios",
-    "h1_line3": "que no <em>parecen</em>",
-    "h1_line4": "<em>hechos por IA.</em>",
+    "h1_line1": "Diseño UI",
+    "h1_line2": "que no",
+    "h1_line3": "<em>parece</em>",
+    "h1_line4": "<em>hecho por IA.</em>",
     "sub": "Un skill de Claude Code que orquesta descubrimiento de vibe, iconos personalizados, ilustraciones 2D, efectos shader opcionales y motion escalado por vibe — construido para imponer cohesión, no para generar slop.",
     "stat_phases": "Phases",
     "stat_vibes": "Vibe anchors",

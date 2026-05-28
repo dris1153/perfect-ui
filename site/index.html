@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>perfect-ui — Landing pages and portfolios that don't look AI-made</title>
+  <title>perfect-ui — UI design that doesn't look AI-made</title>
   <script>document.documentElement.classList.remove('no-js');</script>
 
-  <meta name="description" content="A Claude Code skill that orchestrates vibe-driven design of cohesive landing pages and portfolios. Anti-slop enforcement, custom icons, 2D-first visual craft, vibe-scaled motion." />
+  <meta name="description" content="A Claude Code skill that orchestrates vibe-driven UI design — landing pages, portfolios, dashboards, any page type. Anti-slop enforcement, custom icons, 2D-first visual craft, vibe-scaled motion." />
   <meta name="theme-color" content="#F5F1E8" />
 
   <!-- OpenGraph -->
-  <meta property="og:title" content="perfect-ui — Landing pages that don't look AI-made" />
+  <meta property="og:title" content="perfect-ui — UI design that doesn't look AI-made" />
   <meta property="og:description" content="A Claude Code skill enforcing cohesion: custom icons, vibe-paired typography, 2D-first craft, vibe-scaled motion, tier-filtered anti-slop audit." />
   <meta property="og:image" content="OG-perfect-ui.svg" />
   <meta property="og:type" content="website" />
@@ -24,13 +24,14 @@
   <!-- Fonts — Latin (Instrument Serif + Geist + Geist Mono) + CJK fallback (Noto SC/KR/JP) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,400..700,30..90;1,9..144,400..700,30..90&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet" />
 
-  <!-- Styles -->
+  <!-- Styles (themes.css must load AFTER tokens.css — theme blocks override the editorial defaults) -->
   <link rel="stylesheet" href="css/tokens.css" />
+  <link rel="stylesheet" href="css/themes.css" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/components.css" />
@@ -50,6 +51,7 @@
     gsap_decision: motion 2/3 + scroll choreography keyword → GSAP loaded (CDN); fallback CSS-only via reveal classes
     lenis_decision: motion 2/3 → Lenis loaded (CDN); guards = prefers-reduced-motion + touch-primary devices skip; ScrollTrigger synced via gsap.ticker; lerp 0.1, duration 1.2 (Premium personality)
     i18n: en + vi + zh + ko + ja + es with glossary lock (technical terms stay EN)
+    themes: 11 vibe anchors (Minimal / Editorial-default / Brutalist / Retro-futuristic / Organic / Luxury / Playful / Industrial / Art-deco / Glass-tech / Hand-crafted) via [data-theme] CSS-var swap; fonts lazy-loaded on popover open; per-theme custom P-logo SVG; hybrid generate-via-perfect-ui prompt-copy link in popover footer
     pre_emit_verdict: ALL PASS
   -->
 </head>
@@ -77,7 +79,29 @@
       <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
     </ul>
 
-    <div class="nav-right" style="display:inline-flex; align-items:center; gap:12px;">
+    <div class="nav-right" style="display:inline-flex; align-items:center; gap:10px;">
+      <!-- THEME SWITCHER -->
+      <div class="theme-switcher" data-theme-switcher data-open="false">
+        <button class="theme-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Select theme">
+          <span class="theme-trigger-num">02</span>
+          <span class="theme-trigger-code">EDT</span>
+          <svg class="theme-trigger-chev" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M1 1l4 4 4-4"/>
+          </svg>
+        </button>
+        <div class="theme-popover" role="listbox" aria-label="Theme catalog">
+          <div class="theme-popover-head">
+            <span class="theme-popover-title">Theme — <em>11 vibes</em></span>
+            <span class="theme-popover-title" style="color:var(--ink-subtle);">designed via perfect-ui</span>
+          </div>
+          <div class="theme-grid" role="presentation"></div>
+          <div class="theme-popover-foot">
+            <p>Each theme = one vibe anchor from <code>visual-direction-guide.md</code> — palette + typography + motion ease + custom P-logo. DOM structure stays Editorial; example pages remain Editorial-only.</p>
+            <a class="theme-generate" href="#" data-theme-generate>Generate custom via perfect-ui →</a>
+          </div>
+        </div>
+      </div>
+
       <!-- LANGUAGE SWITCHER -->
       <div class="lang-switcher" data-lang-switcher data-open="false">
         <button class="lang-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"
@@ -139,10 +163,10 @@
     </div>
 
     <div class="grid-12">
-      <h1 class="h1 split-lines" aria-label="Landing pages and portfolios that don't look AI-made.">
-        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line1">Landing pages</span></span>
-        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line2">and portfolios</span></span>
-        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line3">that don't <em>look</em></span></span>
+      <h1 class="h1 split-lines" aria-label="UI design that doesn't look AI-made.">
+        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line1">UI design</span></span>
+        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line2">that doesn't</span></span>
+        <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line3"><em>look</em></span></span>
         <span class="line-mask"><span class="line-inner" data-i18n-html="hero.h1_line4"><em>AI-made.</em></span></span>
       </h1>
 
@@ -944,7 +968,8 @@
 <!-- Lenis (smooth scroll — Tier 2 motion, guarded by reduced-motion + touch checks) -->
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 
-<!-- Site scripts (load order matters: i18n → lenis → animations → main) -->
+<!-- Site scripts (load order: theme → i18n → lenis → tabs → faq → animations → main) -->
+<script src="js/theme.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/lenis.js"></script>
 <script src="js/tabs.js"></script>

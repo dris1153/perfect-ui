@@ -103,13 +103,32 @@
 .meta a { color: var(--ink-muted); }
 .h1 {
   font-size: clamp(48px, 8vw, 116px);
-  line-height: 0.92;
+  /* Unified Latin-script line-height — EN / ES / VI all share 1.15.
+     Was 0.98 base + per-lang/theme overrides; consolidated for consistency. */
+  line-height: 1.15;
   letter-spacing: -0.025em;
   grid-column: 1 / span 9;
 }
 .h1 em {
   color: var(--accent);
   font-style: italic;
+}
+
+/* ============ HERO LINE-HEIGHT MATRIX ============
+   Latin scripts (EN / ES / VI) inherit 1.15 from .h1 base.
+   CJK (ZH / KO / JA) overrides because dense glyphs + marks need different breathing. */
+
+body.lang-zh .h1,
+body.lang-ko .h1,
+body.lang-ja .h1 {
+  line-height: 1.08;
+}
+
+/* Vietnamese-specific: tone marks (Ế Ố Ấ etc.) need vertical headroom
+   INSIDE the masked-reveal animation box. EN/ES don't carry tone marks. */
+body.lang-vi .split-lines > .line-mask {
+  padding-top: 0.05em;
+  padding-bottom: 0.04em;
 }
 .hero-sub {
   grid-column: 9 / span 4;
@@ -955,6 +974,185 @@ footer {
 body:not(.i18n-loading) [data-i18n],
 body:not(.i18n-loading) [data-i18n-html] {
   transition: opacity var(--dur-standard) var(--ease-signature);
+}
+
+/* ============ THEME SWITCHER (tile-grid popover) ============ */
+.theme-switcher {
+  position: relative;
+  display: inline-flex;
+}
+.theme-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  border: 1px solid var(--rule);
+  padding: 8px 10px 8px 12px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: color var(--dur-standard) var(--ease-signature),
+              border-color var(--dur-standard) var(--ease-signature);
+}
+.theme-trigger:hover { color: var(--ink); border-color: var(--ink); }
+.theme-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.theme-trigger-num {
+  color: var(--ink);
+  font-weight: 500;
+}
+.theme-trigger-code {
+  color: var(--accent);
+  font-weight: 500;
+}
+.theme-trigger-chev {
+  width: 10px;
+  height: 10px;
+  transition: transform var(--dur-standard) var(--ease-signature);
+}
+.theme-switcher[data-open="true"] .theme-trigger-chev { transform: rotate(180deg); }
+
+.theme-popover {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 304px;
+  background: var(--bg-elev);
+  border: 1px solid var(--ink);
+  box-shadow: 6px 6px 0 0 var(--ink);
+  z-index: 60;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px);
+  transition: opacity var(--dur-standard) var(--ease-signature),
+              transform var(--dur-standard) var(--ease-signature);
+}
+.theme-switcher[data-open="true"] .theme-popover {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.theme-popover-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--rule);
+}
+.theme-popover-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.theme-popover-title em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.theme-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  aspect-ratio: 1 / 1.1;
+  padding: 6px 6px 5px;
+  background: var(--tile-bg);
+  color: var(--tile-ink);
+  border: 1px solid var(--tile-ink);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: transform var(--dur-quick) var(--ease-signature),
+              box-shadow var(--dur-quick) var(--ease-signature);
+}
+.theme-tile:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 0 var(--tile-ink);
+}
+.theme-tile:focus-visible {
+  outline: 2px solid var(--tile-accent);
+  outline-offset: 2px;
+}
+.theme-tile[data-current="true"] {
+  box-shadow: 0 0 0 2px var(--accent);
+  outline-offset: 0;
+}
+.theme-tile-num {
+  font-size: 9px;
+  font-weight: 700;
+  opacity: 0.85;
+}
+.theme-tile-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tile-accent);
+}
+.theme-tile-code {
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.theme-popover-foot {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.theme-popover-foot p {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--ink-subtle);
+  line-height: 1.5;
+}
+.theme-generate {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+  align-self: flex-start;
+  cursor: pointer;
+  transition: color var(--dur-standard) var(--ease-signature);
+}
+.theme-generate:hover { color: var(--accent); }
+.theme-generate[data-copied="true"] { color: var(--accent); }
+
+@media (max-width: 900px) {
+  .theme-popover {
+    right: auto;
+    left: 0;
+    width: 280px;
+  }
 }
 
 /* ============ CJK FONT FALLBACK ============

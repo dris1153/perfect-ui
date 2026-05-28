@@ -19,10 +19,10 @@
 
   "hero": {
     "readme_link": "README",
-    "h1_line1": "ランディングと",
-    "h1_line2": "ポートフォリオ —",
-    "h1_line3": "<em>AIが作ったように</em>",
-    "h1_line4": "<em>見えないものを。</em>",
+    "h1_line1": "UI デザイン",
+    "h1_line2": "AIが作った",
+    "h1_line3": "<em>ように</em>",
+    "h1_line4": "<em>見えない。</em>",
     "sub": "Vibe ディスカバリー、カスタムアイコン、2D イラスト、オプションのシェーダーエフェクト、vibe スケール motion をオーケストレーションする Claude Code skill — slop を生成するのではなく、一貫性を強制するために作られました。",
     "stat_phases": "Phase",
     "stat_vibes": "Vibe anchor",

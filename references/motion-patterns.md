@@ -146,14 +146,37 @@ Need scroll-linked motion?
 
 ### D. Smooth scroll baseline
 
+**Authoritative decision tree + per-tier setup + guards + audit moved to `smooth-scroll-flow.md`.** This section is the brief recap; consult flow file for full 5-tier ladder, escalation criteria, anchor link routing per tier, modal lock patterns, and Phase 8 audit checklist.
+
 ```
-Want smooth scroll?
-├─ Intensity ≤ 1/3 → No. Native scroll. Lenis adds 10KB for nothing.
-├─ Intensity = 2/3 → Lenis baseline IF vibe is luxury / glass-tech / organic
-│                    (motion-pacing benefits)
-└─ Intensity = 3/3 → Lenis required (smooth scroll feeds GSAP ScrollTrigger
-                     for consistent feel)
+Want smooth scroll? Vibe-gated default at Phase 2e.1 — apply smooth-scroll-flow.md decision matrix.
+
+Hard guards (always force Tier 1 native scroll regardless of authored tier):
+├─ prefers-reduced-motion: reduce
+└─ (hover: none) and (pointer: coarse)  ← touch-primary devices
+
+Then intensity × vibe:
+├─ Intensity ≤ 1/3 → Tier 1 (native) — OR Tier 2 (CSS smooth) if anchor-heavy
+├─ Intensity = 2/3:
+│    ├─ Atmospheric (luxury / glass-tech / organic / retro-futuristic / art-deco / playful)
+│    │   → Tier 3 (Lenis ~3.5KB gz)
+│    └─ Restraint (minimal / editorial / brutalist / industrial / hand-crafted)
+│        → Tier 1 (native) — Augen/Paperclip pattern: 0/7 human editorial pages use smooth scroll
+└─ Intensity = 3/3:
+     ├─ Atmospheric → Tier 4 (Lenis + GSAP ScrollTrigger sync via gsap.ticker)
+     │   └─ Auto-suggest Tier 5 (ScrollSmoother) only if ≥2 criteria hit:
+     │       • 3+ parallax data-speed/data-lag sections planned
+     │       • 4+ pinned scroll-scrub sections planned
+     │       • Club GreenSock license explicitly confirmed at brief
+     │   (ScrollSmoother is PAID — always logs override + license confirmation)
+     └─ Restraint → Tier 1 (override required to enable smooth scroll on restraint vibe)
+
+Override path: --scroll=native|css|lenis|lenis-st|smoother flag, inline brief mention,
+or mid-phase AskUserQuestion when mismatch detected. All overrides logged in
+plans/{slug}/overrides.md § Smooth Scroll Override.
 ```
+
+**See `smooth-scroll-flow.md` for:** full setup code (vanilla + React/Next.js) per tier, Lenis + ScrollTrigger sync wiring, anchor link routing per tier, modal/dropdown stop pattern, common pitfalls (mobile rubber-band, ScrollTrigger desync, iframe blocking, sticky flicker), bundle budget table, ScrollSmoother license + override protocol, Phase 8 audit checklist (11 items).
 
 ## Approved Patterns
 

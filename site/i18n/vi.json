@@ -19,10 +19,10 @@
 
   "hero": {
     "readme_link": "README",
-    "h1_line1": "Trang landing",
-    "h1_line2": "và portfolio",
-    "h1_line3": "không <em>trông</em>",
-    "h1_line4": "<em>như do AI làm.</em>",
+    "h1_line1": "Thiết kế UI",
+    "h1_line2": "không trông",
+    "h1_line3": "<em>giống</em>",
+    "h1_line4": "<em>do AI làm.</em>",
     "sub": "Skill Claude Code điều phối khám phá vibe, custom icon, illustration 2D, shader effect tuỳ chọn, và motion theo vibe — xây để áp đặt sự nhất quán, không phải sinh slop.",
     "stat_phases": "Phase",
     "stat_vibes": "Vibe anchor",

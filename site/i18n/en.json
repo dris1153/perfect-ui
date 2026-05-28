@@ -19,9 +19,9 @@
 
   "hero": {
     "readme_link": "README",
-    "h1_line1": "Landing pages",
-    "h1_line2": "and portfolios",
-    "h1_line3": "that don't <em>look</em>",
+    "h1_line1": "UI design",
+    "h1_line2": "that doesn't",
+    "h1_line3": "<em>look</em>",
     "h1_line4": "<em>AI-made.</em>",
     "sub": "A Claude Code skill orchestrating vibe discovery, custom icons, 2D illustrations, optional shader effects, and vibe-scaled motion — built to enforce cohesion, not generate slop.",
     "stat_phases": "Phases",
