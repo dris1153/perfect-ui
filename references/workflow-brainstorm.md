@@ -37,6 +37,21 @@ If log.json doesn't exist, silent (first build for this project). Create on firs
 
 See `macrostructure-catalog.md § Diversification rule` for full hard + soft rules.
 
+## Studied-DNA input mode (NEW v2.5.0)
+
+When `--study <URL>` ran and produced extracted DNA (see `study-mode.md`), Phase 1 brief uses extracted DNA as **LOCKED inputs** — skip vibe / palette / typography questions (already locked from the studied source).
+
+User still answers:
+
+- Audience
+- Use case
+- Tone
+- Macrostructure pick uses extracted macrostructure as default (can override)
+
+**Diversification rule SUSPENDED** for studied-DNA runs (`.perfect-ui/log.json` entry records `theme: studied-DNA`).
+
+If user pivots ("use Linen theme instead" / "ignore the DNA"), route back to normal Phase 1 questions; diversification resumes.
+
 ## Step 1 — Scope sanity check
 - If user request describes 3+ independent concerns (e.g. "build a landing + dashboard + admin"), flag for decomposition before continuing. Each becomes its own brief → plan → implement cycle.
 - If trivial (single-section update, copy tweak, color swap), produce a 5-line brief inline and skip the approval gate.

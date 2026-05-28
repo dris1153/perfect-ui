@@ -35,6 +35,24 @@ Run audit per `redesign-audit-checklist.md`. Output: `plans/{date}-{slug}/audit.
 
 Then proceed to Phase 0.5 with audit context attached.
 
+### `--study <URL>` mode (NEW v2.5.0)
+
+If `--study <URL>` flag passed OR user provides URL with intent keywords ("study this", "extract DNA", "use as reference"), enter Study Mode.
+
+Routing:
+
+1. Phase 0 detects `--study` mode
+2. Run `study-mode.md § URL safety` refusal check
+3. If passes: run `study-mode.md § URL fetch` + `§ DNA extraction`
+4. Emit diagnosis report per `study-mode.md § Diagnosis report format`
+5. Wait for user response (3-way branch):
+   - "Build with this DNA" → continue to Phase 0.5 with extracted DNA as locked inputs
+   - "Lock the DNA" → emit `design.md`, end session
+   - Silence / "stop" → diagnosis IS deliverable, end session
+6. If "build with DNA" → Phase 0.5 uses Studied-DNA input mode (`workflow-brainstorm.md § Studied-DNA input mode`); diversification suspended
+
+See `study-mode.md` for full protocol.
+
 ---
 
 ## Phase 0.1 — Pre-flight scan (auto-detect)
@@ -131,6 +149,24 @@ Surface diversification check as one-line summary before proceeding to Phase 1:
 If log.json doesn't exist, silent (first build for this project). Will be created at Phase 7-end.
 
 See `macrostructure-catalog.md § Diversification rule` for full hard + soft rules.
+
+### Step 7 — Component-scope detection (NEW v2.5.0)
+
+After type detection, check component-scope signals (per `component-scope.md § When this applies`):
+
+1. Multi-signal check: brief ≤30 words + UI element keyword + `--component` flag
+2. If 2+ signals fire → component scope confirmed. State explicitly: *"Component-scope: 2 signals matched (short brief + 'button' keyword). Skipping macrostructure / nav / footer / hero enrichment."*
+3. If only 1 signal fires (ambiguous) → ask via `AskUserQuestion`: *"One component or whole page?"*. Default to component if user doesn't engage
+4. If 0 signals fire OR page-flow signals dominate → stay in page scope (current behavior)
+
+Component-scope routing:
+- Skip Phase 2.5 macrostructure pick, Phase 2c spatial language, hero enrichment
+- Keep Phase 2 vibe/palette/typography, Phase 2.6 Brand Motion Identity
+- Phase 7 collapses page-level emission (see `workflow-implement.md § Step 1.6`)
+- Phase 8 runs subset (see `workflow-audit.md § Step Y`)
+- Skip `.perfect-ui/log.json` write (component runs don't rotate)
+
+See `component-scope.md` for full protocol + signal list.
 
 ### No refusals
 The skill does NOT refuse any `--type` value. Dashboard / admin / SaaS-app / e-commerce are accepted with the evidence-base disclosure above. When another skill is genuinely a better fit (full app architecture, full Shopify backend, exact screenshot replication), skill suggests via SKILL.md § Beyond — never force-redirects.

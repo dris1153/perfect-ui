@@ -154,6 +154,46 @@ grep -rE "window\.addEventListener\(['\"]scroll['\"]" app/
 
 Document violations in audit report per `Step H — Output report` template. Reference `gsap-integration.md` for fix guidance.
 
+### Step Y — Component-scope subset (v2.5.0+, runs ONLY if component-scope detected at Phase 0.5)
+
+When Phase 0.5 detected component-scope (see `component-scope.md`), Phase 8 audit runs a filtered subset:
+
+**Skip:**
+- Step F Visual checks (no full page to render)
+- Macrostructure-specific checks (component has no macrostructure)
+- Diversification rule check (component runs don't rotate)
+- Marketing-only grep checks (component is element, not section)
+
+**Keep:**
+- Step B `[universal]` grep checks — emoji / icon libraries / forbidden fonts / inline hex / motion respect
+- Anti-slop universal subset (contrast, a11y, typography gates)
+- **8-state coverage check** — verify component renders correctly in all 8 states (default / hover / focus / active / disabled / loading / error / success). Read `.preview.*` wrapper, confirm 8 labelled rows present.
+
+Output report format (component-scope):
+
+```markdown
+# Anti-slop audit — {slug} (component-scope)
+
+## Context
+- Component: <type>
+- Vibe: <vibe>
+- Motion personality: <personality>
+
+## Filter
+- Applicable: universal rules only + 8-state coverage
+- Skipped: visual / macrostructure / diversification / marketing
+
+## Grep + 8-state results
+| Check | Result |
+|-------|--------|
+| ... | ... |
+
+## Verdict
+- PASS / FAIL
+```
+
+See `component-scope.md` for full short-circuit logic.
+
 ### Step G — Performance + a11y checks
 
 - Lighthouse mobile performance ≥ 90 (≥ 80 if 3D or data-heavy app surface)

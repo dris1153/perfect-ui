@@ -4,7 +4,7 @@ description: "Design and build cohesive web pages with custom visual identity �
 license: MIT
 metadata:
   author: dris1153
-  version: "2.4.1"
+  version: "2.5.0"
 argument-hint: "[description OR existing site URL/screenshot] [--type any_page_type] [--new|--redesign] [--no-3d] [--stack nextjs|astro|vanilla]"
 ---
 
@@ -58,14 +58,20 @@ If user says only "design a website" or "build a site" → ask via `AskUserQuest
 8. **Vibe before pixels** — never write code or generate assets before the vibe is named, the palette is locked, and the typography pair is chosen.
 9. **Type-aware where it matters** — landing/portfolio (special tier) use rich type-specific anatomy + skeleton + per-vibe section archetypes; every other type (generic tier) uses `generic-page-anatomy.md` + `generic-page-skeleton.md` with sections driven by the Page-Purpose Exercise. Phase 1 brief always asks page-purpose; Phase 6 plan branches by tier; Phase 8 audit honors `[universal]` / `[marketing-only]` / `[landing/portfolio-only]` tags from § Applicability Matrix per `--type`.
 10. **Diversify across runs** — for projects with prior perfect-ui builds tracked in `.perfect-ui/log.json`, macrostructure pick at Phase 2.5 must NOT match any of the last 3 entries (hard rule). Vibe / dials / motion personality should differ from last entry (soft warnings; override OK). Read at Phase 0.5; written at Phase 7-end. See `references/macrostructure-catalog.md § Diversification rule` + `references/anti-slop-rules.md § Diversification Rule`.
+11. **Pre-emit `<design_plan>` verification (v2.5.0+)** — at Phase 7 entry, before any code emission, populate the 10-field `<design_plan>` block (macrostructure_diversification / vibe_validity / dial_alignment / motion_personality / hero_math / bento_density / label_sweep / button_contrast / honest_copy / gsap_decision) per `references/preemit-design-plan.md`. Collect-all-errors validation — any FAIL routes user back to the relevant phase; do NOT proceed until all PASS. Block stamped in BOTH the generated CSS AND `plans/{slug}/plan.md § Pre-emit verification`. Component-scope runs minimal 4-field subset (vibe_validity / motion_personality / button_contrast / honest_copy).
 
 ## Process Flow (Authoritative)
 
 ```mermaid
 flowchart TD
-    M[Phase 0: Detect Mode: new vs redesign] --> P[Phase 0.1: Pre-flight scan — auto-detect existing tokens]
+    M[Phase 0: Detect Mode: new vs redesign] --> SM{Phase 0a: --study URL?}
+    SM -->|Yes| ST[Study mode: URL safety + fetch + DNA extraction + 3-way branch]
+    SM -->|No| P[Phase 0.1: Pre-flight scan — auto-detect existing tokens]
+    ST --> P
     P --> T[Phase 0.5: Detect Type → tier route + read log.json]
-    T --> MC[Phase 2.5: Macrostructure pick — diversification check]
+    T --> CS{Phase 0.5b: Component-scope signals?}
+    CS -->|2+ signals| CB[Component-scope branch: skip macrostructure / hero / log.json]
+    CS -->|0-1 signals| MC[Phase 2.5: Macrostructure pick — diversification check]
     MC --> BM[Phase 2.6: Brand Motion Identity — pick personality]
     T --> B[Phase 1: Discovery — inline brainstorm protocol, branched per type]
     B --> C[Phase 2: Visual Direction — palette/typo/spatial/effect/motion]
@@ -73,10 +79,12 @@ flowchart TD
     D --> E[Phase 4: 2D Visual Assets — illustration / static 3D render / photo / SVG]
     E --> F{Phase 5: Visual Effect Layer?}
     F -->|Yes| G[Shader / Particle / Atmospheric via React Three Fiber or CSS]
-    F -->|No| H[Phase 6: Plan — inline plan protocol, type-aware]
-    G --> H
+    F -->|No| PE[Phase 7 entry: Pre-emit design_plan block — 10 fields verified]
+    G --> PE
+    CB --> PE
+    PE --> H[Phase 6: Plan — inline plan protocol, type-aware]
     H --> I[Phase 7: Implement — inline protocol, apply locked motion intensity]
-    I --> J[Phase 8: Anti-Slop Review + Polish]
+    I --> J[Phase 8: Anti-Slop Review + Polish — component-scope runs subset]
     J --> K[Done]
 ```
 
@@ -305,8 +313,10 @@ Run the audit inline (see `references/workflow-phases.md` § Phase 8) with `--ty
 
 | Phase | Method | Purpose |
 |-------|--------|---------|
+| 0a | `--study <URL>` mode (see `references/study-mode.md`) — URL safety refusal + WebFetch + DNA extraction + diagnosis + 3-way branch | Extract live-site DNA (fonts, palette, macrostructure, nav/footer archetypes); suspend diversification rule when build-with-DNA chosen |
 | 0.1 | Auto-detect pre-flight scan (see `references/preflight-scan.md`) | Read existing tokens / fonts / motion lib; preserve found tokens, introduce only what's missing |
 | 0.5 | Type detection + read `.perfect-ui/log.json` for diversification check | Surface last 3 macrostructures; hard rule blocks repeat |
+| 0.5b | Component-scope detection (see `references/component-scope.md`) — multi-signal check: brief ≤30 words + UI element keyword + `--component` flag (2+ signals → component scope) | Skip macrostructure / hero / nav-footer / Phase 8 visual / log.json; keep vibe / palette / typography / motion personality; emit component + `.preview.*` 8-state wrapper |
 | 1 | Inline brainstorm protocol (see `references/workflow-brainstorm.md`) | Vibe + type-branched brief |
 | 2 | Inline + `AskUserQuestion` | Lock palette/typo/effect-layer |
 | 3 | Direct SVG OR vector icon design pipeline (text-to-SVG, or text-to-image + vector trace) | Custom icons |
@@ -315,7 +325,8 @@ Run the audit inline (see `references/workflow-phases.md` § Phase 8) with `--ty
 | 2.5 | Macrostructure pick (see `references/macrostructure-catalog.md`) | Type-independent page shape (one of 7 macros); diversification check against `.perfect-ui/log.json` |
 | 2.6 | Brand Motion Identity (see `references/motion-patterns.md § Motion Personalities`) | Lock 3 motion constants — signature easing + duration palette + entrance pattern |
 | 6 | Inline plan protocol (see `references/workflow-plan.md`) | Type-aware implementation plan |
-| 7 | Inline implement protocol (see `references/workflow-implement.md`) — writes log.json at end + auto-detects GSAP need (see `references/gsap-integration.md`) | Build the site |
+| 7 entry | Pre-emit `<design_plan>` verification (see `references/preemit-design-plan.md`) — 10-field block; collect-all-errors validation; minimal 4-field subset for component-scope | Gate code emission until all locked picks consistent; stamp block in CSS + plan.md |
+| 7 | Inline implement protocol (see `references/workflow-implement.md`) — writes log.json at end + auto-detects GSAP need (see `references/gsap-integration.md`) + component-scope short-circuit when detected | Build the site (page) OR component + `.preview.*` 8-state wrapper (component-scope) |
 | 8 | Inline tier-filtered audit (see `references/workflow-audit.md`) | Anti-slop audit |
 
 Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landing|portfolio}/`, `app/components/effects/`.
@@ -325,6 +336,9 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 | Topic | File |
 |-------|------|
 | Detailed phase walkthrough | `references/workflow-phases.md` |
+| Study mode (`--study <URL>` — URL safety + DNA extraction + diagnosis + 3-way branch) | `references/study-mode.md` |
+| Component-scope branch (multi-signal detection + skipped vs kept phases + 8-state preview wrapper) | `references/component-scope.md` |
+| Pre-emit `<design_plan>` verification (10-field block + collect-all-errors validation) | `references/preemit-design-plan.md` |
 | Pre-flight scan (auto-detect existing tokens before Phase 2) | `references/preflight-scan.md` |
 | Macrostructure catalog (7 page-shape archetypes — Marquee Hero / Bento Grid / Long Document / Manifesto / Stat-Led / Workbench / Letter) | `references/macrostructure-catalog.md` |
 | GSAP skill integration (intensity 3/3 + keyword detection → optional gsap-* skill triggering with inline fallback) | `references/gsap-integration.md` |
@@ -383,5 +397,8 @@ For everything else — pricing pages, blog landings, about pages, dashboards, a
 | "User wants a dashboard, refuse them like the old SKILL said" | NO. Open scope as of v2.1.0; self-contained as of v2.2.0. Log evidence-base disclosure and proceed with generic tier. |
 | "Dashboard / admin doesn't need vibe lock, it's just a UI" | NO. Universal toolkit applies to every type. Vibe lock + custom icons + motion intensity + applicability-matrix audit still run. |
 | "Apply full anti-slop tier 1-3 to a 404 page" | NO. Phase 8 filters by `[universal]` / `[marketing-only]` / `[landing/portfolio-only]` tag. A 404 has no hero CTA — that rule shouldn't trigger. |
+| "User pasted a URL — let me just clone its layout pixel-for-pixel" | NO. `--study` runs URL safety refusal first (themeforest / framer-templates / dribbble shots are blocked). If safe, extract DNA (palette + fonts + macrostructure) NOT pixel layout. Emit diagnosis report; user picks build-with-DNA / lock-to-design.md / stop. |
+| "It's just a button — skip the whole 8-phase pipeline" | YES, that's exactly what component-scope is for. Multi-signal detect (brief ≤30 words + UI element keyword + `--component`). Keep vibe / palette / typography / motion personality. Skip macrostructure / hero / Phase 8 visual / log.json. Emit component + `.preview.*` 8-state wrapper. |
+| "All Phases 1-6 picks look fine, let me start emitting code now" | NO. Phase 7 ENTRY runs the 10-field `<design_plan>` pre-emit verification (`references/preemit-design-plan.md`). Collect-all-errors — any FAIL routes back to the relevant phase. Block stamped in CSS + plan.md before any code. |
 
 **Remember:** A perfect page is one where icons, copy, color, type, motion, and effects feel made by the same hand. **2D illustration is the default visual language; effects are atmospheric layers; 3D models are forbidden as hero subjects.** The whole point of this skill is enforcing that cohesion regardless of page type, with rich anatomy reserved for landing/portfolio and universal craft for everything else.

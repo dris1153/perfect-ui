@@ -7,6 +7,29 @@ Skill implements directly from `plan.md` + `phase-XX-*.md` files. Per CLAUDE.md:
 ## Step 1 — Phase execution order
 Follow `plan.md` dependency graph. Default sequential unless plan marks phases parallel-safe. Mark each phase status `in_progress` before starting; `completed` after success criteria all check.
 
+## Step 1.5 — Pre-emit `<design_plan>` verification (v2.5.0+)
+
+At Phase 7 entry, BEFORE any code emission, run the pre-emit design_plan verification gate. See `preemit-design-plan.md` for full 10-field schema + validation rules.
+
+1. Populate 10-field block from Phases 1-6 locked picks
+2. Run validation; collect all errors
+3. If any FAIL → return to relevant phase to fix; do NOT proceed to Step 2
+4. If ALL PASS → block stamped in CSS + `plans/{slug}/plan.md § Pre-emit verification`; Step 2 proceeds
+
+**Component-scope runs minimal subset (4 fields):** `vibe_validity`, `motion_personality`, `button_contrast`, `honest_copy`. See `preemit-design-plan.md § Component-scope subset`.
+
+## Step 1.6 — Component-scope short-circuit (v2.5.0+)
+
+If Phase 0.5 detected component-scope (see `component-scope.md`), Phase 7 collapses page-level emission:
+
+- **Skip:** project scaffold (single component), macrostructure-driven section sequence, hero enrichment, multi-section composition
+- **Emit:** 2 files — component artifact (`Button.tsx` / `Card.vue` / `button.css+html` / etc.) + `.preview.*` 8-state wrapper (extension auto-detected from framework, per `component-scope.md § What component-scope EMITS`)
+- **Stamp:** component-scoped CSS comment (see `component-scope.md § Stamp format`)
+
+Skip Step 6 (project memory log write) — component runs don't rotate.
+
+After 2 files emitted, Phase 7 complete. Continue to Phase 8 audit (component-scope subset; see `workflow-audit.md § Step Y`).
+
 ## Step 2 — Per-phase constraints (enforce throughout)
 
 **Imports:**
