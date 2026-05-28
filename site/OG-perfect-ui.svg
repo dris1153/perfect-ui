@@ -14,12 +14,15 @@
   <rect width="1200" height="630" fill="url(#warm)"/>
   <rect width="1200" height="630" filter="url(#grain)" opacity="0.025"/>
 
-  <text x="80" y="120" font-family="ui-monospace, monospace" font-size="18" letter-spacing="3" fill="#5A5247">PERFECT-UI · v2.5.0 · MIT</text>
+  <!-- Top eyebrow -->
+  <text x="80" y="120" font-family="ui-monospace, monospace" font-size="18" letter-spacing="3" fill="#5A5247">PERFECT-UI · v2.5.1 · MIT</text>
 
-  <text x="80" y="320" font-family="Georgia, serif" font-style="italic" font-size="110" letter-spacing="-3" fill="#1A1715">Landing pages</text>
-  <text x="80" y="430" font-family="Georgia, serif" font-style="italic" font-size="110" letter-spacing="-3" fill="#1A1715">that don't <tspan fill="#B8635A">look</tspan></text>
-  <text x="80" y="540" font-family="Georgia, serif" font-style="italic" font-size="110" letter-spacing="-3" fill="#B8635A">AI-made.</text>
+  <!-- Main headline: matches current hero "UI design that doesn't look AI-made." -->
+  <text x="80" y="280" font-family="Georgia, serif" font-style="italic" font-size="130" letter-spacing="-4" fill="#1A1715">UI design</text>
+  <text x="80" y="410" font-family="Georgia, serif" font-style="italic" font-size="130" letter-spacing="-4" fill="#1A1715">that doesn't <tspan fill="#B8635A">look</tspan></text>
+  <text x="80" y="540" font-family="Georgia, serif" font-style="italic" font-size="130" letter-spacing="-4" fill="#B8635A">AI-made.</text>
 
+  <!-- Bottom separator + footer -->
   <line x1="80" y1="580" x2="1120" y2="580" stroke="#1A1715" stroke-width="1" opacity="0.2"/>
-  <text x="80" y="610" font-family="ui-monospace, monospace" font-size="16" letter-spacing="2" fill="#5A5247">A Claude Code skill · npx skills add dris1153/perfect-ui</text>
+  <text x="80" y="608" font-family="ui-monospace, monospace" font-size="15" letter-spacing="2" fill="#5A5247">A Claude Code skill · npx skills add dris1153/perfect-ui</text>
 </svg>
