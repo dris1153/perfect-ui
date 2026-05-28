@@ -248,6 +248,52 @@ Default motion intensity per vibe. User confirms or overrides during Phase 2e (l
 ### Per-vibe easing
 Each vibe pairs with a specific cubic-bezier or spring config. Full list: `motion-patterns.md` § Easing Library.
 
+## Two dials — DESIGN_VARIANCE + VISUAL_DENSITY (Phase 2)
+
+Beyond motion intensity (Phase 2e), two additional dials lock at Phase 2. Combined with motion intensity, perfect-ui has a 3-dial system.
+
+### DESIGN_VARIANCE (1-10)
+Drives layout asymmetry, grid commitment, spatial language.
+
+| Range | Atmosphere | Behavior |
+|-------|------------|----------|
+| 1-3 | Predictable / Art Gallery Symmetric | Flex `justify-center`, strict 12-col, equal paddings, symmetric grids |
+| 4-7 | Offset / Daily App Asymmetric | Margin offsets (-2rem), mixed aspect ratios, left-aligned headers over centered content |
+| 8-10 | Artsy / Chaotic Asymmetric | Masonry, fractional grid units (`2fr 1fr 1fr`), massive empty zones (`padding-left: 20vw`) |
+
+**Mobile override:** variance 4+ aggressively falls back to single-column at <768px to prevent horizontal scroll.
+
+### VISUAL_DENSITY (1-10)
+Drives spacing scale, card usage, font scaling, chrome density.
+
+| Range | Atmosphere | Behavior |
+|-------|------------|----------|
+| 1-3 | Art Gallery / Airy | Generous whitespace, huge section gaps (py-32+), expensive feel |
+| 4-7 | Daily App / Balanced | Normal SaaS spacing (py-16 to py-24) |
+| 8-10 | Cockpit / Dense | Tiny paddings (p-2 to p-4), 1px lines instead of cards, monospaced numbers |
+
+### Per-vibe defaults
+
+| Vibe | DESIGN_VARIANCE | VISUAL_DENSITY |
+|------|-----------------|----------------|
+| Minimal | 3 | 3 |
+| Editorial | 6 | 4 |
+| Brutalist | 8 | 7 |
+| Retro-futuristic | 7 | 5 |
+| Organic | 4 | 3 |
+| Luxury | 4 | 3 |
+| Playful | 6 | 5 |
+| Industrial | 5 | 7 |
+| Art-deco | 5 | 4 |
+| Glass-tech | 6 | 4 |
+| Hand-crafted | 5 | 3 |
+
+User confirms or overrides at Phase 2. Macrostructure choice (see `macrostructure-catalog.md`) can adjust ±2 from vibe default.
+
+### Diversification rule (cross-run)
+
+Read `.perfect-ui/log.json` at Phase 0.5. New run must differ from last entry on at least one dial by ≥3 points. Warning emitted if violated; user override allowed. See `anti-slop-rules.md § Diversification Rule` for full rule set.
+
 ## Vibe × Hero H1 Line Range
 
 Recommended H1 line count per vibe. Universal ceiling: 4+ lines = catastrophic failure regardless of vibe. Enforced as Tier 1 anti-slop rule (see `anti-slop-rules.md § Tier 1 rule #11`).

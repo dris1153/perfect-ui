@@ -27,7 +27,8 @@ Tells are CUMULATIVE — a single rule break is sometimes compensable, but stack
 9. **AI-generated 3D model as hero subject**. Default Octane render aesthetic — glossy plastic shading, balanced studio lighting, generic primitive arrangement. Includes `.glb`/`.gltf` imports rendered real-time + AI-generated 3D blobs/characters/scenes. **Use static 3D render → 2D image (Augen pattern) OR shader effect OR 2D illustration instead.** Direct evidence: 0/7 human-crafted landings used real-time AI-generated 3D models.
 10. **OrbitControls enabled in landing/portfolio** — signals "viewer demo" not designed page. Visitor doesn't want to "explore 3D."
 11. **Hero H1 line count exceeds vibe-specific limit** — see `visual-direction-guide.md` § Hero H1 line range column. Universal ceiling: 4+ lines is catastrophic failure regardless of vibe. Enforcement: container `max-w-5xl` / `max-w-6xl` + H1 `clamp(3rem, 5vw, 5.5rem)`. If headline copy exceeds 90 chars, rewrite shorter; never break the line cap by reducing font below `--text-display-s`.
-12. **Meta-label headers** — "SECTION 01" / "QUESTION 05" / "ABOUT US" / "CHAPTER THREE" / numbered eyebrows / uppercase mono-cap section labels. No exception even for ordinal content. Vibe-paired typography hierarchy (display weight, color) communicates section identity instead.
+12. **Meta-label headers** — "SECTION 01" / "QUESTION 05" / "ABOUT US" / "CHAPTER THREE" / numbered eyebrows / uppercase mono-cap section labels. No exception even for ordinal content. Vibe-paired typography hierarchy (display weight, color) communicates section identity instead. **Exception:** Long Document macrostructure (see `macrostructure-catalog.md` § Long Document) permits numbered sections for genuinely ordinal content, cap ≤5.
+13. **Empty Bento Grid cells / missing corners / voids** — when using Bento Grid macrostructure (see `macrostructure-catalog.md` § Bento Grid), `grid-flow-dense` is MANDATORY + col-span/row-span values must mathematically interlock. Empty cells = templated AI feel. Use `auto-flow: dense` + verify with visual inspection.
 
 ### Tier 2 — AI compositional tendencies (MUST FIX in combination)
 
@@ -80,6 +81,7 @@ Phase 8 audit filters rules by `--type` tier. Two tiers:
 | `OrbitControls` enabled | `[marketing-only]` | 1 |
 | Hero H1 line count exceeds vibe-specific limit (see `visual-direction-guide.md`) | `[universal]` | 1 |
 | Meta-label headers ("SECTION 01" / "CHAPTER THREE" / numbered eyebrows) | `[universal]` | 1 |
+| Empty bento grid cells (missing corners / voids; `grid-flow-dense` missing on Bento macrostructure) | `[universal]` | 1 |
 | Hero filler text ("Scroll to explore" / "Swipe down") — icons OK | `[marketing-only]` | 2 |
 | Fabricated metrics / testimonials / logos / case-study counts — see § Honest Copy Mandate | `[universal]` | (positive guidance — flag in audit when fabrication detected) |
 | Generic browser-mockup right-half hero | `[marketing-only]` | 2 |
@@ -161,6 +163,18 @@ Forbidden fabrications (already in tier matrix; restated here for context):
 - Fabricated case-study counts (8 case studies displayed when user has 2)
 
 Phase 7 implementation must use placeholder rendering; Phase 8 audit greps for forbidden numbers + names per `[marketing-only]` rules.
+
+
+## Diversification Rule (cross-run)
+
+For projects with multiple perfect-ui runs (tracked in `.perfect-ui/log.json`), each new run must avoid replicating recent picks:
+
+- **Macrostructure** (hard rule) — must differ from the last 3 entries. See `macrostructure-catalog.md § Diversification rule`.
+- **Vibe + wildcard** combo (soft warning) — should differ from last entry; user override allowed.
+- **DESIGN_VARIANCE + VISUAL_DENSITY** dials (soft warning) — at least one dial should differ ≥3 points from last entry.
+- **Motion personality** (soft warning) — should differ from last entry.
+
+Read at Phase 0.5; surface as one-line summary ("Last 3 builds: ..."). Hard rule violations block (user override + log entry required); warnings allow override. See `workflow-brainstorm.md` § Phase 0.5 for read logic.
 
 
 ## Typography

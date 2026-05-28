@@ -4,7 +4,7 @@ description: "Design and build cohesive web pages with custom visual identity �
 license: MIT
 metadata:
   author: dris1153
-  version: "2.3.0"
+  version: "2.4.0"
 argument-hint: "[description OR existing site URL/screenshot] [--type any_page_type] [--new|--redesign] [--no-3d] [--stack nextjs|astro|vanilla]"
 ---
 
@@ -57,13 +57,16 @@ If user says only "design a website" or "build a site" → ask via `AskUserQuest
 7. **Motion intensity scales with vibe** — locked at Phase 2e (0/3 to 3/3 scale). Stack escalates by need: CSS → Framer Motion → Lenis → GSAP. Generic fade-up-on-everything is forbidden. NO motion on body copy. `prefers-reduced-motion` always respected. See `references/motion-patterns.md`.
 8. **Vibe before pixels** — never write code or generate assets before the vibe is named, the palette is locked, and the typography pair is chosen.
 9. **Type-aware where it matters** — landing/portfolio (special tier) use rich type-specific anatomy + skeleton + per-vibe section archetypes; every other type (generic tier) uses `generic-page-anatomy.md` + `generic-page-skeleton.md` with sections driven by the Page-Purpose Exercise. Phase 1 brief always asks page-purpose; Phase 6 plan branches by tier; Phase 8 audit honors `[universal]` / `[marketing-only]` / `[landing/portfolio-only]` tags from § Applicability Matrix per `--type`.
+10. **Diversify across runs** — for projects with prior perfect-ui builds tracked in `.perfect-ui/log.json`, macrostructure pick at Phase 2.5 must NOT match any of the last 3 entries (hard rule). Vibe / dials / motion personality should differ from last entry (soft warnings; override OK). Read at Phase 0.5; written at Phase 7-end. See `references/macrostructure-catalog.md § Diversification rule` + `references/anti-slop-rules.md § Diversification Rule`.
 
 ## Process Flow (Authoritative)
 
 ```mermaid
 flowchart TD
     M[Phase 0: Detect Mode: new vs redesign] --> P[Phase 0.1: Pre-flight scan — auto-detect existing tokens]
-    P --> T[Phase 0.5: Detect Type → tier route]
+    P --> T[Phase 0.5: Detect Type → tier route + read log.json]
+    T --> MC[Phase 2.5: Macrostructure pick — diversification check]
+    MC --> BM[Phase 2.6: Brand Motion Identity — pick personality]
     T --> B[Phase 1: Discovery — inline brainstorm protocol, branched per type]
     B --> C[Phase 2: Visual Direction — palette/typo/spatial/effect/motion]
     C --> D[Phase 3: Custom Icon Set]
@@ -303,14 +306,17 @@ Run the audit inline (see `references/workflow-phases.md` § Phase 8) with `--ty
 | Phase | Method | Purpose |
 |-------|--------|---------|
 | 0.1 | Auto-detect pre-flight scan (see `references/preflight-scan.md`) | Read existing tokens / fonts / motion lib; preserve found tokens, introduce only what's missing |
-| 1 | Inline brainstorm protocol (see `references/workflow-phases.md` § Phase 1) | Vibe + type-branched brief |
+| 0.5 | Type detection + read `.perfect-ui/log.json` for diversification check | Surface last 3 macrostructures; hard rule blocks repeat |
+| 1 | Inline brainstorm protocol (see `references/workflow-brainstorm.md`) | Vibe + type-branched brief |
 | 2 | Inline + `AskUserQuestion` | Lock palette/typo/effect-layer |
 | 3 | Direct SVG OR vector icon design pipeline (text-to-SVG, or text-to-image + vector trace) | Custom icons |
 | 4 | Text-to-image (style control / photorealism) + image post-processing | 2D visual assets (illustration / static 3D render → 2D / photo / SVG) |
 | 5 | React Three Fiber as shader runner (shaders only) OR CSS / Lottie | Visual Effect Layer — shaders, particles, atmospheric |
-| 6 | Inline plan protocol (see `references/workflow-phases.md` § Phase 6) | Type-aware implementation plan |
-| 7 | Inline implement protocol (see `references/workflow-phases.md` § Phase 7) | Build the site |
-| 8 | Inline tier-filtered audit (see `references/workflow-phases.md` § Phase 8) | Anti-slop audit |
+| 2.5 | Macrostructure pick (see `references/macrostructure-catalog.md`) | Type-independent page shape (one of 7 macros); diversification check against `.perfect-ui/log.json` |
+| 2.6 | Brand Motion Identity (see `references/motion-patterns.md § Motion Personalities`) | Lock 3 motion constants — signature easing + duration palette + entrance pattern |
+| 6 | Inline plan protocol (see `references/workflow-plan.md`) | Type-aware implementation plan |
+| 7 | Inline implement protocol (see `references/workflow-implement.md`) — writes log.json at end | Build the site |
+| 8 | Inline tier-filtered audit (see `references/workflow-audit.md`) | Anti-slop audit |
 
 Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landing|portfolio}/`, `app/components/effects/`.
 
@@ -320,6 +326,11 @@ Outputs land in: `plans/{date}-{slug}/`, `app/components/icons/`, `public/{landi
 |-------|------|
 | Detailed phase walkthrough | `references/workflow-phases.md` |
 | Pre-flight scan (auto-detect existing tokens before Phase 2) | `references/preflight-scan.md` |
+| Macrostructure catalog (7 page-shape archetypes — Marquee Hero / Bento Grid / Long Document / Manifesto / Stat-Led / Workbench / Letter) | `references/macrostructure-catalog.md` |
+| Workflow — Phase 1 brainstorm protocol (inline) | `references/workflow-brainstorm.md` |
+| Workflow — Phase 6 plan protocol (inline) | `references/workflow-plan.md` |
+| Workflow — Phase 7 implement protocol (inline) | `references/workflow-implement.md` |
+| Workflow — Phase 8 audit protocol (inline) | `references/workflow-audit.md` |
 | Visual direction patterns + commitment audit | `references/visual-direction-guide.md` |
 | Custom icon pipeline | `references/custom-icon-pipeline.md` |
 | 2D illustration catalog (11 vibes × styles) | `references/2d-illustration-catalog.md` |

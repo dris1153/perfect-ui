@@ -69,6 +69,78 @@ Best for: brutalist, industrial, retro-futuristic
 ```
 Best for: glass-tech, retro-futuristic, luxury
 
+### A5. Full-bleed declarative
+**Use when:** vibe + wildcard demands authoritative single H1 over full-bleed image · macrostructure = Marquee Hero
+**Layout:** H1 centered horizontal but offset vertically (bottom 40%), image full-bleed background with subtle gradient overlay, single CTA below H1
+**Best for vibes:** Editorial, Luxury, Brutalist
+**Best for macrostructures:** Marquee Hero
+
+### A6. Mini hero + bento canvas
+**Use when:** macrostructure = Bento Grid · page has tools/features showcase
+**Layout:** Small H1 + 1-line subhead (max 3 lines combined) above 8-12 cell bento grid covering 60%+ of viewport
+**Best for vibes:** Minimal, Glass-tech, Industrial
+**Best for macrostructures:** Bento Grid
+
+### A7. No hero, full-bleed grid
+**Use when:** macrostructure = Bento Grid OR Workbench · page opens directly to content
+**Layout:** Nav bar → full-bleed bento grid OR full-bleed app shell. No traditional hero.
+**Best for vibes:** Brutalist, Glass-tech, Industrial
+**Best for macrostructures:** Bento Grid, Workbench
+
+### A8. Editorial spread
+**Use when:** macrostructure = Long Document · content is narrative
+**Layout:** 2-column magazine spread (lead text + opener image side-by-side), generous py-32 padding
+**Best for vibes:** Editorial, Hand-crafted
+**Best for macrostructures:** Long Document
+
+### A9. Number + headline
+**Use when:** macrostructure = Long Document with ordinal sections
+**Layout:** Massive number (00, 01 etc) left + headline right, asymmetric 30/70 split
+**Best for vibes:** Editorial, Art-deco, Industrial
+**Best for macrostructures:** Long Document
+
+### A10. Massive typography only
+**Use when:** macrostructure = Manifesto · declarative single statement
+**Layout:** Single H1 sized `clamp(4rem, 12vw, 12rem)`, no image, no CTA, full viewport height, generous whitespace around
+**Best for vibes:** Brutalist, Minimal, Art-deco
+**Best for macrostructures:** Manifesto
+
+### A11. Statement + signature
+**Use when:** macrostructure = Manifesto OR Letter · voice is personal
+**Layout:** Quote/statement large + signature line below (italic, smaller)
+**Best for vibes:** Editorial, Hand-crafted, Luxury
+**Best for macrostructures:** Manifesto, Letter
+
+### A12. Number-led headline
+**Use when:** macrostructure = Stat-Led · primary message is numerical
+**Layout:** Headline number `clamp(5rem, 14vw, 15rem)` + supporting headline beneath
+**Best for vibes:** Industrial, Glass-tech, Retro-futuristic
+**Best for macrostructures:** Stat-Led
+
+### A13. Proof bar above hero
+**Use when:** macrostructure = Stat-Led · social proof is hero-eligible
+**Layout:** Logo row (5-7 logos) at top → standard hero below
+**Best for vibes:** Glass-tech, Minimal, Editorial
+**Best for macrostructures:** Stat-Led
+
+### A14. Compact toolbar hero
+**Use when:** macrostructure = Workbench · top bar IS the hero
+**Layout:** Top bar with logo + nav + actions, then immediate content surface (no hero section per se)
+**Best for vibes:** Industrial, Glass-tech
+**Best for macrostructures:** Workbench
+
+### A15. Correspondence opener
+**Use when:** macrostructure = Letter · personal/founder voice
+**Layout:** "Dear [audience]," opener at top, body paragraphs below, signature at end
+**Best for vibes:** Editorial, Hand-crafted
+**Best for macrostructures:** Letter
+
+### A16. Handwritten note + sketch
+**Use when:** macrostructure = Letter · craft-led
+**Layout:** Hand-drawn opener illustration (SVG ink line) + body text + handwritten-style signature
+**Best for vibes:** Hand-crafted, Organic
+**Best for macrostructures:** Letter
+
 ## Social Proof Archetypes
 
 ### S1. Single Row Logo Bar

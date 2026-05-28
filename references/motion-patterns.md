@@ -46,6 +46,60 @@ The default intensity per vibe. User can override during Phase 2e (logged if mis
 | Glass-tech | 2-3/3 | FM + Lenis (+ GSAP) | Smooth flowing reveals, scroll-linked |
 | Hand-crafted | 0-1/3 | CSS | Subtle, no smoothness — paper aesthetic |
 
+## Motion Personalities (Phase 2.6)
+
+Select ONE archetype per project. Independent of intensity (0-3/3). Personality drives character (easing + duration + entrance pattern). Intensity drives amount (how much motion).
+
+### The 4 personalities
+
+| Personality | Signature easing | Duration palette (quick / standard / slow) | Entrance pattern | Best for vibes |
+|-------------|------------------|--------------------------------------------|------------------|----------------|
+| **Playful** | `ease-out-back` (10-20% overshoot) — `cubic-bezier(0.34, 1.56, 0.64, 1)` | 150ms / 250ms / 400ms | Spring bounce | Playful, Organic |
+| **Premium** | `cubic-bezier(0.4, 0, 0.2, 1)` (Material Design standard) | 250ms / 400ms / 600ms | Subtle fade-up | Minimal, Editorial, Luxury, Hand-crafted |
+| **Corporate** | `cubic-bezier(0.2, 0, 0, 1)` (sharp deceleration) | 200ms / 300ms / 400ms | Crisp slide | Industrial, Art-deco |
+| **Energetic** | `ease-out-expo` (15-30% overshoot) — `cubic-bezier(0.16, 1, 0.3, 1)` | 100ms / 200ms / 350ms | Quick translate | Brutalist, Retro-futuristic, Glass-tech |
+
+### Brand Motion Identity (3 locked constants)
+
+Once personality is picked at Phase 2.6, 3 constants are LOCKED for the entire project:
+
+1. **Signature easing** — one cubic-bezier curve used in 80% of animations. Other 20% may use neutral `ease-out` for utility transitions.
+2. **Duration palette** — 3 values (quick / standard / slow). NEVER use arbitrary durations like 312ms or 583ms. All animations snap to one of these 3.
+3. **Entrance pattern** — consistent reveal style. Don't mix fade-up + slide + scale randomly across the page. Pick one entrance pattern, use it everywhere.
+
+### Personality × Intensity matrix
+
+Personality locks character. Intensity locks scope. Both axes locked independently at Phase 2e (intensity) + Phase 2.6 (personality).
+
+|   | Intensity 0/3 (no motion) | Intensity 1/3 (minimal) | Intensity 2/3 (moderate) | Intensity 3/3 (full) |
+|---|---------------------------|--------------------------|--------------------------|----------------------|
+| **Playful** | hover only | + 1 entrance per section | + scroll-linked bounce | + spring choreography |
+| **Premium** | hover only | + subtle fade-up entries | + Lenis smooth scroll | + GSAP timeline reveals |
+| **Corporate** | hover only | + crisp slide entrance | + scroll-linked slide | + multi-element sequences |
+| **Energetic** | hover only | + quick translate snaps | + scroll-driven overshoots | + bold choreography |
+
+### Per-vibe personality defaults
+
+| Vibe | Default personality | Override allowed |
+|------|---------------------|-------------------|
+| Minimal | Premium | Yes (Energetic for tech-startup feel) |
+| Editorial | Premium | Yes |
+| Brutalist | Energetic | No (Corporate would betray vibe) |
+| Retro-futuristic | Energetic | No |
+| Organic | Playful | Yes (Premium for wellness brands) |
+| Luxury | Premium | No (other personalities cheapen) |
+| Playful | Playful | No |
+| Industrial | Corporate | Yes (Energetic for tech-industrial) |
+| Art-deco | Corporate | Yes (Premium for luxury heritage) |
+| Glass-tech | Energetic | Yes (Premium for restraint) |
+| Hand-crafted | Premium | Yes (Playful for whimsical) |
+
+User confirms or overrides at Phase 2.6. Mismatches logged in `plans/{date}-{slug}/overrides.md`.
+
+### Relationship to per-vibe easing (existing § Easing Library)
+
+Pre-v2.4: each of 11 vibes had its own paired cubic-bezier in § Easing Library. Post-v2.4: personality drives that pairing. Each vibe gets a default personality (table above); user can override. The § Easing Library section is preserved for backward compatibility and now documents the per-personality easing curves.
+
 ## Motion Intensity Scale (0-3)
 
 | Level | Description | Patterns allowed |
