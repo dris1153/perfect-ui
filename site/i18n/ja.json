@@ -6,17 +6,16 @@
     "dir": "ltr",
     "switcher_label": "言語を選択"
   },
-
   "nav": {
     "install": "インストール",
     "why": "理由",
     "pipeline": "パイプライン",
     "vibes": "Vibe",
     "examples": "例",
+    "showcase": "Showcase",
     "faq": "FAQ",
     "repo": "Repo"
   },
-
   "hero": {
     "readme_link": "README",
     "h1_line1": "UI デザイン",
@@ -29,7 +28,6 @@
     "stat_tiers": "Anti-slop tier",
     "stat_types": "ページタイプ — 特別 tier 2 つ"
   },
-
   "install": {
     "label": "— インストール",
     "h2": "<em>1 つのコマンド。</em>ビルド不要。設定不要。",
@@ -41,7 +39,6 @@
     "copy_btn": "コピー",
     "copy_btn_done": "コピー済み"
   },
-
   "why": {
     "label": "— 理由",
     "h2": "<em>作られた理由:</em> AI ページはデフォルトを積み重ねる。",
@@ -52,9 +49,24 @@
     "stat_violations": "AI ページごとの違反積算",
     "ai_heading": "AI のデフォルト — 積み重なる",
     "human_heading": "人間のコミットメント — 単一",
-    "close": "一貫性は craft の乗算係数です。この skill はそれを強制可能なルールとしてエンコードします。"
+    "close": "一貫性は craft の乗算係数です。この skill はそれを強制可能なルールとしてエンコードします。",
+    "ai_item_1": "Inter 単独",
+    "ai_item_2": "紫/青グラデーション hero",
+    "ai_item_3": "<code>h-screen</code> どこでも",
+    "ai_item_4": "<code>lucide-react</code> アイコン",
+    "ai_item_5": "3 列均等 feature grid",
+    "ai_item_6": "\"Get Started\" CTA",
+    "ai_item_7": "丸い偽 stat (10K+, 99.99%)",
+    "ai_item_8": "全要素 fade-up",
+    "human_item_1": "1 つの vibe を end-to-end ロック",
+    "human_item_2": "カスタム SVG アイコンセット",
+    "human_item_3": "非対称 editorial grid",
+    "human_item_4": "Vibe ペア typography",
+    "human_item_5": "特徴的な display フォント",
+    "human_item_6": "具体的な draft copy",
+    "human_item_7": "リアルな evidence ベース stat",
+    "human_item_8": "Vibe スケール motion intensity"
   },
-
   "scope": {
     "label": "— 範囲",
     "h2": "<em>2 つの tier。</em>拒否なし。",
@@ -63,7 +75,6 @@
     "generic_heading": "汎用 tier — 普遍的な craft",
     "close": "普遍ツールキットは両方に適用 — vibe ロック、palette、typography、カスタムアイコン、2D イラスト、ビジュアルエフェクト、motion intensity。Companion アプローチは <a href=\"#beyond\">§ Beyond</a> で提案。"
   },
-
   "pipeline": {
     "label": "— パイプライン",
     "h2": "<em>8 つの phase、</em>それぞれが単一の関心事。",
@@ -93,13 +104,18 @@
     "p08_title": "Anti-slop 監査",
     "p08_desc": "インライン tier フィルタ監査。Tier 1 ヒット = ship ブロック。Grep + ビジュアルチェック。マーケティング以外の type にはマーケティング専用ルールをスキップ。"
   },
-
   "vibes_sec": {
     "label": "— Vibe",
     "h2": "<em>11 の anchor。</em>1 つ + ワイルドカード 1 つ。Design 時点でロック。",
     "meta": "visual-direction-guide.md"
   },
-
+  "theme": {
+    "header_label": "Theme",
+    "header_count": "11 vibes",
+    "header_subtitle": "perfect-ui によるデザイン",
+    "footer_desc": "各 theme = <code>visual-direction-guide.md</code> からの 1 つの vibe anchor — palette + typography + motion ease + カスタム P-ロゴ。DOM 構造は Editorial のまま；例ページは Editorial 専用。",
+    "cta_generate": "perfect-ui でカスタム生成 →"
+  },
   "tiers": {
     "label": "— Anti-slop",
     "h2": "<em>Tier 1</em> auto-fail。<em>Tier 2</em> 注意。<em>Tier 3</em> 補償可能。",
@@ -110,9 +126,31 @@
     "t2_heading": "構図ドリフト",
     "t3_tag": "Tier 3 — 補償可能",
     "t3_heading": "Cohesion ≥ 8/10 が救う",
-    "t3_footnote": "ビジュアル craft cohesion ≥ 8/10 のときのみ許可。Override パス: ユーザーが 2 回リクエスト + 理由を記録。"
+    "t3_footnote": "ビジュアル craft cohesion ≥ 8/10 のときのみ許可。Override パス: ユーザーが 2 回リクエスト + 理由を記録。",
+    "t1_item_1": "<code>DM Sans + Space Grotesk</code> ペア",
+    "t1_item_2": "紫/青グラデーション hero + グラデーションテキスト",
+    "t1_item_3": "<code>lucide-react</code> / <code>@heroicons</code> インポート",
+    "t1_item_4": "Hero に等重 CTA 2 つ",
+    "t1_item_5": "<code>h-screen</code> utility クラス",
+    "t1_item_6": "3 列均等 feature カードグリッド",
+    "t1_item_7": "Tailwind 密度 &gt; 200 utility",
+    "t1_item_8": "汎用 CTA (\"Get Started\", \"Sign In\")",
+    "t1_item_9": "AI 生成 3D モデルを hero subject に",
+    "t1_item_10": "Landing/portfolio の <code>OrbitControls</code>",
+    "t2_item_1": "分割 hero 右半分の汎用ブラウザ mockup",
+    "t2_item_2": "フレンドリーな bullet チェックボックス安心行",
+    "t2_item_3": "丸い偽 stat (10K+, 99.99%)",
+    "t2_item_4": "AI のかわいいイラストを hero に",
+    "t2_item_5": "高 variance での中央 hero + 中央 H1",
+    "t2_item_6": "純粋装飾としての 3D モデル",
+    "t2_item_7": "2D イラスト間でのスタイル混合",
+    "t2_item_8": "全要素汎用 fade-up モーション",
+    "t2_item_9": "ユニバーサル duration として <code>ease-in-out</code> 0.3s",
+    "t3_item_1": "特徴的 display とペアの <code>Inter</code> body",
+    "t3_item_2": "非荷重 copy 内の AI 決まり文句",
+    "t3_item_3": "汎用 startup 名 (Acme, Globex)",
+    "t3_item_4": "全ヘッダーで Title Case"
   },
-
   "examples_sec": {
     "label": "— 実践",
     "h2": "<em>4 つの実フロー。</em>1 つの規律。",
@@ -132,7 +170,24 @@
     "dashboard_disclosure": "<strong>Evidence-base 開示(Phase 0.5 で記録):</strong> skill の evidence base(分析した 12 のマーケティング landing)は dashboard / admin / e-commerce / app-surface パターンを直接カバーしません。普遍 craft ツールキットは依然適用されます。出力品質は best-effort。",
     "dashboard_outcome": "Vibe ロック、カスタムアイコン、motion 規律を備えた dashboard — 適用されないマーケティングパターンに関する false-positive 監査警告なしで。"
   },
-
+  "showcase": {
+    "label": "— Showcase",
+    "h2": "<em>実際の出力</em>skill から出荷。",
+    "intro": "各カードは vibe × type × macrostructure の組み合わせを示す実際の例ファイルを開きます。WebP プレビューは各 16-30 KB (1440×900 自動キャプチャ、最適化済み)。",
+    "cta": "例を開く",
+    "coffee": {
+      "title": "コーヒーサブスク",
+      "desc": "Tsumiki — シングルオリジンのスペシャルティコーヒー、ロースターからの週刊レター。"
+    },
+    "luxury": {
+      "title": "ヘリテージ調香",
+      "desc": "Maison Lumière — 一本のボトル、十二年のアタール、Grasse で手作業ブレンド。"
+    },
+    "playful": {
+      "title": "イラストデュオ",
+      "desc": "Mochi Studio — リスボンのイラスト + モーションデュオ、Bento Grid で 6 プロジェクト厳選。"
+    }
+  },
   "mandates": {
     "label": "— Mandate",
     "h2": "<em>10 の mandate。</em>譲歩不可。",
@@ -159,7 +214,6 @@
     "m10_title": "Pre-emit 検証",
     "m10_desc": "Phase 7 入口は 10 フィールドの <code>&lt;design_plan&gt;</code> ブロックの後でコードをゲート。FAIL はすべて戻されます。CSS + plan.md にスタンプ。"
   },
-
   "faq": {
     "label": "— FAQ",
     "h2": "<em>すでに聞かれた</em>質問。",
@@ -181,7 +235,6 @@
     "q8": "<em>vaporwave のような</em>新しい vibe をどう追加しますか?",
     "a8": "<p>Palette + typography ペアを <code>references/visual-direction-guide.md</code> に追加、アーキタイプマッピングを <code>assets/nextjs-skeleton/section-archetypes.md</code> に追加、イラストスタイル row を <code>references/2d-illustration-catalog.md</code> に追加、関連すれば 3D-pairing row を visual-direction-guide に追加。それから validate を実行。</p>"
   },
-
   "beyond": {
     "label": "— Beyond",
     "h2": "<em>Companion アプローチ</em> — より深いアーキテクチャのために。",
@@ -190,7 +243,6 @@
     "header_need": "必要なこと",
     "header_skill": "推奨アプローチ"
   },
-
   "footer": {
     "version": "<em>perfect-ui</em> — v2.5.0",
     "tagline": "Skill 名は <code>SKILL.md</code> frontmatter 内に",

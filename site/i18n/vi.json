@@ -6,17 +6,16 @@
     "dir": "ltr",
     "switcher_label": "Chọn ngôn ngữ"
   },
-
   "nav": {
     "install": "Cài đặt",
     "why": "Vì sao",
     "pipeline": "Quy trình",
     "vibes": "Vibe",
     "examples": "Ví dụ",
+    "showcase": "Showcase",
     "faq": "Hỏi đáp",
     "repo": "Repo"
   },
-
   "hero": {
     "readme_link": "README",
     "h1_line1": "Thiết kế UI",
@@ -29,7 +28,6 @@
     "stat_tiers": "Tier anti-slop",
     "stat_types": "Loại trang — 2 tier đặc biệt"
   },
-
   "install": {
     "label": "— Cài đặt",
     "h2": "<em>Một lệnh.</em> Không build step. Không config.",
@@ -41,7 +39,6 @@
     "copy_btn": "Sao chép",
     "copy_btn_done": "Đã chép"
   },
-
   "why": {
     "label": "— Vì sao",
     "h2": "<em>Tạo ra vì</em> trang AI chồng các default.",
@@ -52,9 +49,24 @@
     "stat_violations": "Vi phạm chồng / trang AI",
     "ai_heading": "AI default — chồng lên nhau",
     "human_heading": "Cam kết của con người — đơn nhất",
-    "close": "Sự nhất quán là hệ số nhân cho craft. Skill này mã hoá điều đó thành luật bắt buộc."
+    "close": "Sự nhất quán là hệ số nhân cho craft. Skill này mã hoá điều đó thành luật bắt buộc.",
+    "ai_item_1": "Chỉ Inter",
+    "ai_item_2": "Hero gradient tím/xanh",
+    "ai_item_3": "<code>h-screen</code> khắp nơi",
+    "ai_item_4": "Icon <code>lucide-react</code>",
+    "ai_item_5": "Grid 3 cột feature đều nhau",
+    "ai_item_6": "CTA \"Get Started\"",
+    "ai_item_7": "Stat tròn giả (10K+, 99.99%)",
+    "ai_item_8": "Fade-up trên mọi element",
+    "human_item_1": "Một vibe khoá end-to-end",
+    "human_item_2": "Bộ icon SVG custom",
+    "human_item_3": "Grid editorial bất đối xứng",
+    "human_item_4": "Typography ghép vibe",
+    "human_item_5": "Font display đặc trưng",
+    "human_item_6": "Copy draft cụ thể",
+    "human_item_7": "Stat thực dựa trên evidence",
+    "human_item_8": "Motion intensity scale theo vibe"
   },
-
   "scope": {
     "label": "— Phạm vi",
     "h2": "<em>Hai tier.</em> Không từ chối.",
@@ -63,7 +75,6 @@
     "generic_heading": "Tier tổng quát — craft phổ quát",
     "close": "Bộ công cụ phổ quát áp dụng cho cả hai — khoá vibe, palette, typography, custom icon, illustration 2D, visual effect, motion intensity. Các hướng tiếp cận companion gợi ý trong <a href=\"#beyond\">§ Beyond</a>."
   },
-
   "pipeline": {
     "label": "— Quy trình",
     "h2": "<em>Tám phase,</em> mỗi phase một mối quan tâm duy nhất.",
@@ -93,13 +104,18 @@
     "p08_title": "Audit anti-slop",
     "p08_desc": "Audit inline lọc theo tier. Tier 1 hit = block ship. Grep + kiểm tra visual. Rule marketing-only bị skip cho type non-marketing."
   },
-
   "vibes_sec": {
     "label": "— Vibe",
     "h2": "<em>Mười một anchor.</em> Một + một wildcard. Khoá tại thời điểm design.",
     "meta": "visual-direction-guide.md"
   },
-
+  "theme": {
+    "header_label": "Theme",
+    "header_count": "11 vibes",
+    "header_subtitle": "thiết kế bởi perfect-ui",
+    "footer_desc": "Mỗi theme = một vibe anchor từ <code>visual-direction-guide.md</code> — palette + typography + motion ease + P-logo custom. Cấu trúc DOM giữ Editorial; trang ví dụ vẫn Editorial-only.",
+    "cta_generate": "Tạo custom qua perfect-ui →"
+  },
   "tiers": {
     "label": "— Anti-slop",
     "h2": "<em>Tier 1</em> auto-fail. <em>Tier 2</em> caution. <em>Tier 3</em> bù được.",
@@ -110,9 +126,31 @@
     "t2_heading": "Drift về bố cục",
     "t3_tag": "Tier 3 — Bù được",
     "t3_heading": "Cohesion ≥ 8/10 cứu",
-    "t3_footnote": "Chỉ cho phép NẾU visual craft cohesion ≥ 8/10. Đường override: user request hai lần + lý do được log."
+    "t3_footnote": "Chỉ cho phép NẾU visual craft cohesion ≥ 8/10. Đường override: user request hai lần + lý do được log.",
+    "t1_item_1": "Cặp <code>DM Sans + Space Grotesk</code>",
+    "t1_item_2": "Hero gradient tím/xanh + text gradient",
+    "t1_item_3": "Import <code>lucide-react</code> / <code>@heroicons</code>",
+    "t1_item_4": "Hai CTA cùng trọng số ở hero",
+    "t1_item_5": "Utility class <code>h-screen</code>",
+    "t1_item_6": "Grid 3 cột card feature đều nhau",
+    "t1_item_7": "Tailwind density &gt; 200 utility",
+    "t1_item_8": "CTA generic (\"Get Started\", \"Sign In\")",
+    "t1_item_9": "Model 3D AI sinh làm hero subject",
+    "t1_item_10": "<code>OrbitControls</code> trong landing/portfolio",
+    "t2_item_1": "Browser-mockup generic ở nửa phải split hero",
+    "t2_item_2": "Hàng checkbox bullet \"thân thiện\"",
+    "t2_item_3": "Stat tròn giả (10K+, 99.99%)",
+    "t2_item_4": "Illustration cute AI sinh làm hero",
+    "t2_item_5": "Hero center + H1 center ở high variance",
+    "t2_item_6": "Model 3D dùng thuần như decoration",
+    "t2_item_7": "Trộn style giữa các illustration 2D",
+    "t2_item_8": "Fade-up motion generic trên mọi element",
+    "t2_item_9": "<code>ease-in-out</code> 0.3s làm duration phổ quát",
+    "t3_item_1": "<code>Inter</code> body khi ghép với display đặc trưng",
+    "t3_item_2": "Cụm cliché AI trong copy không tải trọng",
+    "t3_item_3": "Tên startup generic (Acme, Globex)",
+    "t3_item_4": "Title Case Trên Mọi Header"
   },
-
   "examples_sec": {
     "label": "— Trên thực tế",
     "h2": "<em>Bốn flow thật.</em> Một kỷ luật.",
@@ -132,7 +170,24 @@
     "dashboard_disclosure": "<strong>Evidence-base disclosure (log tại Phase 0.5):</strong> evidence base của skill (12 marketing landing đã phân tích) KHÔNG cover trực tiếp các pattern dashboard / admin / e-commerce / app-surface. Bộ công cụ craft phổ quát vẫn áp dụng. Chất lượng output là best-effort.",
     "dashboard_outcome": "Dashboard với khoá vibe, custom icon, kỷ luật motion — không có cảnh báo audit false-positive về pattern marketing không liên quan."
   },
-
+  "showcase": {
+    "label": "— Showcase",
+    "h2": "<em>Output thực tế</em> ship từ skill.",
+    "intro": "Mỗi card mở một file ví dụ thật minh hoạ một combo vibe × type × macrostructure. Preview WebP 16-30 KB mỗi cái (tự capture 1440×900, optimize).",
+    "cta": "Mở ví dụ",
+    "coffee": {
+      "title": "Đăng ký cà phê",
+      "desc": "Tsumiki — cà phê single-origin specialty, thư hàng tuần từ roaster."
+    },
+    "luxury": {
+      "title": "Nước hoa di sản",
+      "desc": "Maison Lumière — một chai, mười hai năm attar, blend tay tại Grasse."
+    },
+    "playful": {
+      "title": "Duo illustration",
+      "desc": "Mochi Studio — duo illustration + motion ở Lisbon, sáu project chọn lọc trong Bento Grid."
+    }
+  },
   "mandates": {
     "label": "— Mandate",
     "h2": "<em>Mười mandate.</em> Bất di bất dịch.",
@@ -159,7 +214,6 @@
     "m10_title": "Pre-emit verification",
     "m10_desc": "Cổng vào Phase 7 chặn code sau khối <code>&lt;design_plan&gt;</code> 10 trường. Bất kỳ FAIL nào route ngược lại. Đóng dấu trong CSS + plan.md."
   },
-
   "faq": {
     "label": "— Hỏi đáp",
     "h2": "<em>Câu hỏi</em> đã được hỏi.",
@@ -181,7 +235,6 @@
     "q8": "<em>Làm sao</em> thêm một vibe mới như vaporwave?",
     "a8": "<p>Thêm cặp palette + typography vào <code>references/visual-direction-guide.md</code>, thêm mapping archetype vào <code>assets/nextjs-skeleton/section-archetypes.md</code>, thêm row style illustration vào <code>references/2d-illustration-catalog.md</code>, thêm row 3D-pairing vào visual-direction-guide nếu liên quan. Sau đó chạy validate.</p>"
   },
-
   "beyond": {
     "label": "— Beyond",
     "h2": "<em>Các hướng companion</em> cho kiến trúc sâu hơn.",
@@ -190,7 +243,6 @@
     "header_need": "Khi bạn cần",
     "header_skill": "Hướng tiếp cận đề xuất"
   },
-
   "footer": {
     "version": "<em>perfect-ui</em> — v2.5.0",
     "tagline": "Tên skill nằm trong frontmatter <code>SKILL.md</code>",

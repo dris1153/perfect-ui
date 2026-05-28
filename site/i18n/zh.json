@@ -6,17 +6,16 @@
     "dir": "ltr",
     "switcher_label": "选择语言"
   },
-
   "nav": {
     "install": "安装",
     "why": "为什么",
     "pipeline": "流程",
     "vibes": "Vibe",
     "examples": "示例",
+    "showcase": "Showcase",
     "faq": "常见问题",
     "repo": "Repo"
   },
-
   "hero": {
     "readme_link": "README",
     "h1_line1": "UI 设计",
@@ -29,7 +28,6 @@
     "stat_tiers": "Anti-slop tier",
     "stat_types": "页面类型 — 2 个特殊 tier"
   },
-
   "install": {
     "label": "— 安装",
     "h2": "<em>一条命令。</em>无 build 步骤。无配置。",
@@ -41,7 +39,6 @@
     "copy_btn": "复制",
     "copy_btn_done": "已复制"
   },
-
   "why": {
     "label": "— 为什么",
     "h2": "<em>诞生的原因:</em>AI 页面堆叠默认值。",
@@ -52,9 +49,24 @@
     "stat_violations": "每个 AI 页堆叠违规",
     "ai_heading": "AI 默认值 — 堆叠",
     "human_heading": "人类承诺 — 单一",
-    "close": "一致性是 craft 的倍增器。这个 skill 把它编码为可执行的规则。"
+    "close": "一致性是 craft 的倍增器。这个 skill 把它编码为可执行的规则。",
+    "ai_item_1": "单独 Inter",
+    "ai_item_2": "紫/蓝渐变 hero",
+    "ai_item_3": "<code>h-screen</code> 到处用",
+    "ai_item_4": "<code>lucide-react</code> 图标",
+    "ai_item_5": "3 列等宽 feature grid",
+    "ai_item_6": "\"Get Started\" CTA",
+    "ai_item_7": "圆整假 stat (10K+, 99.99%)",
+    "ai_item_8": "每个 element 都 fade-up",
+    "human_item_1": "单一 vibe 锁端到端",
+    "human_item_2": "自定义 SVG 图标集",
+    "human_item_3": "非对称 editorial grid",
+    "human_item_4": "Vibe 搭配的 typography",
+    "human_item_5": "独特的 display 字体",
+    "human_item_6": "具体的 draft copy",
+    "human_item_7": "基于真实证据的 stat",
+    "human_item_8": "Vibe 缩放的 motion intensity"
   },
-
   "scope": {
     "label": "— 范围",
     "h2": "<em>两个 tier。</em>不拒绝。",
@@ -63,7 +75,6 @@
     "generic_heading": "通用 tier — 通用 craft",
     "close": "通用工具包适用于两者——锁定 vibe、palette、typography、自定义图标、2D 插画、视觉效果、motion intensity。Companion 方案在 <a href=\"#beyond\">§ Beyond</a> 中建议。"
   },
-
   "pipeline": {
     "label": "— 流程",
     "h2": "<em>八个 phase,</em>每个只关注一件事。",
@@ -93,13 +104,18 @@
     "p08_title": "Anti-slop 审计",
     "p08_desc": "内联按 tier 过滤的审计。Tier 1 命中 = 阻止 ship。Grep + 视觉检查。非营销 type 跳过仅营销规则。"
   },
-
   "vibes_sec": {
     "label": "— Vibe",
     "h2": "<em>十一个 anchor。</em>一个 + 一个 wildcard。在 design 时锁定。",
     "meta": "visual-direction-guide.md"
   },
-
+  "theme": {
+    "header_label": "Theme",
+    "header_count": "11 vibes",
+    "header_subtitle": "由 perfect-ui 设计",
+    "footer_desc": "每个 theme = 来自 <code>visual-direction-guide.md</code> 的一个 vibe anchor — palette + typography + motion ease + 自定义 P-logo。DOM 结构保持 Editorial；示例页面仅 Editorial。",
+    "cta_generate": "通过 perfect-ui 生成自定义 →"
+  },
   "tiers": {
     "label": "— Anti-slop",
     "h2": "<em>Tier 1</em> 自动 fail。<em>Tier 2</em> 警示。<em>Tier 3</em> 可补偿。",
@@ -110,9 +126,31 @@
     "t2_heading": "构图漂移",
     "t3_tag": "Tier 3 — 可补偿",
     "t3_heading": "Cohesion ≥ 8/10 拯救",
-    "t3_footnote": "仅在视觉 craft cohesion ≥ 8/10 时允许。Override 路径:用户请求两次 + 记录原因。"
+    "t3_footnote": "仅在视觉 craft cohesion ≥ 8/10 时允许。Override 路径:用户请求两次 + 记录原因。",
+    "t1_item_1": "<code>DM Sans + Space Grotesk</code> 配对",
+    "t1_item_2": "紫/蓝渐变 hero + 渐变文字",
+    "t1_item_3": "<code>lucide-react</code> / <code>@heroicons</code> 导入",
+    "t1_item_4": "Hero 中两个等权 CTA",
+    "t1_item_5": "<code>h-screen</code> utility class",
+    "t1_item_6": "3 列等宽 feature card grid",
+    "t1_item_7": "Tailwind 密度 &gt; 200 utility",
+    "t1_item_8": "通用 CTA (\"Get Started\", \"Sign In\")",
+    "t1_item_9": "AI 生成的 3D 模型作 hero subject",
+    "t1_item_10": "Landing/portfolio 中 <code>OrbitControls</code>",
+    "t2_item_1": "分屏 hero 右半通用 browser-mockup",
+    "t2_item_2": "友好 bullet checkbox 安抚行",
+    "t2_item_3": "圆整假 stat (10K+, 99.99%)",
+    "t2_item_4": "AI 可爱 illustration 作 hero",
+    "t2_item_5": "高 variance 的居中 hero + 居中 H1",
+    "t2_item_6": "3D 模型纯作装饰",
+    "t2_item_7": "2D illustration 间混风格",
+    "t2_item_8": "每个 element 通用 fade-up motion",
+    "t2_item_9": "<code>ease-in-out</code> 0.3s 作通用 duration",
+    "t3_item_1": "与独特 display 配对时的 <code>Inter</code> body",
+    "t3_item_2": "非承重 copy 中的 AI 陈词",
+    "t3_item_3": "通用 startup 名 (Acme, Globex)",
+    "t3_item_4": "每个 Header 都 Title Case"
   },
-
   "examples_sec": {
     "label": "— 实践中",
     "h2": "<em>四个真实流程。</em>一种纪律。",
@@ -132,7 +170,24 @@
     "dashboard_disclosure": "<strong>Evidence-base 披露(在 Phase 0.5 记录):</strong>skill 的 evidence base(已分析 12 个营销 landing)不直接覆盖 dashboard / admin / e-commerce / app-surface pattern。通用 craft 工具包仍适用。输出质量为 best-effort。",
     "dashboard_outcome": "Dashboard 带 vibe 锁、自定义图标、motion 纪律——无关于不适用营销 pattern 的误报审计警告。"
   },
-
+  "showcase": {
+    "label": "— Showcase",
+    "h2": "<em>真实输出</em>来自 skill。",
+    "intro": "每张卡片打开一个真实的示例文件,展示一个 vibe × type × macrostructure 组合。每个 WebP 预览 16-30 KB (1440×900 自动截图,已优化)。",
+    "cta": "打开示例",
+    "coffee": {
+      "title": "咖啡订阅",
+      "desc": "Tsumiki — 单一产地精品咖啡,烘焙师的每周来信。"
+    },
+    "luxury": {
+      "title": "传承香水",
+      "desc": "Maison Lumière — 一瓶,十二年 attar,在 Grasse 手工调制。"
+    },
+    "playful": {
+      "title": "插画二人组",
+      "desc": "Mochi Studio — 里斯本的插画 + 动效二人组,Bento Grid 六个精选项目。"
+    }
+  },
   "mandates": {
     "label": "— Mandate",
     "h2": "<em>十条 mandate。</em>不可妥协。",
@@ -159,7 +214,6 @@
     "m10_title": "Pre-emit 验证",
     "m10_desc": "Phase 7 入口在 10 字段 <code>&lt;design_plan&gt;</code> 块后守住代码。任何 FAIL 路由返回。在 CSS + plan.md 中盖章。"
   },
-
   "faq": {
     "label": "— 常见问题",
     "h2": "<em>已被问过</em>的问题。",
@@ -181,7 +235,6 @@
     "q8": "<em>如何</em>添加一个新 vibe 比如 vaporwave?",
     "a8": "<p>把 palette + typography 对加到 <code>references/visual-direction-guide.md</code>,把 archetype 映射加到 <code>assets/nextjs-skeleton/section-archetypes.md</code>,把 illustration 风格 row 加到 <code>references/2d-illustration-catalog.md</code>,相关时把 3D-pairing row 加到 visual-direction-guide。然后跑 validate。</p>"
   },
-
   "beyond": {
     "label": "— Beyond",
     "h2": "<em>Companion 方案</em>面向更深的架构。",
@@ -190,7 +243,6 @@
     "header_need": "如果你需要",
     "header_skill": "建议方案"
   },
-
   "footer": {
     "version": "<em>perfect-ui</em> — v2.5.0",
     "tagline": "Skill 名称在 <code>SKILL.md</code> frontmatter 中",

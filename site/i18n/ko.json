@@ -6,17 +6,16 @@
     "dir": "ltr",
     "switcher_label": "언어 선택"
   },
-
   "nav": {
     "install": "설치",
     "why": "이유",
     "pipeline": "파이프라인",
     "vibes": "Vibe",
     "examples": "예시",
+    "showcase": "Showcase",
     "faq": "FAQ",
     "repo": "Repo"
   },
-
   "hero": {
     "readme_link": "README",
     "h1_line1": "UI 디자인",
@@ -29,7 +28,6 @@
     "stat_tiers": "Anti-slop tier",
     "stat_types": "페이지 타입 — 특수 tier 2개"
   },
-
   "install": {
     "label": "— 설치",
     "h2": "<em>한 줄 명령.</em> 빌드 단계 없음. 설정 없음.",
@@ -41,7 +39,6 @@
     "copy_btn": "복사",
     "copy_btn_done": "복사됨"
   },
-
   "why": {
     "label": "— 이유",
     "h2": "<em>만들어진 이유:</em> AI 페이지는 기본값을 쌓는다.",
@@ -52,9 +49,24 @@
     "stat_violations": "AI 페이지당 쌓인 위반",
     "ai_heading": "AI 기본값 — 쌓임",
     "human_heading": "인간의 다짐 — 단일",
-    "close": "일관성은 craft의 곱셈 계수입니다. 이 skill은 그것을 강제 가능한 규칙으로 인코딩합니다."
+    "close": "일관성은 craft의 곱셈 계수입니다. 이 skill은 그것을 강제 가능한 규칙으로 인코딩합니다.",
+    "ai_item_1": "Inter 단독",
+    "ai_item_2": "보라/파랑 그라데이션 hero",
+    "ai_item_3": "<code>h-screen</code> 어디에나",
+    "ai_item_4": "<code>lucide-react</code> 아이콘",
+    "ai_item_5": "3열 동일 feature grid",
+    "ai_item_6": "\"Get Started\" CTA",
+    "ai_item_7": "둥근 가짜 stat (10K+, 99.99%)",
+    "ai_item_8": "모든 element에 fade-up",
+    "human_item_1": "한 vibe end-to-end 잠금",
+    "human_item_2": "커스텀 SVG 아이콘 세트",
+    "human_item_3": "비대칭 editorial grid",
+    "human_item_4": "Vibe 페어링 typography",
+    "human_item_5": "독특한 display 폰트",
+    "human_item_6": "구체적인 draft copy",
+    "human_item_7": "실제 evidence 기반 stat",
+    "human_item_8": "Vibe 스케일 motion intensity"
   },
-
   "scope": {
     "label": "— 범위",
     "h2": "<em>두 가지 tier.</em> 거절 없음.",
@@ -63,7 +75,6 @@
     "generic_heading": "일반 tier — 보편적 craft",
     "close": "보편 툴킷은 양쪽 모두에 적용됩니다 — vibe 잠금, palette, typography, 커스텀 아이콘, 2D 일러스트, 시각 효과, motion intensity. Companion 방식은 <a href=\"#beyond\">§ Beyond</a>에서 제안됩니다."
   },
-
   "pipeline": {
     "label": "— 파이프라인",
     "h2": "<em>여덟 phase,</em> 각 phase는 단일 관심사.",
@@ -93,13 +104,18 @@
     "p08_title": "Anti-slop audit",
     "p08_desc": "인라인 tier-필터 audit. Tier 1 히트 = ship 차단. Grep + 시각 검사. 마케팅이 아닌 type에 대해 마케팅 전용 규칙은 건너뜀."
   },
-
   "vibes_sec": {
     "label": "— Vibe",
     "h2": "<em>열한 가지 anchor.</em> 하나 + 와일드카드 하나. Design 시점에 잠금.",
     "meta": "visual-direction-guide.md"
   },
-
+  "theme": {
+    "header_label": "Theme",
+    "header_count": "11 vibes",
+    "header_subtitle": "perfect-ui로 디자인",
+    "footer_desc": "각 theme = <code>visual-direction-guide.md</code>의 vibe anchor 하나 — palette + typography + motion ease + 커스텀 P-로고. DOM 구조는 Editorial 유지; 예제 페이지는 Editorial 전용.",
+    "cta_generate": "perfect-ui로 커스텀 생성 →"
+  },
   "tiers": {
     "label": "— Anti-slop",
     "h2": "<em>Tier 1</em> auto-fail. <em>Tier 2</em> 경고. <em>Tier 3</em> 보상 가능.",
@@ -110,9 +126,31 @@
     "t2_heading": "구성 드리프트",
     "t3_tag": "Tier 3 — 보상 가능",
     "t3_heading": "Cohesion ≥ 8/10이 구함",
-    "t3_footnote": "시각 craft cohesion ≥ 8/10일 때만 허용. Override 경로: 사용자가 두 번 요청 + 이유 기록."
+    "t3_footnote": "시각 craft cohesion ≥ 8/10일 때만 허용. Override 경로: 사용자가 두 번 요청 + 이유 기록.",
+    "t1_item_1": "<code>DM Sans + Space Grotesk</code> 페어",
+    "t1_item_2": "보라/파랑 그라데이션 hero + 그라데이션 텍스트",
+    "t1_item_3": "<code>lucide-react</code> / <code>@heroicons</code> import",
+    "t1_item_4": "Hero에 동일 가중치 CTA 두 개",
+    "t1_item_5": "<code>h-screen</code> utility 클래스",
+    "t1_item_6": "3열 동일 feature card grid",
+    "t1_item_7": "Tailwind 밀도 &gt; 200 utility",
+    "t1_item_8": "일반 CTA (\"Get Started\", \"Sign In\")",
+    "t1_item_9": "AI 생성 3D 모델을 hero subject로",
+    "t1_item_10": "Landing/portfolio의 <code>OrbitControls</code>",
+    "t2_item_1": "분할 hero 오른쪽 절반 일반 브라우저 mockup",
+    "t2_item_2": "친근한 bullet checkbox 안심 행",
+    "t2_item_3": "둥근 가짜 stat (10K+, 99.99%)",
+    "t2_item_4": "Hero로 AI 귀여운 illustration",
+    "t2_item_5": "높은 variance에 중앙 hero + 중앙 H1",
+    "t2_item_6": "순수 장식용 3D 모델",
+    "t2_item_7": "2D illustration 간 스타일 혼합",
+    "t2_item_8": "모든 element 일반 fade-up motion",
+    "t2_item_9": "범용 duration으로 <code>ease-in-out</code> 0.3s",
+    "t3_item_1": "독특한 display와 페어링된 <code>Inter</code> body",
+    "t3_item_2": "비중심 copy의 AI 클리셰 문구",
+    "t3_item_3": "일반 startup 이름 (Acme, Globex)",
+    "t3_item_4": "모든 Header에 Title Case"
   },
-
   "examples_sec": {
     "label": "— 실제 사례",
     "h2": "<em>네 가지 실전 흐름.</em> 하나의 규율.",
@@ -132,7 +170,24 @@
     "dashboard_disclosure": "<strong>Evidence-base 공개(Phase 0.5에서 기록):</strong> skill의 evidence base(분석된 12개 마케팅 landing)는 dashboard / admin / e-commerce / app-surface 패턴을 직접 다루지 않습니다. 보편 craft 툴킷은 여전히 적용됩니다. 출력 품질은 best-effort.",
     "dashboard_outcome": "Vibe 잠금, 커스텀 아이콘, motion 규율을 갖춘 dashboard — 적용되지 않는 마케팅 패턴에 대한 false-positive audit 경고 없이."
   },
-
+  "showcase": {
+    "label": "— Showcase",
+    "h2": "<em>실제 출력물</em> skill에서 배포됨.",
+    "intro": "각 카드는 vibe × type × macrostructure 조합을 보여주는 실제 예제 파일을 엽니다. WebP 미리보기는 각 16-30 KB (1440×900 자동 캡처, 최적화).",
+    "cta": "예제 열기",
+    "coffee": {
+      "title": "커피 구독",
+      "desc": "Tsumiki — 단일 원산지 스페셜티 커피, 로스터의 주간 편지."
+    },
+    "luxury": {
+      "title": "헤리티지 향수",
+      "desc": "Maison Lumière — 한 병, 12년 숙성 아타르, Grasse에서 손으로 블렌딩."
+    },
+    "playful": {
+      "title": "일러스트 듀오",
+      "desc": "Mochi Studio — 리스본의 일러스트 + 모션 듀오, Bento Grid에 6개 선별 프로젝트."
+    }
+  },
   "mandates": {
     "label": "— Mandate",
     "h2": "<em>열 가지 mandate.</em> 타협 불가.",
@@ -159,7 +214,6 @@
     "m10_title": "Pre-emit 검증",
     "m10_desc": "Phase 7 진입이 10필드 <code>&lt;design_plan&gt;</code> 블록 뒤에서 코드를 게이트합니다. FAIL은 되돌아갑니다. CSS + plan.md에 도장 찍힙니다."
   },
-
   "faq": {
     "label": "— FAQ",
     "h2": "<em>이미 들어온</em> 질문들.",
@@ -181,7 +235,6 @@
     "q8": "<em>vaporwave 같은</em> 새 vibe는 어떻게 추가하나요?",
     "a8": "<p>Palette + typography 쌍을 <code>references/visual-direction-guide.md</code>에 추가, archetype 매핑을 <code>assets/nextjs-skeleton/section-archetypes.md</code>에 추가, 일러스트 스타일 row를 <code>references/2d-illustration-catalog.md</code>에 추가, 관련 시 3D-pairing row를 visual-direction-guide에 추가. 그런 다음 validate 실행.</p>"
   },
-
   "beyond": {
     "label": "— Beyond",
     "h2": "<em>Companion 방식</em> — 더 깊은 아키텍처를 위해.",
@@ -190,7 +243,6 @@
     "header_need": "필요한 것",
     "header_skill": "제안 방식"
   },
-
   "footer": {
     "version": "<em>perfect-ui</em> — v2.5.0",
     "tagline": "Skill 이름은 <code>SKILL.md</code> frontmatter에",

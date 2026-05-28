@@ -6,17 +6,16 @@
     "dir": "ltr",
     "switcher_label": "Seleccionar idioma"
   },
-
   "nav": {
     "install": "Instalar",
     "why": "Por qué",
     "pipeline": "Pipeline",
     "vibes": "Vibe",
     "examples": "Ejemplos",
+    "showcase": "Showcase",
     "faq": "FAQ",
     "repo": "Repo"
   },
-
   "hero": {
     "readme_link": "README",
     "h1_line1": "Diseño UI",
@@ -29,7 +28,6 @@
     "stat_tiers": "Tiers anti-slop",
     "stat_types": "Tipos de página — 2 tiers especiales"
   },
-
   "install": {
     "label": "— Instalar",
     "h2": "<em>Un comando.</em> Sin build. Sin config.",
@@ -41,7 +39,6 @@
     "copy_btn": "Copiar",
     "copy_btn_done": "Copiado"
   },
-
   "why": {
     "label": "— Por qué",
     "h2": "<em>Hecho porque</em> las páginas AI apilan defaults.",
@@ -52,9 +49,24 @@
     "stat_violations": "Violaciones apiladas / página AI",
     "ai_heading": "Defaults de IA — apilados",
     "human_heading": "Compromiso humano — singular",
-    "close": "La cohesión es el multiplicador del craft. Este skill la codifica como reglas exigibles."
+    "close": "La cohesión es el multiplicador del craft. Este skill la codifica como reglas exigibles.",
+    "ai_item_1": "Inter sola",
+    "ai_item_2": "Hero gradiente púrpura/azul",
+    "ai_item_3": "<code>h-screen</code> en todas partes",
+    "ai_item_4": "Iconos <code>lucide-react</code>",
+    "ai_item_5": "Grid de 3 cols feature iguales",
+    "ai_item_6": "CTAs \"Get Started\"",
+    "ai_item_7": "Stats falsas redondas (10K+, 99.99%)",
+    "ai_item_8": "Fade-up en cada elemento",
+    "human_item_1": "Un vibe bloqueado end-to-end",
+    "human_item_2": "Set de iconos SVG personalizados",
+    "human_item_3": "Grid editorial asimétrico",
+    "human_item_4": "Typography emparejada con vibe",
+    "human_item_5": "Fuentes display distintivas",
+    "human_item_6": "Copy draft específico",
+    "human_item_7": "Stats reales basadas en evidencia",
+    "human_item_8": "Motion intensity escalada por vibe"
   },
-
   "scope": {
     "label": "— Alcance",
     "h2": "<em>Dos tiers.</em> Sin rechazos.",
@@ -63,7 +75,6 @@
     "generic_heading": "Tier genérico — craft universal",
     "close": "El toolkit universal aplica a ambos — bloqueo de vibe, palette, typography, iconos personalizados, ilustraciones 2D, efectos visuales, motion intensity. Aproximaciones companion sugeridas en <a href=\"#beyond\">§ Beyond</a>."
   },
-
   "pipeline": {
     "label": "— Pipeline",
     "h2": "<em>Ocho phases,</em> cada una con una sola preocupación.",
@@ -93,13 +104,18 @@
     "p08_title": "Auditoría anti-slop",
     "p08_desc": "Auditoría inline filtrada por tier. Hits en Tier 1 = bloquea ship. Grep + chequeos visuales. Reglas marketing-only saltadas para types no-marketing."
   },
-
   "vibes_sec": {
     "label": "— Vibes",
     "h2": "<em>Once anchors.</em> Uno + un wildcard. Bloqueados en tiempo de design.",
     "meta": "visual-direction-guide.md"
   },
-
+  "theme": {
+    "header_label": "Theme",
+    "header_count": "11 vibes",
+    "header_subtitle": "diseñado vía perfect-ui",
+    "footer_desc": "Cada theme = un vibe anchor de <code>visual-direction-guide.md</code> — palette + typography + motion ease + P-logo personalizado. La estructura DOM se mantiene Editorial; las páginas de ejemplo siguen siendo solo Editorial.",
+    "cta_generate": "Generar custom vía perfect-ui →"
+  },
   "tiers": {
     "label": "— Anti-slop",
     "h2": "<em>Tier 1</em> auto-fail. <em>Tier 2</em> precaución. <em>Tier 3</em> compensable.",
@@ -110,9 +126,31 @@
     "t2_heading": "Drift compositivo",
     "t3_tag": "Tier 3 — Compensable",
     "t3_heading": "Cohesión ≥ 8/10 salva",
-    "t3_footnote": "Permitido solo SI la cohesión de craft visual es ≥ 8/10. Ruta de override: el usuario solicita dos veces + razón registrada."
+    "t3_footnote": "Permitido solo SI la cohesión de craft visual es ≥ 8/10. Ruta de override: el usuario solicita dos veces + razón registrada.",
+    "t1_item_1": "Par <code>DM Sans + Space Grotesk</code>",
+    "t1_item_2": "Hero gradiente púrpura/azul con texto gradiente",
+    "t1_item_3": "Imports <code>lucide-react</code> / <code>@heroicons</code>",
+    "t1_item_4": "Dos CTAs de igual peso en hero",
+    "t1_item_5": "Clase utility <code>h-screen</code>",
+    "t1_item_6": "Grid de 3 cols card feature iguales",
+    "t1_item_7": "Densidad Tailwind &gt; 200 utilities",
+    "t1_item_8": "CTAs genéricos (\"Get Started\", \"Sign In\")",
+    "t1_item_9": "Modelo 3D generado por IA como hero subject",
+    "t1_item_10": "<code>OrbitControls</code> en landing/portfolio",
+    "t2_item_1": "Browser-mockup genérico en mitad derecha de hero dividido",
+    "t2_item_2": "Fila de checkbox bullet amigable",
+    "t2_item_3": "Stats falsas redondas (10K+, 99.99%)",
+    "t2_item_4": "Ilustración AI cute como hero",
+    "t2_item_5": "Hero centrado + H1 centrado con alta variance",
+    "t2_item_6": "Modelo 3D usado puramente como decoración",
+    "t2_item_7": "Mezcla de estilos entre ilustraciones 2D",
+    "t2_item_8": "Motion fade-up genérico en cada elemento",
+    "t2_item_9": "<code>ease-in-out</code> 0.3s como duración universal",
+    "t3_item_1": "<code>Inter</code> body emparejado con display distintivo",
+    "t3_item_2": "Frases cliché de IA en copy no portante",
+    "t3_item_3": "Nombres genéricos de startup (Acme, Globex)",
+    "t3_item_4": "Title Case En Cada Header"
   },
-
   "examples_sec": {
     "label": "— En la práctica",
     "h2": "<em>Cuatro flujos reales.</em> Una disciplina.",
@@ -132,7 +170,24 @@
     "dashboard_disclosure": "<strong>Divulgación de evidence-base (registrada en Phase 0.5):</strong> el evidence base del skill (12 landings de marketing analizadas) NO cubre directamente patrones de dashboard / admin / e-commerce / app-surface. El toolkit universal de craft aplica de todos modos. La calidad de output es best-effort.",
     "dashboard_outcome": "Dashboard con bloqueo de vibe, iconos personalizados, disciplina de motion — sin avisos de auditoría false-positive sobre patrones de marketing que no aplican."
   },
-
+  "showcase": {
+    "label": "— Showcase",
+    "h2": "<em>Salidas reales</em> enviadas desde el skill.",
+    "intro": "Cada tarjeta abre un archivo de ejemplo real que demuestra una combinación vibe × type × macrostructure. Las previsualizaciones WebP son de 16-30 KB cada una (auto-capturadas a 1440×900, optimizadas).",
+    "cta": "Abrir ejemplo",
+    "coffee": {
+      "title": "Suscripción de café",
+      "desc": "Tsumiki — café de especialidad de origen único, carta semanal del tostador."
+    },
+    "luxury": {
+      "title": "Perfumería heritage",
+      "desc": "Maison Lumière — una sola botella, doce años de attar, mezclado a mano en Grasse."
+    },
+    "playful": {
+      "title": "Dúo de ilustración",
+      "desc": "Mochi Studio — dúo de ilustración + motion en Lisboa, seis proyectos seleccionados en Bento Grid."
+    }
+  },
   "mandates": {
     "label": "— Mandatos",
     "h2": "<em>Diez mandatos.</em> No negociables.",
@@ -159,7 +214,6 @@
     "m10_title": "Verificación pre-emit",
     "m10_desc": "La entrada a Phase 7 guarda el código tras un bloque <code>&lt;design_plan&gt;</code> de 10 campos. Cualquier FAIL devuelve. Estampado en CSS + plan.md."
   },
-
   "faq": {
     "label": "— FAQ",
     "h2": "<em>Preguntas</em> ya hechas.",
@@ -181,7 +235,6 @@
     "q8": "<em>¿Cómo añado</em> un vibe nuevo como vaporwave?",
     "a8": "<p>Añade el par palette + typography a <code>references/visual-direction-guide.md</code>, añade un mapeo de arquetipo a <code>assets/nextjs-skeleton/section-archetypes.md</code>, añade una fila de estilo de ilustración a <code>references/2d-illustration-catalog.md</code>, añade una fila de emparejamiento 3D a visual-direction-guide si aplica. Luego ejecuta validate.</p>"
   },
-
   "beyond": {
     "label": "— Beyond",
     "h2": "<em>Aproximaciones companion</em> para arquitectura más profunda.",
@@ -190,7 +243,6 @@
     "header_need": "Si necesitas",
     "header_skill": "Aproximación sugerida"
   },
-
   "footer": {
     "version": "<em>perfect-ui</em> — v2.5.0",
     "tagline": "Nombre del skill en el frontmatter de <code>SKILL.md</code>",
