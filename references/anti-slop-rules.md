@@ -54,6 +54,85 @@ Tells are CUMULATIVE — a single rule break is sometimes compensable, but stack
 - Override path: user must request twice + reason logged in `plans/{date}-{slug}/overrides.md`.
 
 
+## Applicability Matrix
+
+Phase 8 audit filters rules by `--type` tier. Two tiers:
+
+- **Special tier** (`--type landing` | `--type portfolio`) → all rules apply (full set below)
+- **Generic tier** (any other `--type` — blog, about, pricing, contact, coming-soon, dashboard, admin, e-commerce, custom) → `[universal]` rules apply; `[marketing-only]` rules apply only when the page has explicit marketing intent (see [`generic-page-anatomy.md`](generic-page-anatomy.md) § Page-Purpose Exercise question 5); `[landing/portfolio-only]` rules skipped
+
+### Tag table
+
+| Rule | Tag | Tier |
+|------|-----|------|
+| DM Sans + Space Grotesk pairing | `[universal]` | 1 |
+| Icon library imports (lucide / heroicons / phosphor / tabler / react-icons / font-awesome / material-icons) | `[universal]` | 1 |
+| `h-screen` utility | `[universal]` | 1 |
+| Tailwind utility density > 200 in initial HTML | `[universal]` | 1 |
+| AI purple/blue gradient hero + gradient highlight on H1 keyword | `[marketing-only]` | 1 |
+| Two equal-weight CTAs in hero | `[marketing-only]` | 1 |
+| 3-column equal feature card grid | `[marketing-only]` | 1 |
+| Generic SaaS CTA labels ("Get Started" / "Sign In" / "Subscribe") | `[marketing-only]` | 1 |
+| AI-generated 3D model as hero subject | `[marketing-only]` | 1 |
+| `OrbitControls` enabled | `[marketing-only]` | 1 |
+| Generic browser-mockup right-half hero | `[marketing-only]` | 2 |
+| Friendly bullet checkbox reassurance row under CTA | `[marketing-only]` | 2 |
+| Round fake stats (10K+ / 99.99% / 10x faster) | `[marketing-only]` | 2 |
+| AI-generated cute illustration as hero subject | `[marketing-only]` | 2 |
+| Centered hero + centered H1 at variance > 4 | `[marketing-only]` | 2 |
+| 3D model as pure decoration (no narrative) | `[marketing-only]` | 2 |
+| Style mixing across 2D illustrations in same site | `[universal]` | 2 |
+| Forbidden fonts alone (Inter / Roboto / Open Sans / Helvetica / Poppins / Lato / Montserrat / Nunito) | `[universal]` | 3 |
+| AI cliché phrases (elevate / seamless / unleash / empower / unlock / game-changer / cutting-edge / next-gen / delve / tapestry / leverage) in headlines / primary CTAs | `[marketing-only]` | 3 |
+| Generic startup placeholder names (Acme / Globex / Initech) | `[universal]` | 3 |
+| Title Case headers | `[universal]` | 3 |
+| Forbidden color patterns (pure `#000` / `#FFF` / saturation > 80% / mixed warm+cool grays / >1 accent) | `[universal]` | layout |
+| Forbidden layout patterns (all-centered / equal card heights forced / missing max-width / uniform border-radius) | `[universal]` | layout |
+| Emoji as icons | `[universal]` | icons |
+| Mixed icon styles in same set | `[universal]` | icons |
+| Cliché icon metaphors (rocket / shield / lightning / lightbulb / gear) | `[universal]` | icons |
+| Neon outer glows / custom mouse cursors / glassmorphism without inner-border | `[universal]` | effects |
+| Generic fade-up on every element | `[universal]` | motion |
+| `ease-in-out` 0.3s as universal duration | `[universal]` | motion |
+| Motion on body `<p>` text | `[universal]` | motion |
+| Multiple competing scroll libraries | `[universal]` | motion |
+| Ignoring `prefers-reduced-motion` | `[universal]` | motion |
+| `will-change` left on after animation | `[universal]` | motion |
+| Landing copy clichés (Elevate / Seamless / Take your X to the next level / The future of...) | `[marketing-only]` | copy |
+| Portfolio openers ("Hi I'm X passionate..." / "Hello world" / "Welcome to my portfolio") | `[landing/portfolio-only]` (portfolio) | copy |
+| Portfolio personality padding (multi-disciplinary creative / pixel-perfect / crafting beautiful / "I love coffee and dogs") | `[landing/portfolio-only]` (portfolio) | copy |
+| Portfolio "Years of experience" counter | `[landing/portfolio-only]` (portfolio) | copy |
+| Portfolio vague availability ("Available for new opportunities" w/o date) | `[landing/portfolio-only]` (portfolio) | copy |
+| Forbidden placeholder data (John Doe / Jane Smith / Project 01 / generic role+company) | `[universal]` | copy |
+| Unstyled default shadcn components | `[universal]` | components |
+| Pill "New" / "Beta" badges everywhere | `[universal]` | components |
+| Newsletter footer takeover | `[marketing-only]` | components |
+| 4D framework cliché (Discover-Define-Develop-Deliver) | `[landing/portfolio-only]` (portfolio) | copy |
+| Skill bars / proficiency percentages | `[landing/portfolio-only]` (portfolio) | copy |
+
+### Audit logic (Phase 8)
+
+1. Read current session `--type`
+2. Determine tier — special vs generic
+3. Build filtered rule set:
+   - special tier → all rules
+   - generic tier → `[universal]` rules + (`[marketing-only]` rules iff marketing intent = true from page-purpose exercise)
+   - generic tier → never `[landing/portfolio-only]` rules
+4. Run grep checks on filtered subset (see § Final Audit Checklist at end of this file)
+5. Output PASS/FAIL with applicable-rule count and skipped-rule count
+
+### Worked examples
+
+- `--type landing` → ~45 rules apply (full set)
+- `--type portfolio` → ~45 rules apply (full set including portfolio-specific copy clichés)
+- `--type pricing` with marketing intent = true → ~38 rules apply (skips portfolio-only ~4 rules)
+- `--type dashboard` with marketing intent = false → ~25 rules apply (skips marketing-only ~16 + portfolio-only ~4)
+- `--type blog` with marketing intent = true → ~38 rules apply
+- `--type 404` with marketing intent = false → ~25 rules apply
+
+Untagged rules in this file default to `[universal]` — safest assumption.
+
+
 ## Typography
 
 ### Forbidden fonts (default reject)

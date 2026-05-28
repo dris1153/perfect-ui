@@ -561,7 +561,7 @@
     <div class="hero-head">
       <span class="wordmark">perfect-ui</span>
       <span class="meta">
-        <span>v2.0.0</span>
+        <span>v2.1.0</span>
         <span>MIT</span>
         <a href="README.md">README ↗</a>
       </span>
@@ -584,8 +584,8 @@
           <div class="stat-label">Anti-slop tiers</div>
         </div>
         <div>
-          <div class="stat-num">2</div>
-          <div class="stat-label">Site types</div>
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Page types — 2 special tiers</div>
         </div>
       </div>
     </div>
@@ -660,36 +660,35 @@
     <div class="grid-12">
       <div class="sec-head">
         <span class="label">— 02</span>
-        <h2><em>Scope.</em> What's in. What's not.</h2>
+        <h2><em>Scope.</em> Two tiers. No refusals.</h2>
         <span class="sec-meta">SKILL.md § Scope</span>
       </div>
       <div class="scope-grid">
         <div class="scope-col scope-handles">
-          <h3>Handles</h3>
+          <h3>Special tier — rich treatment</h3>
           <ul>
-            <li>Landing pages — marketing, sales, product launch</li>
-            <li>Portfolios — work showcase, hire-me, personal site</li>
-            <li>Vibe-driven visual direction (palette, type, spatial)</li>
-            <li>Custom SVG icon sets (zero emoji, zero icon libraries)</li>
-            <li>2D illustrations: AI-generated, SVG, static 3D render → PNG</li>
-            <li>Visual effects: CSS atmosphere, shaders, particles</li>
-            <li>Vibe-scaled motion (CSS → Framer Motion → Lenis → GSAP)</li>
-            <li>Next.js + Tailwind + shadcn implementation</li>
+            <li><code>landing</code> — marketing, sales, product launch</li>
+            <li><code>portfolio</code> — work showcase, hire-me, personal site</li>
+            <li>Type-specific anatomy + Next.js skeleton</li>
+            <li>Per-vibe section archetypes</li>
+            <li>Full Tier 1/2/3 anti-slop audit</li>
+            <li>Evidence-backed (12 marketing landings analyzed)</li>
           </ul>
         </div>
-        <div class="scope-col scope-rejects">
-          <h3>Refuses</h3>
+        <div class="scope-col scope-handles">
+          <h3>Generic tier — universal craft</h3>
           <ul>
-            <li>Full apps — use <code>ck:frontend-development</code></li>
-            <li>Dashboards, admin panels — use <code>ck:frontend-development</code></li>
-            <li>E-commerce stores — use <code>ck:shopify</code></li>
-            <li>SaaS internals, app surfaces</li>
-            <li>AI-generated 3D models as hero subject</li>
-            <li>Backend APIs, auth, payment integration</li>
-            <li>Blog sites (deferred — not yet supported)</li>
+            <li><code>blog</code>, <code>about</code>, <code>pricing</code>, <code>contact</code>, <code>coming-soon</code></li>
+            <li><code>error-page</code> (404 / 500), <code>legal</code>, <code>dashboard</code>, <code>admin</code>, <code>e-commerce</code></li>
+            <li>Any custom <code>--type</code> string</li>
+            <li>Generic anatomy + generic Next.js skeleton</li>
+            <li>Sections driven by Page-Purpose Exercise (no fixed template)</li>
+            <li>Universal anti-slop subset (Applicability Matrix filter)</li>
+            <li>Best-effort craft for app-surface types (evidence base partial)</li>
           </ul>
         </div>
       </div>
+      <p class="why-close" style="grid-column: 1 / span 12;">Universal toolkit applies to both tiers — vibe lock, palette, typography, custom icons, 2D illustrations, visual effects, motion intensity. No refusals; suggestions for companion skills live in § Beyond.</p>
     </div>
   </section>
 
@@ -713,8 +712,8 @@
 
         <div class="phase">
           <span class="phase-num">— 00.5</span>
-          <h3>Detect type</h3>
-          <p>Landing vs portfolio. Asks if unspecified. Refuses dashboards/apps.</p>
+          <h3>Detect type → tier</h3>
+          <p>Any <code>--type</code> accepted. Routes to special tier (landing / portfolio) or generic tier (any other). No refusals; evidence-base disclosure for app surfaces.</p>
           <span class="ref">SKILL.md § Phase 0.5</span>
         </div>
 
@@ -1025,8 +1024,8 @@
 
         <div class="mandate">
           <span class="mandate-num">— 08</span>
-          <h3>Type-aware everything</h3>
-          <p>Phase 1 brief, plan, anatomy, skeleton — all branch by <code>--type</code>.</p>
+          <h3>Type-aware where it matters</h3>
+          <p>Landing / portfolio get rich type-specific anatomy + per-vibe archetypes. All other types use generic anatomy + skeleton. Phase 8 audit filters rules per <code>--type</code> tier.</p>
         </div>
 
       </div>
@@ -1034,11 +1033,11 @@
   </section>
 
   <!-- IN PRACTICE -->
-  <section aria-label="In practice — three example flows">
+  <section aria-label="In practice — four example flows">
     <div class="grid-12">
       <div class="sec-head">
         <span class="label">— 07</span>
-        <h2><em>In practice.</em> Three real flows.</h2>
+        <h2><em>In practice.</em> Four real flows.</h2>
         <span class="sec-meta">README.md § Examples</span>
       </div>
 
@@ -1046,7 +1045,8 @@
         <div class="tabs-list" role="tablist" aria-label="Example flows">
           <button role="tab" id="tab-coffee" aria-controls="panel-coffee" aria-selected="true" tabindex="0">Coffee landing</button>
           <button role="tab" id="tab-portfolio" aria-controls="panel-portfolio" aria-selected="false" tabindex="-1">Portfolio redesign</button>
-          <button role="tab" id="tab-refused" aria-controls="panel-refused" aria-selected="false" tabindex="-1">Dashboard refused</button>
+          <button role="tab" id="tab-blog" aria-controls="panel-blog" aria-selected="false" tabindex="-1">Blog page</button>
+          <button role="tab" id="tab-dashboard" aria-controls="panel-dashboard" aria-selected="false" tabindex="-1">Dashboard</button>
         </div>
 
         <div class="tabs-panels">
@@ -1078,12 +1078,37 @@
             <p class="tab-outcome">Restrained portfolio that lets the work breathe. Atmospheric, not flashy. Audit-caught copy leftover prevented a slop-shipped redesign.</p>
           </div>
 
-          <div class="tab-panel" id="panel-refused" role="tabpanel" aria-labelledby="tab-refused" data-active="false">
-            <p class="tab-quote">"Build me an admin dashboard with a sidebar and analytics charts."</p>
+          <div class="tab-panel" id="panel-blog" role="tabpanel" aria-labelledby="tab-blog" data-active="false">
+            <p class="tab-quote">"Design a blog landing for a typography studio's writing. Editorial vibe, long-form serif."</p>
+            <ol class="tab-flow">
+              <li>Phase 0 detects <code>--new</code></li>
+              <li>Phase 0.5 detects <code>blog</code> keyword → <em>generic tier</em></li>
+              <li>Phase 1 → generic brief with Page-Purpose Exercise (job = inform, marketing-intent = true)</li>
+              <li>Phase 2 → palette cream + ink + ochre accent · PP Editorial Old + Söhne · asymmetric editorial · motion 1-2/3</li>
+              <li>Phase 3 → 3 custom SVG icons (tag-glyph, link-arrow, social mark)</li>
+              <li>Phase 4 → letter-form silkscreen hero accent</li>
+              <li>Phase 6 → generic plan: nav + hero + article-list + footer (driven by page-purpose, not template)</li>
+              <li>Phase 8 → audit runs <code>[universal]</code> + <code>[marketing-only]</code> subset; <code>[landing/portfolio-only]</code> rules skipped — passes</li>
+            </ol>
+            <p class="tab-outcome">Editorial blog landing with the same craft discipline as a landing page. Section stack picked from generic anatomy, not templated.</p>
+          </div>
+
+          <div class="tab-panel" id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard" data-active="false">
+            <p class="tab-quote">"Design a dashboard for a self-hosted analytics tool. Brutalist vibe, dense info, dark mode."</p>
             <div class="tab-refusal">
-              perfect-ui scope = marketing-style sites only (landing / portfolio). For an admin dashboard with sidebar and charts, use <code>ck:frontend-development</code> instead — it has React/TypeScript patterns suited to app surfaces. If you need a marketing landing page <em>for</em> your admin tool, that's in scope — clarify and we'll proceed.
+              <strong>Evidence-base disclosure (logged at Phase 0.5):</strong> skill's evidence base (12 marketing landings analyzed) does NOT cover dashboard / admin / e-commerce / app-surface patterns directly. Universal craft toolkit still applies. Output quality is best-effort, not evidence-backed.
             </div>
-            <p class="tab-outcome">Skill knows when to step aside. Refusal is a redirect, not a block. Off-scope work goes to skills built for it.</p>
+            <ol class="tab-flow">
+              <li>Phase 0 detects <code>--new</code></li>
+              <li>Phase 0.5 detects <code>dashboard</code> keyword → <em>generic tier</em> + disclosure logged</li>
+              <li>Phase 1 → generic brief (data displayed, user role, page-purpose = display data, marketing-intent = false)</li>
+              <li>Phase 2 → brutalist vibe · Söhne Mono + Söhne Breit · hi-contrast + electric-yellow accent · motion 1/3 CSS-only</li>
+              <li>Phase 3 → 6 custom icons (data-source markers, filter glyphs, sort-direction, refresh-state)</li>
+              <li>Phase 4 → schematic illustration for empty-states</li>
+              <li>Phase 6 → app-shell (sidebar + topbar) + filter-bar + data-grid + empty-state — no hero, no CTA, purpose-driven</li>
+              <li>Phase 8 → audit runs <code>[universal]</code> rules only; marketing-only rules (two equal CTAs, gradient hero, feature grid) skipped</li>
+            </ol>
+            <p class="tab-outcome">Dashboard with vibe lock, custom icons, motion discipline — without false-positive audit warnings about marketing patterns that don't apply.</p>
           </div>
 
         </div>
@@ -1105,20 +1130,21 @@
           <h3>Trigger phrases</h3>
           <div class="triggers">
             <code>design a landing page for [product]</code>
-            <code>build me a marketing page</code>
-            <code>I need a hero section / sales page</code>
             <code>design my portfolio</code>
-            <code>build a portfolio for [name]</code>
-            <code>redesign this landing → [URL]</code>
-            <code>perfect-ui [product or URL]</code>
+            <code>design my pricing page</code>
+            <code>build a blog landing</code>
+            <code>create an about page</code>
+            <code>design a dashboard for [tool]</code>
+            <code>design a 404 / coming-soon page</code>
+            <code>redesign this site → [URL]</code>
           </div>
           <p style="margin-top: 24px; font-size: 14px; color: var(--ink-muted); line-height: 1.6;">
-            The skill auto-detects mode (new vs redesign) and type (landing vs portfolio). If ambiguous, asks via <code>AskUserQuestion</code>. Off-scope requests are refused with redirect.
+            The skill auto-detects mode (new vs redesign) and type. Landing / portfolio route to special tier; any other type routes to generic tier with universal craft toolkit. No refusals — app-surface types (dashboard / admin / e-commerce) get an evidence-base disclosure and proceed.
           </p>
 
           <h3 style="margin-top: 40px;">Flags</h3>
           <div class="triggers" style="font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--ink-muted);">
-            <div><strong style="color: var(--ink);">--type</strong> &nbsp; landing | portfolio &nbsp; <span style="opacity: 0.7;">(asks if unspecified)</span></div>
+            <div><strong style="color: var(--ink);">--type</strong> &nbsp; any value &nbsp; <span style="opacity: 0.7;">(special: landing / portfolio · generic: everything else — asks if unspecified)</span></div>
             <div><strong style="color: var(--ink);">--new</strong> / <strong style="color: var(--ink);">--redesign</strong> &nbsp; <span style="opacity: 0.7;">(auto-detects from URL/screenshot)</span></div>
             <div><strong style="color: var(--ink);">--no-3d</strong> &nbsp; <span style="opacity: 0.7;">(skip Phase 5 entirely)</span></div>
             <div><strong style="color: var(--ink);">--stack</strong> &nbsp; nextjs | astro | vanilla &nbsp; <span style="opacity: 0.7;">(default: nextjs)</span></div>
@@ -1139,14 +1165,16 @@
 │   ├── visual-asset-prompt-library.md
 │   ├── visual-effect-patterns.md
 │   ├── motion-patterns.md
-│   ├── landing-anatomy.md
-│   ├── portfolio-anatomy.md
-│   ├── anti-slop-rules.md
+│   ├── landing-anatomy.md         (special tier)
+│   ├── portfolio-anatomy.md       (special tier)
+│   ├── generic-page-anatomy.md    (generic tier — v2.1.0)
+│   ├── anti-slop-rules.md         (with Applicability Matrix)
 │   ├── loading-ui-patterns.md
 │   └── redesign-audit-checklist.md
 ├── assets/nextjs-skeleton/
-│   ├── landing-skeleton.md
-│   ├── portfolio-skeleton.md
+│   ├── landing-skeleton.md          (special tier)
+│   ├── portfolio-skeleton.md        (special tier)
+│   ├── generic-page-skeleton.md     (generic tier — v2.1.0)
 │   └── section-archetypes.md
 └── plans/                  (research artifacts)</div>
         </div>
@@ -1155,43 +1183,37 @@
   </section>
 
   <!-- BEYOND -->
-  <section aria-label="Beyond perfect-ui — when to use other skills">
+  <section aria-label="Beyond perfect-ui — companion skills">
     <div class="grid-12">
       <div class="sec-head">
         <span class="label">— 09</span>
-        <h2><em>Beyond.</em> Where to go when this isn't the fit.</h2>
-        <span class="sec-meta">README.md § Related Skills</span>
+        <h2><em>Beyond.</em> Companion skills for deeper architecture.</h2>
+        <span class="sec-meta">SKILL.md § Beyond perfect-ui</span>
       </div>
+
+      <p class="mandates-intro">
+        Skill no longer refuses any page type. For these specific deeper-architecture cases, another skill is genuinely a better fit — perfect-ui suggests, doesn't force-redirect. The visible page surface is in scope regardless.
+      </p>
 
       <div class="beyond">
         <div class="beyond-row">
           <div>If you need</div>
-          <div>Use instead</div>
+          <div>Better fit</div>
         </div>
 
         <div class="beyond-row">
-          <div class="beyond-need">Full apps, dashboards, admin panels, complex multi-page IA</div>
+          <div class="beyond-need">Full app architecture, complex client-side state, deep multi-page IA</div>
           <div class="beyond-skill"><code>ck:frontend-development</code></div>
         </div>
 
         <div class="beyond-row">
-          <div class="beyond-need">Replicate exact design from screenshot or video</div>
-          <div class="beyond-skill"><code>ck:frontend-design</code></div>
-        </div>
-
-        <div class="beyond-row">
-          <div class="beyond-need">Component-level UI work in existing apps</div>
-          <div class="beyond-skill"><code>ck:ui-ux-pro-max</code></div>
-        </div>
-
-        <div class="beyond-row">
-          <div class="beyond-need">E-commerce stores</div>
+          <div class="beyond-need">Full Shopify backend (products, cart, checkout, inventory)</div>
           <div class="beyond-skill"><code>ck:shopify</code></div>
         </div>
 
         <div class="beyond-row">
-          <div class="beyond-need">Logo / CIP / banner / social-photo design (called by perfect-ui internally for icons)</div>
-          <div class="beyond-skill"><code>ckm:design</code></div>
+          <div class="beyond-need">Exact design replication from screenshot / Figma reference</div>
+          <div class="beyond-skill"><code>ck:frontend-design</code></div>
         </div>
       </div>
     </div>
@@ -1200,7 +1222,7 @@
   <!-- FOOTER -->
   <footer>
     <div class="foot-row">
-      <span><em>perfect-ui</em> — v2.0.0</span>
+      <span><em>perfect-ui</em> — v2.1.0</span>
       <span>Skill name in SKILL.md frontmatter.</span>
       <span><a href="README.md">README</a> · <a href="SKILL.md">SKILL</a></span>
     </div>

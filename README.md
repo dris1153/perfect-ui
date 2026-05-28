@@ -2,13 +2,15 @@
 
 > Skill for Claude Code — designs and ships **landing pages** and **portfolios** that look human-crafted, not AI-generated.
 
-**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.0.0 &nbsp;·&nbsp; **License:** MIT
+**Skill name:** `perfect-ui` &nbsp;·&nbsp; **Version:** 2.1.0 &nbsp;·&nbsp; **License:** MIT
 
 ---
 
 ## What it does
 
 Most LLMs default to the same SaaS slop when asked to design a website: Inter font, AI purple/blue gradient hero, three-column equal feature cards, lucide-react icons, "Elevate your workflow" copy. **Perfect UI is built specifically to avoid that.**
+
+**v2.1.0 update:** Skill scope opens beyond landing/portfolio. `--type` now accepts any page type. Landing and portfolio keep rich anatomy + skeleton + section archetypes. All other types (blog, about, pricing, contact, coming-soon, error pages, legal, dashboard, admin, e-commerce, custom) use generic anatomy + skeleton with the same universal craft toolkit (vibe + palette + typography + custom icons + 2D illustrations + motion + anti-slop). No refusals.
 
 It orchestrates a strict 8-phase pipeline:
 
@@ -55,20 +57,33 @@ The skill activates on any of these (auto-detected from user message):
 - "personal site / hire-me page / work showcase"
 - "redesign my portfolio"
 
-**Off-scope (refused, redirected):**
-- "build a dashboard / admin panel" → use `ck:frontend-development`
-- "build my SaaS app" → use `ck:frontend-development`
-- "e-commerce store" → use `ck:frontend-development` or `ck:shopify`
+**Generic (any other page type — supported via generic tier):**
+- "design my pricing page"
+- "build a blog landing"
+- "create an about page"
+- "design a contact page" / "coming-soon page" / "waitlist"
+- "design a 404 / error page"
+- "design a dashboard for my [tool]"
+- "build an admin panel"
+- "design a product catalog page" / "storefront homepage"
+- Free-text page-type description (any custom string accepted as `--type`)
+
+**Suggested (not refused) — see § Beyond perfect-ui in SKILL.md:**
+- Full app architecture / complex multi-page IA → `ck:frontend-development` is a better fit
+- Full Shopify backend (cart, checkout, inventory) → `ck:shopify` is a better fit
+- Exact design replication from screenshot/Figma → `ck:frontend-design` is a better fit
+
+Skill still handles these page types if asked — it just suggests companions for the deeper architecture.
 
 ### Arguments
 
 ```
-[description OR existing site URL] [--type landing|portfolio] [--new|--redesign] [--no-3d] [--stack nextjs|astro|vanilla]
+[description OR existing site URL] [--type any_page_type] [--new|--redesign] [--no-3d] [--stack nextjs|astro|vanilla]
 ```
 
 | Flag | Default | Behavior |
 |------|---------|----------|
-| `--type` | _asks_ | `landing` or `portfolio`. If unspecified, asks via `AskUserQuestion`. |
+| `--type` | _detects or asks_ | Any string accepted. `landing` / `portfolio` route to special tier (rich anatomy). Everything else routes to generic tier (universal craft toolkit). Common detected values: `blog`, `about`, `pricing`, `contact`, `coming-soon`, `error-page`, `legal`, `dashboard`, `admin`, `e-commerce`. If unspecified and not detected, asks via `AskUserQuestion` with 9 presets + free-text option. |
 | `--new` / `--redesign` | _detects_ | Auto-detects from URL/screenshot presence. Override if needed. |
 | `--no-3d` | propose | Skip Phase 5 entirely. Default is to propose 3D as optional. |
 | `--stack` | `nextjs` | `nextjs` (Next.js + Tailwind + shadcn — recommended), `astro`, or `vanilla`. |
@@ -124,15 +139,42 @@ The skill activates on any of these (auto-detected from user message):
 10. Phase 7 — `ck:cook` implements
 11. Phase 8 — audit catches "Welcome to my portfolio" copy left over from old site → fixes → ships
 
-### Example 3 — User request that gets refused
+### Example 3 — Blog page (generic tier)
 
 **Input:**
-> Build me an admin dashboard with a sidebar and analytics charts.
+> Design a blog landing for a typography studio's writing. Editorial vibe, long-form serif.
 
-**Skill response:**
-> perfect-ui scope = marketing-style sites only (landing/portfolio).
-> For an admin dashboard with sidebar and charts, use `ck:frontend-development` instead — it has React/TypeScript patterns suited to app surfaces.
-> If you need a marketing landing page FOR your admin tool, that's in scope — clarify and we'll proceed.
+**Skill flow:**
+1. Phase 0 — detects `new` (no URL)
+2. Phase 0.5 — detects `blog` keyword → generic tier
+3. Phase 1 — `ck:brainstorm` runs generic brief (audience, content type, Page-Purpose Exercise → job=inform, marketing-intent=true)
+4. Phase 2 — locks editorial vibe (PP Editorial Old + Söhne, cream + ink palette + ochre accent)
+5. Phase 3 — minimal icon set (3 icons: tag-glyph, link-arrow, social)
+6. Phase 4 — letter-form silkscreen hero accent
+7. Phase 5 — declined (vibe doesn't need atmosphere)
+8. Phase 6 — `ck:plan` outputs generic-tier plan: scaffold → tokens → nav → hero → article-list → footer (sections driven by page-purpose, not template)
+9. Phase 7 — `ck:cook` builds it
+10. Phase 8 — audit runs `[universal]` + `[marketing-only]` subset; no `[landing/portfolio-only]` rules triggered. Passes.
+
+### Example 4 — Dashboard (generic tier with evidence disclosure)
+
+**Input:**
+> Design a dashboard for a self-hosted analytics tool. Brutalist vibe, dense info, dark mode.
+
+**Skill logs (Phase 0.5 Step 5):**
+> Note: skill's evidence base (12 marketing landings analyzed) does NOT cover dashboard / admin / e-commerce / app-surface patterns directly. Universal craft toolkit (vibe lock, custom icons, motion rules, anti-slop universal subset) still applies. Output quality is best-effort, not evidence-backed.
+
+**Skill flow:**
+1. Phase 0 — detects `new`
+2. Phase 0.5 — detects `dashboard` keyword → generic tier (disclosure logged above)
+3. Phase 1 — generic brief: data displayed, user role, primary action, Page-Purpose Exercise → job=display data, marketing-intent=false
+4. Phase 2 — locks brutalist vibe (Söhne Mono + Söhne Breit, hi-contrast black + off-white + electric-yellow accent, motion intensity 1/3 CSS-only)
+5. Phase 3 — 6 custom icons (data-source markers, filter glyphs, sort-direction, refresh-state)
+6. Phase 4 — schematic illustration for empty-states
+7. Phase 5 — skipped (data-heavy page, no atmosphere needed)
+8. Phase 6 — generic plan: app-shell (sidebar + topbar) + filter-bar + data-grid + empty-state (no hero, no CTA — driven by page-purpose)
+9. Phase 7 — `ck:cook` builds it
+10. Phase 8 — audit runs `[universal]` rules only (marketing-intent=false). Marketing-only rules (two equal CTAs, AI gradient hero, 3-col feature grid) skipped — they don't apply. Passes.
 
 ---
 
@@ -286,7 +328,13 @@ A: It's designed to orchestrate them. Without them, the workflow degrades — Cl
 A: Add palette + typography pair to [`references/visual-direction-guide.md`](references/visual-direction-guide.md), add archetype mapping to [`assets/nextjs-skeleton/section-archetypes.md`](assets/nextjs-skeleton/section-archetypes.md), add 3D-pairing row if relevant.
 
 **Q: Can I use this for blog sites?**
-A: Not yet. Blog support was deferred — see [`plans/260509-perfect-ui-multitype/brainstorm.md`](plans/260509-perfect-ui-multitype/brainstorm.md) for context. Currently `landing` and `portfolio` only.
+A: Yes — blog is supported via generic tier (since v2.1.0). Skill applies vibe lock + custom icons + motion + universal anti-slop. Generic anatomy lets page-purpose drive sections rather than prescribing a template. Landing and portfolio remain the only types with full rich anatomy + per-vibe section archetypes.
+
+**Q: Does this skill work for dashboards / admin / e-commerce?**
+A: Yes — generic tier accepts any type (since v2.1.0). Skill logs a notice that the evidence base (12 marketing landings analyzed) doesn't cover app-surface patterns directly; output is best-effort universal craft. Vibe lock, custom icons, motion rules, and `[universal]` anti-slop rules still apply. Phase 8 audit filters out `[marketing-only]` and `[landing/portfolio-only]` rules that don't make sense for non-marketing pages. For full Shopify backend, `ck:shopify` covers commerce internals; for deep app architecture, `ck:frontend-development` covers app patterns — but perfect-ui isn't a refusal for these. See § Beyond perfect-ui in SKILL.md.
+
+**Q: How does the anti-slop audit handle generic-tier pages (e.g. a 404 or dashboard)?**
+A: Phase 8 reads `--type` and the marketing-intent flag from Page-Purpose Exercise. Rules in `references/anti-slop-rules.md` are tagged `[universal]`, `[marketing-only]`, or `[landing/portfolio-only]`. For a 404 with no marketing intent, only `[universal]` rules run (no emoji, no icon libraries, custom SVG cohesion, no h-screen, prefers-reduced-motion respect, etc.). Marketing-only rules like "no two equal-weight CTAs in hero" don't fire because a 404 has no hero. See § Applicability Matrix.
 
 **Q: Can I add a rotating 3D product GLB to my hero?**
 A: Generally NO. Direct evidence from 12 real landings showed 0/7 human-crafted pages used real-time 3D models. Use one of these instead:

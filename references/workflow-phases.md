@@ -27,35 +27,75 @@ Then proceed to Phase 0.5 with audit context attached.
 
 ---
 
-## Phase 0.5 — Type Detection
+## Phase 0.5 — Type Detection (No Refusals)
 
-### Detection rules
+Two tiers based on `--type`:
+- **Special tier** — `landing` | `portfolio`. Rich anatomy + skeleton + section archetypes per vibe + full anti-slop audit.
+- **Generic tier** — any other type. Generic anatomy + generic skeleton + universal anti-slop subset.
+
+### Step 1 — Parse `--type` flag
+If `--type` is passed, accept any string. No validation against an enum:
+- `landing` | `portfolio` → special tier
+- anything else → generic tier (carry the supplied string as type name)
+
+### Step 2 — Auto-detect from input description (when no flag)
+Match keywords (case-insensitive). First match wins:
+
 ```
-if --type flag passed → use it directly
-elif user explicitly says "landing", "marketing page", "sales page", "product launch" → landing
-elif user explicitly says "portfolio", "work showcase", "hire-me page", "personal site" → portfolio
-elif redesign audit detected type → use that
-else → AskUserQuestion("Site type?", [Landing, Portfolio])
+landing | marketing page | sales page | hero page | funnel | conversion → landing (special)
+portfolio | hire-me page | work showcase | personal site | hire me      → portfolio (special)
+blog | article | post                                                    → blog (generic)
+about | team | company info                                              → about (generic)
+pricing | plans | tiers                                                  → pricing (generic)
+contact | reach out | get in touch                                       → contact (generic)
+coming soon | waitlist | early access                                    → coming-soon (generic)
+404 | error page | not found                                             → error-page (generic)
+legal | terms | privacy                                                  → legal (generic)
+dashboard | admin panel | admin dashboard | internal tool                → dashboard (generic) ⚠ disclose
+e-commerce | storefront | product catalog | online store | shop          → e-commerce (generic) ⚠ disclose
+full app | SaaS app | user dashboard                                     → app (generic) ⚠ disclose
 ```
 
-### Off-scope refusal (REQUIRED)
-If user requests any of these, refuse and redirect:
-- "dashboard", "admin panel", "internal tool"
-- "full app", "build my app"
-- "e-commerce", "online store", "Shopify-like"
-- "SaaS internal", "user dashboard"
+Other matches → use the matched keyword as type name in generic tier.
 
-Refusal text:
-> perfect-ui scope = marketing-style sites only (landing/portfolio).
-> For {requested-thing}, use ck:frontend-development or ck:frontend-design instead.
-> If you actually need a marketing page FOR your {app/SaaS/store}, that's a landing — clarify and we'll proceed.
+### Step 3 — AskUserQuestion fallback (when no flag and no detection)
+```
+Header: "Page Type"
+Question: "What type of page are you designing?"
+Options:
+- Landing page (marketing / conversion)
+- Portfolio / personal site
+- Blog / article
+- About / team page
+- Pricing page
+- Contact / coming-soon / waitlist
+- Dashboard / admin
+- E-commerce / store
+- Other (free text → generic tier)
+```
 
-### Carry type into all downstream phases
-Type determines:
-- Phase 1 brief template (which questions to ask)
-- Phase 6 plan template (which sections to scaffold)
-- Phase 7 skeleton (landing-skeleton.md vs portfolio-skeleton.md)
-- Phase 8 anti-slop checks (type-specific clichés)
+### Step 4 — Tier routing
+- **Special tier** (`landing` | `portfolio`):
+  - Phase 1: type-specific brief template (landing or portfolio variant below)
+  - Phase 6: type-specific plan template (landing or portfolio output below)
+  - Phase 7: `assets/nextjs-skeleton/landing-skeleton.md` or `portfolio-skeleton.md`
+  - Phase 8: full anti-slop audit — all rules per § Applicability Matrix apply
+- **Generic tier** (any other type):
+  - Phase 1: generic brief template (vibe / inspirations + Page-Purpose Exercise from `generic-page-anatomy.md`)
+  - Phase 6: generic plan template (sections driven by page-purpose, not template — see Phase 6 § Generic tier plan output below)
+  - Phase 7: `assets/nextjs-skeleton/generic-page-skeleton.md`
+  - Phase 8: filtered audit per § Applicability Matrix — `[universal]` rules + `[marketing-only]` rules only when marketing intent = true
+
+### Step 5 — Evidence-base disclosure (generic tier, app-surface types)
+When detected type ∈ {`dashboard`, `admin`, `e-commerce`, `app`} OR user-supplied free text suggests app surface, log this notice once at start of session:
+
+> Note: skill's evidence base (12 marketing landings analyzed — see `plans/260509-ai-vs-human-analysis/synthesis.md`) does NOT cover dashboard / admin / e-commerce / app-surface patterns directly. Universal craft toolkit (vibe lock, custom icons, motion rules, anti-slop universal subset) still applies. Output quality is best-effort, not evidence-backed.
+
+### Carry type and intent into all downstream phases
+Type, tier, AND the `marketing intent` flag from generic-anatomy Page-Purpose Exercise (Q5) are carried into every subsequent phase prompt. Phase 8 uses the intent flag to decide whether `[marketing-only]` rules apply for generic-tier pages.
+
+### No refusals
+The skill does NOT refuse any `--type` value. Dashboard / admin / SaaS-app / e-commerce are accepted with the evidence-base disclosure above. When another skill is genuinely a better fit (full app architecture, full Shopify backend, exact screenshot replication), skill suggests via SKILL.md § Beyond — never force-redirects.
 
 ---
 
@@ -393,12 +433,40 @@ Inputs (read these files):
 13. Animations + scroll behavior
 14. Responsive + a11y polish
 
-### Hard constraints (both types) — call out in plan
+### If tier = generic (any other type) — phase output
+Sections are driven by the Page-Purpose Exercise (`generic-page-anatomy.md` § Page-Purpose Exercise), NOT a fixed template.
+
+1. Project scaffold + Tailwind theme tokens from visual-direction.md
+2. Font loading via next/font (display + body)
+3. Layout primitives (Container, Section, Grid) — adjust to page chrome density
+4. Page-purpose definition (consume Phase 1 brief answers)
+5. Section selection — pick from `generic-page-anatomy.md` § Section Pattern Library based on purpose. Do NOT default to a hero+features+CTA stack.
+6. Implement chosen sections in dependency order (e.g. dashboard: sidebar → topbar → data-grid → filter-bar; pricing: hero → tiers → FAQ → CTA; blog: hero → article-list → footer; 404: minimal banner + return-home link)
+7. {if 3D} Visual effect layer integration
+8. Animations + scroll behavior (respect locked motion intensity from Phase 2e)
+9. Responsive + a11y polish
+10. Phase 8 anti-slop audit — filtered subset per § Applicability Matrix
+
+Example section stacks by type:
+- `blog` → nav + hero + article-list + footer
+- `pricing` → nav + hero + pricing-tiers + FAQ + final-CTA + footer
+- `about` → nav + hero + team-grid + values + contact-cta + footer
+- `contact` / `coming-soon` → minimal nav + hero + form + footer
+- `dashboard` → app-shell (sidebar + topbar) + filter-bar + data-grid + empty-state
+- `404` → minimal banner + return-home link
+- `legal` → nav + long-form-prose + footer
+- custom → user / page-purpose drives
+
+### Hard constraints (all tiers) — call out in plan
 - Custom icons only (NEVER lucide-react / heroicons / phosphor)
 - Locked palette as Tailwind tokens — no inline hex
-- Real draft copy, no Lorem, no AI clichés
+- Real draft copy, no Lorem, no AI clichés (per applicability matrix tier)
 - min-h-[100dvh] not h-screen
-- Type-specific anti-slop: portfolio → no "Hi I'm passionate" opener, no skill bars
+- Type-specific anti-slop:
+  - portfolio → no "Hi I'm passionate" opener, no skill bars
+  - landing → no two equal-weight CTAs, no 3-col equal-feature-grid
+  - generic with marketing intent → no AI gradient hero, no fake stats
+  - generic without marketing intent (e.g. dashboard, 404, legal) → universal rules only
 ```
 
 User reviews plan. Iterate until approved.
@@ -438,41 +506,67 @@ After each section completes, spot-check:
 
 ---
 
-## Phase 8 — Anti-Slop Review
+## Phase 8 — Anti-Slop Review (Tier-Filtered)
 
-See `anti-slop-rules.md` § Final Audit for the full machine-runnable checklist.
+See `anti-slop-rules.md` § Final Audit for the full machine-runnable checklist and `anti-slop-rules.md` § Applicability Matrix for the rule-to-type mapping that drives filtering.
+
+### Audit filter logic
+1. Read current session `--type` and tier (special vs generic — set in Phase 0.5)
+2. Read `marketing intent` flag from Phase 1 brief (generic tier only — see `generic-page-anatomy.md` Q5)
+3. Build filtered rule set:
+   - Special tier (`landing` | `portfolio`) → ALL rules apply
+   - Generic tier + marketing intent = true → `[universal]` + `[marketing-only]` rules apply
+   - Generic tier + marketing intent = false → `[universal]` rules only
+   - `[landing/portfolio-only]` rules never apply to generic tier
+4. Run grep checks on filtered subset
+5. Output PASS/FAIL with applicable-rule count and skipped-rule count
 
 ### Run as code-reviewer agent task
 ```
-Task: Audit {landing|portfolio} for AI slop violations.
-Type: {landing|portfolio}
-Reference: references/anti-slop-rules.md § Final Audit
+Task: Audit {type} for AI slop violations (tier-filtered).
+Type: {type}
+Tier: {special | generic}
+Marketing intent: {true | false}     # generic tier only
+Reference: references/anti-slop-rules.md § Applicability Matrix + § Final Audit
 Source: app/ directory
 
-Generic grep checks (both types):
+[universal] grep checks — always run:
 - Emoji: grep -rE '[\\x{1F300}-\\x{1FAFF}]' app/
-- Icon libraries: grep -rE 'lucide-react|@heroicons|phosphor|@tabler' app/
-- Forbidden fonts: grep -rE 'Inter|Roboto|Open Sans|Space Grotesk' app/
-- h-screen: grep -rE 'h-screen' app/
+- Icon libraries: grep -rE 'lucide-react|@heroicons|phosphor|@tabler|react-icons|font-awesome' app/
+- Forbidden fonts alone: grep -rE 'Inter|Roboto|"Open Sans"|Space Grotesk|Poppins|Lato|Montserrat|Nunito' app/ tailwind.config.* (allow Inter when paired with distinctive display font)
+- DM Sans + Space Grotesk pair (Tier 1): both present together = fail
+- h-screen: grep -rE '\\bh-screen\\b' app/
+- Inline hex outside tokens: grep -rE '#[0-9a-fA-F]{6}' app/components/ (exclude SVG paths)
+- Generic ease-in-out / ease-out (Tier 2 motion): grep -rE '(ease-in-out|ease-out|"easeInOut"|"easeOut")' app/components/
+- prefers-reduced-motion respect: grep -rE 'useReducedMotion|prefers-reduced-motion' app/ (required when motion library imported)
+- Style mixing across illustrations: visual check via screenshot
 
-If type = landing:
-- AI clichés: grep -rEi 'elevate|seamless|unleash|empower|unlock|game.?changer|next.?gen' app/
-- Generic placeholders: grep -rE 'John Doe|Jane Smith|Acme Corp|99\.99|Lorem ipsum' app/
+[marketing-only] grep checks — run if tier = special OR (tier = generic AND marketing intent = true):
+- AI clichés: grep -rEi 'elevate|seamless|unleash|empower|unlock|game.?changer|next.?gen|cutting.?edge|delve|tapestry|leverage' app/lib/content.ts app/components
+- Round fake stats: grep -rE '10K\\+|99\\.99%|10x faster|1M\\+' app/
+- Generic SaaS CTA: grep -rE '"Get Started"|"Sign In"|"Subscribe"|"Start Free"|"Sign Up Free"' app/
+- AI purple/blue gradient: grep -rE 'from-purple-.*to-blue-|from-blue-.*to-purple-' app/
+- Generic placeholders: grep -rE 'John Doe|Jane Smith|Acme Corp|Lorem ipsum' app/
 
-If type = portfolio:
+[landing/portfolio-only] grep checks — run only if type = portfolio:
 - Cliché openers: grep -rEi "hi,?\\s+i'?m\\s|hello,?\\s+world|welcome to my (portfolio|corner)|passionate (designer|developer|creative)" app/
 - Skill bar / proficiency: grep -rEi 'proficiency|years of experience.{0,30}\\d+\\+|skill.bar' app/
 - 4D framework: grep -rEi 'discover.{0,5}define.{0,5}develop.{0,5}deliver' app/
 - Multi-disciplinary cliché: grep -rEi 'multi.?disciplinary creative|based in [a-z ]+' app/
 
-Visual checks via screenshot:
-- Single accent color enforced (count distinct accents)
-- Lighthouse mobile score ≥ 90 (≥ 80 if 3D)
-- Type-specific:
-  - Landing: hero NOT centered-H1 at variance > 4
-  - Portfolio: actual work visible above the fold (not just bio)
+Visual checks (screenshot-driven):
+- Single accent color enforced (count distinct accents in render)
+- Lighthouse mobile performance ≥ 90 (≥ 80 if 3D or data-heavy app surface)
+- Tier-specific:
+  - landing → hero NOT centered-H1 at variance > 4 (unless minimal vibe)
+  - portfolio → actual work visible above the fold (not just bio)
+  - generic (marketing intent) → no AI gradient hero, no fake stats, no two-equal-weight CTAs
+  - generic (no marketing intent, e.g. dashboard) → vibe consistency + icon cohesion only
 
-Output: plans/{date}-{slug}/anti-slop-report.md with PASS/FAIL per check.
+Output: plans/{date}-{slug}/anti-slop-report.md with
+- Applicable rules: N
+- Skipped rules: M
+- Per-check PASS/FAIL
 ```
 
 If any FAIL, return to Phase 7 to fix. Repeat until clean.
